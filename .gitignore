@@ -1,0 +1,7 @@
+node_modules/
+server/node_modules/
+server/nyayasetu.db
+server/nyayasetu.db-shm
+server/nyayasetu.db-wal
+server/.env
+.DS_Store

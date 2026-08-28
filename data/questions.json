@@ -1,0 +1,155 @@
+[
+  {
+    "id": "q-nch-1",
+    "route_id": "nch-2",
+    "sort_order": 1,
+    "prompt": "What best describes your consumer issue?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Refund delayed after return / cancellation", "value": "delayed refund" },
+      { "label": "Defective or wrong product delivered", "value": "defective or wrong product" },
+      { "label": "Seller not responding after payment", "value": "non-delivery after payment" },
+      { "label": "Warranty / service not honoured", "value": "warranty not honoured" }
+    ]
+  },
+  {
+    "id": "q-nch-2",
+    "route_id": "nch-2",
+    "sort_order": 2,
+    "prompt": "Have you already written to the seller or marketplace?",
+    "question_key": "priorComplaint",
+    "options": [
+      { "label": "Yes, I have a chat or email trail", "value": "yes-written" },
+      { "label": "Only phone calls, no written proof", "value": "calls-only" },
+      { "label": "Not yet", "value": "not-yet" }
+    ]
+  },
+  {
+    "id": "q-civic-1",
+    "route_id": "civic-cpgrams",
+    "sort_order": 1,
+    "prompt": "What civic issue needs action?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Pothole or damaged road", "value": "damaged road / pothole" },
+      { "label": "Broken street light", "value": "non-functional street light" },
+      { "label": "Blocked drain / waterlogging", "value": "blocked drain / waterlogging" },
+      { "label": "Garbage not collected", "value": "uncollected garbage" }
+    ]
+  },
+  {
+    "id": "q-civic-2",
+    "route_id": "civic-cpgrams",
+    "sort_order": 2,
+    "prompt": "Did you already complain to the municipality?",
+    "question_key": "priorComplaint",
+    "options": [
+      { "label": "Yes, I have a local docket number", "value": "local-docket" },
+      { "label": "Yes, but no acknowledgement", "value": "no-ack" },
+      { "label": "Not yet", "value": "not-yet" }
+    ]
+  },
+  {
+    "id": "q-util-1",
+    "route_id": "utility-discom",
+    "sort_order": 1,
+    "prompt": "What is the electricity issue?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Wrong or inflated bill", "value": "billing dispute" },
+      { "label": "Power outage / no supply", "value": "power outage" },
+      { "label": "Meter not working", "value": "faulty meter" },
+      { "label": "New connection delay", "value": "connection delay" }
+    ]
+  },
+  {
+    "id": "q-water-1",
+    "route_id": "jal-board",
+    "sort_order": 1,
+    "prompt": "What is the water supply issue?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "No water / irregular supply", "value": "irregular or no water supply" },
+      { "label": "Contaminated water", "value": "contaminated water" },
+      { "label": "Pipeline leakage", "value": "pipeline leakage" },
+      { "label": "Tanker not arriving", "value": "tanker not provided" }
+    ]
+  },
+  {
+    "id": "q-bank-1",
+    "route_id": "rbi-ombudsman",
+    "sort_order": 1,
+    "prompt": "What kind of payment or banking issue is this?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "UPI debit but payee not credited", "value": "failed UPI (debited, not credited)" },
+      { "label": "Unauthorized transaction", "value": "unauthorized transaction" },
+      { "label": "ATM / card issue", "value": "ATM or card dispute" },
+      { "label": "Loan / account service delay", "value": "bank service delay" }
+    ]
+  },
+  {
+    "id": "q-bank-2",
+    "route_id": "rbi-ombudsman",
+    "sort_order": 2,
+    "prompt": "Have you already lodged a complaint with the bank?",
+    "question_key": "priorComplaint",
+    "options": [
+      { "label": "Yes, waiting for bank response", "value": "bank-pending" },
+      { "label": "Yes, bank rejected or closed it", "value": "bank-rejected" },
+      { "label": "Not yet — I will contact the bank first", "value": "not-yet" }
+    ]
+  },
+  {
+    "id": "q-cyber-1",
+    "route_id": "cybercrime-1930",
+    "sort_order": 1,
+    "prompt": "What happened?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Money lost to online fraud / fake UPI", "value": "online financial fraud" },
+      { "label": "Phishing link or fake website", "value": "phishing" },
+      { "label": "Social media / OTP scam", "value": "OTP / social engineering scam" },
+      { "label": "Other cyber complaint", "value": "other cyber complaint" }
+    ]
+  },
+  {
+    "id": "q-scheme-1",
+    "route_id": "myscheme",
+    "sort_order": 1,
+    "prompt": "Which area of benefit are you exploring?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Education / scholarship", "value": "education scheme" },
+      { "label": "Agriculture / farmer support", "value": "agriculture scheme" },
+      { "label": "Health / insurance", "value": "health scheme" },
+      { "label": "Housing / other welfare", "value": "housing or other welfare scheme" }
+    ]
+  },
+  {
+    "id": "q-health-1",
+    "route_id": "health-cpgrams",
+    "sort_order": 1,
+    "prompt": "What is the health-service issue?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "OPD / admission delay", "value": "OPD or admission delay" },
+      { "label": "Medicine / diagnostic unavailability", "value": "unavailable medicine or diagnostics" },
+      { "label": "Staff / facility grievance", "value": "facility service grievance" },
+      { "label": "Scheme / Ayushman related", "value": "health scheme service issue" }
+    ]
+  },
+  {
+    "id": "q-edu-1",
+    "route_id": "education-nsp",
+    "sort_order": 1,
+    "prompt": "What do you need help with?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Scholarship application stuck", "value": "scholarship portal issue" },
+      { "label": "School / college service complaint", "value": "institute service complaint" },
+      { "label": "Exam / certificate delay", "value": "exam or certificate delay" },
+      { "label": "Admission related", "value": "admission related grievance" }
+    ]
+  }
+]

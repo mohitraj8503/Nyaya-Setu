@@ -1,0 +1,187 @@
+[
+  {
+    "id": "nch-2",
+    "authority_name": "National Consumer Helpline 2.0",
+    "portal_name": "consumerhelpline.gov.in",
+    "portal_url": "https://consumerhelpline.gov.in/",
+    "helpline": "1915",
+    "department": "Department of Consumer Affairs",
+    "checklist": [
+      "Order ID / invoice or payment screenshot",
+      "Seller or platform communication (chat / email)",
+      "Bank statement or UPI reference for the payment",
+      "Photos or unboxing video if the product is defective",
+      "Written request already sent to the seller (if any)"
+    ],
+    "steps": [
+      "Collect order proof and written follow-up with the seller.",
+      "Lodge the grievance on NCH 2.0 (consumerhelpline.gov.in) or call 1915.",
+      "Keep the NCH docket number for follow-up.",
+      "If unresolved, consider the Consumer Commission path using the same evidence pack."
+    ],
+    "draft_template": "Subject: Consumer grievance regarding {{issueType}} — Order {{orderId}}\n\nTo,\nNational Consumer Helpline / Concerned Consumer Protection Authority\n\nRespected Sir/Madam,\n\nI am {{complainantName}} residing at {{location}}. I purchased {{product}} on {{purchaseDate}} from {{seller}} (Order / Invoice: {{orderId}}).\n\nIssue: {{issueType}}\nDetails: {{description}}\n\nI have already contacted the seller/platform and have not received a satisfactory resolution. I request you to register this complaint, direct the opposite party to {{reliefSought}}, and keep me informed of the docket status.\n\nThis draft is prepared with NyayaSetu guidance only. I will file it myself on the official portal consumerhelpline.gov.in. NyayaSetu does not file complaints on my behalf.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "civic-cpgrams",
+    "authority_name": "Local Municipal Corporation / CPGRAMS",
+    "portal_name": "pgportal.gov.in",
+    "portal_url": "https://pgportal.gov.in/",
+    "helpline": "Local civic helpline",
+    "department": "Urban Local Body / Ministry of Housing and Urban Affairs (escalation)",
+    "checklist": [
+      "Exact location (ward, street, landmark, PIN)",
+      "Photographs of the damaged road or civic defect",
+      "Date first noticed and any prior complaint number",
+      "Safety impact (accidents, flooding, blocked ambulance access)"
+    ],
+    "steps": [
+      "Note the exact location and take dated photographs.",
+      "File first with the municipal corporation / local civic app if available.",
+      "If there is no response, lodge a public grievance on CPGRAMS (pgportal.gov.in).",
+      "Save the registration number in the NyayaSetu tracker."
+    ],
+    "draft_template": "Subject: Civic grievance — {{issueType}} at {{location}}\n\nTo,\nThe Municipal Commissioner / Concerned Civic Authority\nCopy: CPGRAMS Public Grievance Portal\n\nRespected Sir/Madam,\n\nI am {{complainantName}}, a resident of {{location}}. The following civic issue has remained unresolved:\n\nIssue type: {{issueType}}\nDescription: {{description}}\nFirst noticed: {{purchaseDate}}\n\nThis condition affects public safety and daily movement. I request immediate inspection and repair, and a written update on the action taken.\n\nI will submit this request on the official civic channel and, if needed, on https://pgportal.gov.in/. NyayaSetu does not submit grievances on my behalf.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "utility-discom",
+    "authority_name": "State Electricity Distribution Company (DISCOM)",
+    "portal_name": "pgportal.gov.in",
+    "portal_url": "https://pgportal.gov.in/",
+    "helpline": "DISCOM consumer helpline (state-specific)",
+    "department": "State Power Distribution Company / Electricity Ombudsman",
+    "checklist": [
+      "Consumer / CA number on the electricity bill",
+      "Latest bill and payment receipt",
+      "Meter reading photograph (if billing dispute)",
+      "Outage dates and duration (if supply issue)"
+    ],
+    "steps": [
+      "Call or use the DISCOM app/portal with your consumer number.",
+      "Escalate internally using the complaint number.",
+      "If still unresolved, approach the Electricity Ombudsman / CGRF of your state.",
+      "Central public grievances can also be recorded on CPGRAMS."
+    ],
+    "draft_template": "Subject: Electricity / utility grievance — Consumer No. {{orderId}}\n\nTo,\nThe Consumer Grievance Cell, {{seller}}\n\nRespected Sir/Madam,\n\nI am {{complainantName}} at {{location}}. Consumer / CA number: {{orderId}}.\n\nIssue: {{issueType}}\nDetails: {{description}}\n\nI request correction of billing / restoration of supply (as applicable) and a written confirmation. I will file this on the official DISCOM channel and, if required, on https://pgportal.gov.in/.\n\nNyayaSetu does not file this complaint for me.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "jal-board",
+    "authority_name": "Municipal Jal Board / Water Supply Department",
+    "portal_name": "pgportal.gov.in",
+    "portal_url": "https://pgportal.gov.in/",
+    "helpline": "Local Jal Board helpline",
+    "department": "Urban Local Body Water Supply Wing",
+    "checklist": [
+      "Consumer / connection number",
+      "Ward and exact address",
+      "Photos of leakage, tanker delay, or contaminated water",
+      "Prior complaint IDs if any"
+    ],
+    "steps": [
+      "Register the complaint with the local Jal Board / municipality.",
+      "Keep the docket number and follow up after the stated SLA.",
+      "Escalate on CPGRAMS if local redressal fails."
+    ],
+    "draft_template": "Subject: Water supply grievance — {{issueType}} at {{location}}\n\nTo,\nThe Executive Engineer / Jal Board\n\nRespected Sir/Madam,\n\nI am {{complainantName}}, connection / consumer no. {{orderId}}, residing at {{location}}.\n\nIssue: {{issueType}}\nDetails: {{description}}\n\nI request restoration of adequate potable supply / repair of leakage and an update on the action taken. I will file this on the official civic portal and, if needed, https://pgportal.gov.in/.\n\nNyayaSetu does not submit this grievance on my behalf.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "rbi-ombudsman",
+    "authority_name": "RBI Ombudsman / Bank Internal Grievance",
+    "portal_name": "cms.rbi.org.in",
+    "portal_url": "https://cms.rbi.org.in/",
+    "helpline": "Bank customer care, then RBI CMS",
+    "department": "Reserve Bank of India — Integrated Ombudsman Scheme",
+    "checklist": [
+      "UPI / NEFT / card reference number",
+      "Bank statement screenshot (mask account number except last 4 digits)",
+      "Date, time, and amount of the transaction",
+      "Bank complaint number from first-level grievance"
+    ],
+    "steps": [
+      "Raise a complaint with your bank / UPI app first and wait for the bank's timeline.",
+      "If unresolved, file on RBI CMS (cms.rbi.org.in) under the Integrated Ombudsman Scheme.",
+      "For suspected cyber fraud, also call 1930 and report on cybercrime.gov.in."
+    ],
+    "draft_template": "Subject: Banking / UPI grievance — Ref {{orderId}}\n\nTo,\nThe Nodal Officer / Principal Nodal Officer\n{{seller}}\n\nRespected Sir/Madam,\n\nI am {{complainantName}} of {{location}}. Transaction reference: {{orderId}} dated {{purchaseDate}}.\n\nIssue: {{issueType}}\nDetails: {{description}}\n\nRelief sought: {{reliefSought}}\n\nI request reversal / investigation as per RBI guidelines. If this remains unresolved, I will approach https://cms.rbi.org.in/. For suspected fraud I will also use https://cybercrime.gov.in/ and helpline 1930.\n\nNyayaSetu does not file this complaint for me and must not receive OTPs, PINs, or full account numbers.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "cybercrime-1930",
+    "authority_name": "National Cyber Crime Reporting Portal",
+    "portal_name": "cybercrime.gov.in",
+    "portal_url": "https://cybercrime.gov.in/",
+    "helpline": "1930",
+    "department": "Ministry of Home Affairs — Indian Cyber Crime Coordination Centre",
+    "checklist": [
+      "Transaction IDs, UTR, and amount lost",
+      "Screenshots of chats, SMS, or fake websites (do not share OTP)",
+      "Bank / wallet name and time of fraud",
+      "Copy of any 1930 acknowledgement"
+    ],
+    "steps": [
+      "Call 1930 immediately for financial fraud so the beneficiary account can be considered for freezing.",
+      "File a complaint on https://cybercrime.gov.in/.",
+      "Inform your bank in writing with the cyber complaint number.",
+      "Never share OTP, PIN, or remote-access of your device with anyone claiming to help."
+    ],
+    "draft_template": "Subject: Report of cyber / financial fraud — Amount involved {{orderId}}\n\nTo,\nNational Cyber Crime Reporting Portal / Local Cyber Police\n\nRespected Sir/Madam,\n\nI am {{complainantName}} of {{location}}. On {{purchaseDate}} I was subjected to {{issueType}}.\n\nFacts: {{description}}\n\nI request registration of this complaint, coordination for fund freeze where applicable, and investigation. I will submit this myself on https://cybercrime.gov.in/ and/or by calling 1930.\n\nNyayaSetu is only a guidance layer. I will not share OTPs, PINs, Aadhaar, or bank passwords on this website.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "myscheme",
+    "authority_name": "myScheme — National Scheme Discovery",
+    "portal_name": "myscheme.gov.in",
+    "portal_url": "https://www.myscheme.gov.in/",
+    "helpline": "Scheme-specific helplines on myScheme",
+    "department": "National Government Scheme Discovery Platform",
+    "checklist": [
+      "Category of need (education, agriculture, health, housing)",
+      "State of residence and rural/urban status",
+      "Indicative eligibility documents (do not upload here)",
+      "Official scheme code from myScheme if already identified"
+    ],
+    "steps": [
+      "Search eligible schemes on https://www.myscheme.gov.in/.",
+      "Open only official .gov.in application links listed there.",
+      "Prepare documents listed on the official scheme page before applying."
+    ],
+    "draft_template": "Subject: Request for guidance on official scheme — {{issueType}}\n\nTo,\nConcerned Scheme Implementing Department\n\nRespected Sir/Madam,\n\nI am {{complainantName}} of {{location}}. I am seeking information on {{issueType}}.\n\nBackground: {{description}}\n\nI will verify eligibility and apply only through official links on https://www.myscheme.gov.in/. This note is a personal checklist draft generated via NyayaSetu guidance and is not an application.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "health-cpgrams",
+    "authority_name": "Public Health Facility / CPGRAMS",
+    "portal_name": "pgportal.gov.in",
+    "portal_url": "https://pgportal.gov.in/",
+    "helpline": "Facility helpdesk / 104 (state health helpline where available)",
+    "department": "State Health Department / Ministry of Health and Family Welfare",
+    "checklist": [
+      "Hospital / PHC name and date of visit",
+      "OPD / IPD number if issued",
+      "Summary of the service issue (no full medical records uploaded here)",
+      "Prior complaint to the hospital superintendent"
+    ],
+    "steps": [
+      "Raise the issue with the hospital grievance cell first.",
+      "Use the state health helpline where available.",
+      "Escalate on CPGRAMS if there is no response."
+    ],
+    "draft_template": "Subject: Public health service grievance — {{issueType}}\n\nTo,\nThe Medical Superintendent / State Health Department\n\nRespected Sir/Madam,\n\nI am {{complainantName}} of {{location}}. Facility: {{seller}}. Date: {{purchaseDate}}.\n\nIssue: {{issueType}}\nDetails: {{description}}\n\nI request review and a written response. I will file this on the official facility channel and, if required, https://pgportal.gov.in/. I am not uploading medical records on NyayaSetu.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "education-nsp",
+    "authority_name": "National Scholarship Portal / Education Department",
+    "portal_name": "scholarships.gov.in",
+    "portal_url": "https://scholarships.gov.in/",
+    "helpline": "NSP / state education helpline",
+    "department": "Ministry of Education / State Education Department",
+    "checklist": [
+      "Student name as on school records (do not share passwords)",
+      "Institute name and academic year",
+      "Scholarship / exam application ID if already created on the official portal",
+      "Screenshots of error messages (no OTP)"
+    ],
+    "steps": [
+      "Use only official portals such as scholarships.gov.in or the state education site.",
+      "Raise a grievance with the institute nodal officer.",
+      "Escalate on CPGRAMS for department-level service failures."
+    ],
+    "draft_template": "Subject: Education / scholarship service issue — {{issueType}}\n\nTo,\nThe Nodal Officer / Education Department\n\nRespected Sir/Madam,\n\nI am {{complainantName}} of {{location}}. Institute / portal reference: {{orderId}}.\n\nIssue: {{issueType}}\nDetails: {{description}}\n\nI request resolution on the official portal. I will submit this myself on https://scholarships.gov.in/ or the concerned .gov.in site. NyayaSetu does not collect Aadhaar OTPs or portal passwords.\n\nThank you.\n{{complainantName}}"
+  }
+]
