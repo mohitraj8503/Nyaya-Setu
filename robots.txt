@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mohitraj8503.github.io/Nyaya-Setu/sitemap.xml

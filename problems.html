@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Help — NyayaSetu</title>
+<meta name="description" content="Search and browse public-service problems and get a guided route to the correct official portal.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/design.css">
+</head>
+<body>
+<div id="site-header"></div>
+<main class="section">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="kicker">[ Find help ]</span>
+      <h2>What's your problem?</h2>
+      <p>Search in plain words or filter by category, then start the guided wizard.</p>
+    </div>
+    <div class="searchbar reveal" role="search">
+      <span aria-hidden="true">🔎</span>
+      <input id="q" type="search" placeholder="e.g. refund, water, pothole, scholarship, UPI fraud…" aria-label="Search problems">
+    </div>
+    <div class="chips reveal" id="chips" role="group" aria-label="Filter by category"></div>
+    <p id="count" class="reveal" style="margin:1.2rem 0;color:var(--muted);font-weight:600"></p>
+    <div class="grid c3" id="results"></div>
+    <div class="empty" id="empty" style="display:none;margin-top:1rem">No matching problem found. Try different words, or <a href="contact.html">ask for help</a>.</div>
+  </div>
+</main>
+<div id="site-footer"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="data/data.js"></script>
+<script src="assets/js/engine.js"></script>
+<script src="partials.js"></script>
+<script src="assets/js/core.js"></script>
+<script>
+(function(){
+  const q=document.getElementById('q'),chips=document.getElementById('chips'),
+        res=document.getElementById('results'),empty=document.getElementById('empty'),
+        count=document.getElementById('count');
+  let cat='All';
+  NyayaEngine.categories().forEach(c=>{
+    const b=document.createElement('button');
+    b.className='chip';b.textContent=c;b.setAttribute('aria-pressed',c==='All');
+    b.addEventListener('click',()=>{cat=c;
+      chips.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));render();});
+    chips.appendChild(b);
+  });
+  function render(){
+    const list=NyayaEngine.findProblems(q.value,cat);
+    res.innerHTML='';
+    empty.style.display=list.length?'none':'block';
+    count.textContent=list.length+' problem'+(list.length===1?'':'s');
+    list.forEach(p=>{
+      const a=document.createElement('a');
+      a.className='card prob-card';
+      a.href='wizard.html?problem='+encodeURIComponent(p.id);
+      a.innerHTML='<div class="icon">'+p.icon+'</div><div class="cat">'+p.cat+'</div><h3>'+p.title+'</h3><p>'+p.desc+'</p><div class="go">Start wizard →</div>';
+      res.appendChild(a);
+    });
+  }
+  q.addEventListener('input',render);
+  render();
+})();
+</script>
+</body>
+</html>
