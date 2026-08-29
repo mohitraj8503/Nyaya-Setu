@@ -1,0 +1,190 @@
+.nyaya-app-shell {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 8px 24px 48px;
+}
+
+.nyaya-app-card {
+  background: #ffffff;
+  border: 1px solid #eef7f0;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(31, 41, 55, 0.06);
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.nyaya-kicker {
+  display: inline-block;
+  color: #2f855a;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 8px;
+}
+
+.nyaya-app-card h2,
+.nyaya-app-card h3,
+.nyaya-app-card h4 {
+  color: #1f2937;
+  margin: 0 0 12px;
+}
+
+.nyaya-lead,
+.nyaya-status,
+.nyaya-empty {
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.nyaya-status.is-error {
+  color: #b42318;
+}
+
+.nyaya-search-row,
+.nyaya-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+
+.nyaya-search-row input,
+.nyaya-form input,
+.nyaya-form select,
+.nyaya-form textarea {
+  width: 100%;
+  border: 1px solid #d7eadc;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font: inherit;
+  background: #f7fcf8;
+}
+
+.nyaya-search-row input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.nyaya-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #2f855a;
+  color: #fff !important;
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.nyaya-btn.is-ghost {
+  background: #fff;
+  color: #2f855a !important;
+  border: 1px solid #2f855a;
+}
+
+.nyaya-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.nyaya-choice {
+  text-align: left;
+  border: 1px solid #eef7f0;
+  background: #f7fcf8;
+  border-radius: 16px;
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nyaya-choice:hover {
+  border-color: #57b26a;
+}
+
+.nyaya-pill,
+.nyaya-badge {
+  display: inline-block;
+  background: #e8f6ec;
+  color: #276749;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.nyaya-fieldset {
+  border: 1px solid #eef7f0;
+  border-radius: 16px;
+  padding: 12px 16px 16px;
+  margin: 12px 0;
+}
+
+.nyaya-option {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin: 8px 0;
+  cursor: pointer;
+}
+
+.nyaya-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.nyaya-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.nyaya-form label:nth-last-child(-n + 3) {
+  grid-column: 1 / -1;
+}
+
+.nyaya-draft-output {
+  white-space: pre-wrap;
+  background: #f7fcf8;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid #eef7f0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 14px;
+}
+
+.nyaya-tracker-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.nyaya-tracker-item {
+  border: 1px solid #eef7f0;
+  border-radius: 16px;
+  padding: 16px;
+  background: #f7fcf8;
+}
+
+.nyaya-hidden {
+  display: none !important;
+}
+
+@media (max-width: 720px) {
+  .nyaya-form {
+    grid-template-columns: 1fr;
+  }
+
+  .nyaya-app-card {
+    padding: 18px;
+  }
+}

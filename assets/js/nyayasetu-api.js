@@ -74,8 +74,9 @@
     const contactForms = document.querySelectorAll('form#wf-form-Number-Form, form.contant-form');
     contactForms.forEach((form) => {
       // Prevent duplicate binding
-      if (form.dataset.apiBound) return;
+      if (form.dataset.apiBound || form.dataset.nyayaBound) return;
       form.dataset.apiBound = 'true';
+      form.dataset.nyayaBound = 'true';
 
       const parentBlock = form.closest('.form-block') || form.parentElement;
       const successDiv = parentBlock ? parentBlock.querySelector('.w-form-done') : null;
@@ -153,8 +154,9 @@
     // 2. Newsletter Subscription Forms
     const newsletterForms = document.querySelectorAll('form#email-form-2, form.newslatter-from');
     newsletterForms.forEach((form) => {
-      if (form.dataset.apiBound) return;
+      if (form.dataset.apiBound || form.dataset.nyayaBound) return;
       form.dataset.apiBound = 'true';
+      form.dataset.nyayaBound = 'true';
 
       const emailInput = form.querySelector('input[type="email"], #email');
       const submitBtn = form.querySelector('input[type="submit"], button[type="submit"]');

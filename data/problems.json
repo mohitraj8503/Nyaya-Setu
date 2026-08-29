@@ -1,0 +1,83 @@
+[
+  {
+    "id": "consumer-refunds",
+    "slug": "consumer-grievance-and-refunds",
+    "title": "Consumer Grievance & Refunds",
+    "category": "Consumer",
+    "summary": "Delayed refunds, defective goods, and e-commerce disputes mapped to National Consumer Helpline 2.0.",
+    "keywords": "refund, amazon, flipkart, defective, nch, consumer, order, e-commerce, warranty",
+    "route_id": "nch-2"
+  },
+  {
+    "id": "road-repair",
+    "slug": "public-infrastructure-and-road-repair",
+    "title": "Public Infrastructure & Road Repair",
+    "category": "Civic",
+    "summary": "Damaged locality roads, potholes, and civic infrastructure complaints for municipal / CPGRAMS channels.",
+    "keywords": "pothole, road, street light, civic, municipality, nagar nigam, drainage",
+    "route_id": "civic-cpgrams"
+  },
+  {
+    "id": "electricity-utility",
+    "slug": "electricity-and-utility-issues",
+    "title": "Electricity & Utility Issues",
+    "category": "Utilities",
+    "summary": "Billing errors, outages, and DISCOM escalation with state electricity boards and CPGRAMS.",
+    "keywords": "electricity, bill, outage, discom, meter, power cut, utility",
+    "route_id": "utility-discom"
+  },
+  {
+    "id": "water-supply",
+    "slug": "municipal-water-supply",
+    "title": "Municipal Water Supply",
+    "category": "Civic",
+    "summary": "Irregular water supply, contamination, and Jal Board / civic body escalation.",
+    "keywords": "water, jal board, tanker, contamination, leakage, municipal",
+    "route_id": "jal-board"
+  },
+  {
+    "id": "digital-payments",
+    "slug": "digital-payment-and-banking",
+    "title": "Digital Payment & Banking",
+    "category": "Finance",
+    "summary": "Failed UPI, unauthorized debit, and banking complaints via RBI Ombudsman and cybercrime 1930.",
+    "keywords": "upi, banking, rbi, ombudsman, debit, fraud, 1930, neft, failed payment",
+    "route_id": "rbi-ombudsman"
+  },
+  {
+    "id": "cyber-fraud",
+    "slug": "cyber-crime-and-digital-fraud",
+    "title": "Cyber Crime & Digital Fraud",
+    "category": "Cyber",
+    "summary": "Online financial fraud, phishing, and account freeze assistance via cybercrime.gov.in.",
+    "keywords": "cyber, fraud, phishing, otp, scam, 1930, freeze, UPI fraud",
+    "route_id": "cybercrime-1930"
+  },
+  {
+    "id": "schemes",
+    "slug": "scheme-and-benefit-discovery",
+    "title": "Scheme & Benefit Discovery",
+    "category": "Welfare",
+    "summary": "Find official central and state welfare schemes and eligibility via myScheme.",
+    "keywords": "scheme, subsidy, myscheme, pension, scholarship, welfare, pm kisan",
+    "route_id": "myscheme"
+  },
+  {
+    "id": "public-health",
+    "slug": "public-health-and-hospital",
+    "title": "Public Health & Hospital Guidance",
+    "category": "Health",
+    "summary": "Public hospital service issues, referral delays, and health grievance channels.",
+    "keywords": "hospital, health, ayushman, pharmacy, ambulance, opd",
+    "route_id": "health-cpgrams"
+  },
+  {
+    "id": "education",
+    "slug": "student-and-education-guidance",
+    "title": "Student & Education Guidance",
+    "category": "Education",
+    "summary": "Scholarship portals, school/college service issues, and education department grievances.",
+    "keywords": "scholarship, school, college, nsp, education, exam, admission",
+    "route_id": "education-nsp"
+  }
+]
