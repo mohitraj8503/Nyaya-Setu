@@ -172,25 +172,28 @@
     statusEl.textContent = "Generating draft on the server...";
     statusEl.className = "nyaya-status";
 
-    var requestPromise;
-    try {
-      requestPromise = window.NyayaAPI.generateDraft({
-        routeId: answers.routeId,
-        answers: answers,
-      });
-    } catch (error) {
-      requestPromise = Promise.reject(error);
-    }
+    (async function () {
+      try {
+        var payload = await window.NyayaAPI.generateDraft({
+          routeId: answers.routeId,
+          answers: answers,
+        });
 
-    requestPromise
-      .then(function (payload) {
         var draft = payload.data && payload.data.draft;
-        renderDraft(draft || "", (payload.data && payload.data.disclaimer) || "Draft ready. Copy it onto the official portal yourself.", false);
-      })
-      .catch(function () {
+        renderDraft(
+          draft || "",
+          (payload.data && payload.data.disclaimer) || "Draft ready. Copy it onto the official portal yourself.",
+          false
+        );
+      } catch (error) {
         var offlineDraft = buildOfflineDraft(answers);
-        renderDraft(offlineDraft, "NyayaSetu is an independent guidance layer. It does not file this text on any government portal.", true);
-      });
+        renderDraft(
+          offlineDraft,
+          "NyayaSetu is an independent guidance layer. It does not file this text on any government portal.",
+          true
+        );
+      }
+    })();
   });
 
   document.getElementById("nyaya-copy-draft").addEventListener("click", function () {
