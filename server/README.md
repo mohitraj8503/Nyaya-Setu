@@ -2,11 +2,12 @@
 
 Base URL: `http://localhost:5000/api/v1`
 
-## GET /problems
+## 1) GET /problems
 
-Returns all seeded complaint problem entries, optionally filtered by a search query.
+- Method: `GET`
+- Path: `/api/v1/problems`
 
-### Request
+### Sample request
 
 ```http
 GET /api/v1/problems
@@ -33,11 +34,12 @@ GET /api/v1/problems?q=water
 }
 ```
 
-## GET /routes/:id
+## 2) GET /routes/:id
 
-Returns a route definition, its questionnaire, and all related problems for the given route id.
+- Method: `GET`
+- Path: `/api/v1/routes/:id`
 
-### Request
+### Sample request
 
 ```http
 GET /api/v1/routes/municipal-water-supply
@@ -82,11 +84,12 @@ GET /api/v1/routes/municipal-water-supply
 }
 ```
 
-## POST /drafts
+## 3) POST /drafts
 
-Generates a complaint draft from user answers. This route accepts either the full payload or a nested `answers` object.
+- Method: `POST`
+- Path: `/api/v1/drafts`
 
-### Request body
+### Sample request body
 
 ```json
 {
@@ -101,13 +104,6 @@ Generates a complaint draft from user answers. This route accepts either the ful
 }
 ```
 
-### Request
-
-```http
-POST /api/v1/drafts
-Content-Type: application/json
-```
-
 ### Sample response
 
 ```json
@@ -120,11 +116,12 @@ Content-Type: application/json
 }
 ```
 
-## GET /tracker
+## 4) GET /tracker
 
-Returns all tracked complaint items ordered by most recent creation time.
+- Method: `GET`
+- Path: `/api/v1/tracker`
 
-### Request
+### Sample request
 
 ```http
 GET /api/v1/tracker
@@ -152,11 +149,12 @@ GET /api/v1/tracker
 }
 ```
 
-## POST /tracker
+## 5) POST /tracker
 
-Creates a new tracker item for a citizen complaint or follow-up.
+- Method: `POST`
+- Path: `/api/v1/tracker`
 
-### Request body
+### Sample request body
 
 ```json
 {
@@ -168,13 +166,6 @@ Creates a new tracker item for a citizen complaint or follow-up.
   "notes": "Follow up with municipal office",
   "portalUrl": "https://example.gov.in/portal"
 }
-```
-
-### Request
-
-```http
-POST /api/v1/tracker
-Content-Type: application/json
 ```
 
 ### Sample response
