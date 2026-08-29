@@ -49,6 +49,28 @@ function createTables(db) {
       draft_template TEXT NOT NULL DEFAULT ''
     );
 
+    CREATE TABLE IF NOT EXISTS drafts (
+      id TEXT PRIMARY KEY,
+      route_id TEXT,
+      title TEXT NOT NULL DEFAULT '',
+      content TEXT NOT NULL DEFAULT '',
+      status TEXT NOT NULL DEFAULT 'draft',
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS tracker (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      category TEXT,
+      reference_id TEXT,
+      filing_date TEXT,
+      status TEXT NOT NULL DEFAULT 'drafted',
+      notes TEXT,
+      portal_url TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
     CREATE TABLE IF NOT EXISTS questions (
       id TEXT PRIMARY KEY,
       route_id TEXT NOT NULL,

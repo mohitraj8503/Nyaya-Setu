@@ -72,6 +72,20 @@ function sanitizeText(value) {
     .trim();
 }
 
+function stripHtmlAndScripts(value) {
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  const stringValue = typeof value === "string" ? value : String(value);
+  return stringValue
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function sanitizePayload(value) {
   if (Array.isArray(value)) {
     return value.map((item) => sanitizePayload(item));
@@ -149,7 +163,23 @@ router.get("/routes/:id", (req, res) => {
 const generateDraft = (req, res) => {
   const body = sanitizePayload(req.body || {});
   const answers = body.answers && typeof body.answers === "object" ? body.answers : body;
-  const routeId = sanitizeText(body.routeId || answers.routeId);
+  const routeId = stripHtmlAndScripts(body.routeId || answers.routeId);
+
+  const cleanedAnswers = {};
+  for (const [key, value] of Object.entries(answers || {})) {
+    if (typeof value === "string") {
+      cleanedAnswers[key] = stripHtmlAndScripts(value);
+    } else if (Array.isArray(value)) {
+      cleanedAnswers[key] = value.map((item) =>
+        typeof item === "string" ? stripHtmlAndScripts(item) : sanitizePayload(item)
+      );
+    } else if (value && typeof value === "object") {
+      cleanedAnswers[key] = sanitizePayload(value);
+    } else {
+      cleanedAnswers[key] = value;
+    }
+  }
+
   const db = getDb();
 
   let template =
@@ -162,7 +192,7 @@ const generateDraft = (req, res) => {
     }
   }
 
-  const draft = interpolate(template, answers);
+  const draft = interpolate(template, cleanedAnswers);
   res.json({
     ok: true,
     data: {
@@ -194,7 +224,7 @@ router.get("/tracker", (_req, res) => {
 
 router.post("/tracker", (req, res) => {
   const body = sanitizePayload(req.body || {});
-  const title = sanitizeText(body.title || "").trim();
+  const title = stripHtmlAndScripts(body.title || "").trim();
 
   if (!title) {
     res.status(400).json({ ok: false, error: "title is required" });
@@ -211,12 +241,12 @@ router.post("/tracker", (req, res) => {
     )
     .run({
       title,
-      category: sanitizeText(body.category || "").trim(),
-      reference_id: sanitizeText(body.referenceId || body.reference_id || "").trim(),
-      filing_date: sanitizeText(body.filingDate || body.filing_date || "").trim(),
-      status: sanitizeText(body.status || "drafted").trim(),
-      notes: sanitizeText(body.notes || "").trim(),
-      portal_url: sanitizeText(body.portalUrl || body.portal_url || "").trim(),
+      category: stripHtmlAndScripts(body.category || "").trim(),
+      reference_id: stripHtmlAndScripts(body.referenceId || body.reference_id || "").trim(),
+      filing_date: stripHtmlAndScripts(body.filingDate || body.filing_date || "").trim(),
+      status: stripHtmlAndScripts(body.status || "drafted").trim(),
+      notes: stripHtmlAndScripts(body.notes || "").trim(),
+      portal_url: stripHtmlAndScripts(body.portalUrl || body.portal_url || "").trim(),
     });
 
   const item = db
