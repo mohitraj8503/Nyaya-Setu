@@ -55,6 +55,43 @@ function interpolate(template, values) {
   });
 }
 
+function sanitizeText(value) {
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  if (typeof value !== "string") {
+    return String(value);
+  }
+
+  return value
+    .replace(/<script\b[^>]*>.*?<\/script>/gi, " ")
+    .replace(/<style\b[^>]*>.*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function sanitizePayload(value) {
+  if (Array.isArray(value)) {
+    return value.map((item) => sanitizePayload(item));
+  }
+
+  if (value && typeof value === "object") {
+    const sanitized = {};
+    for (const [key, item] of Object.entries(value)) {
+      sanitized[key] = sanitizePayload(item);
+    }
+    return sanitized;
+  }
+
+  if (typeof value === "string") {
+    return sanitizeText(value);
+  }
+
+  return value;
+}
+
 router.get("/problems", (req, res) => {
   const db = getDb();
   const query = String(req.query.q || req.query.query || "").trim();
@@ -110,9 +147,9 @@ router.get("/routes/:id", (req, res) => {
 });
 
 const generateDraft = (req, res) => {
-  const body = req.body || {};
+  const body = sanitizePayload(req.body || {});
   const answers = body.answers && typeof body.answers === "object" ? body.answers : body;
-  const routeId = body.routeId || answers.routeId;
+  const routeId = sanitizeText(body.routeId || answers.routeId);
   const db = getDb();
 
   let template =
@@ -156,8 +193,8 @@ router.get("/tracker", (_req, res) => {
 });
 
 router.post("/tracker", (req, res) => {
-  const body = req.body || {};
-  const title = String(body.title || "").trim();
+  const body = sanitizePayload(req.body || {});
+  const title = sanitizeText(body.title || "").trim();
 
   if (!title) {
     res.status(400).json({ ok: false, error: "title is required" });
@@ -174,12 +211,12 @@ router.post("/tracker", (req, res) => {
     )
     .run({
       title,
-      category: String(body.category || "").trim(),
-      reference_id: String(body.referenceId || body.reference_id || "").trim(),
-      filing_date: String(body.filingDate || body.filing_date || "").trim(),
-      status: String(body.status || "drafted").trim(),
-      notes: String(body.notes || "").trim(),
-      portal_url: String(body.portalUrl || body.portal_url || "").trim(),
+      category: sanitizeText(body.category || "").trim(),
+      reference_id: sanitizeText(body.referenceId || body.reference_id || "").trim(),
+      filing_date: sanitizeText(body.filingDate || body.filing_date || "").trim(),
+      status: sanitizeText(body.status || "drafted").trim(),
+      notes: sanitizeText(body.notes || "").trim(),
+      portal_url: sanitizeText(body.portalUrl || body.portal_url || "").trim(),
     });
 
   const item = db
