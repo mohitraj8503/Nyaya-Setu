@@ -3,1109 +3,1773 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NyayaSetu – Developer Admin Portal</title>
+  <title>NyayaSetu Console — Admin Analytics</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/svg+xml" href="assets/cdn.prod.website-files.com/69082f2869747d13e82f1a82/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/svg+xml" href="assets/cdn.prod.website-files.com/69082f2869747d13e82f1a82/favicon.svg">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Amazon+Ember:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     :root {
-      --bg-primary: #0a0f18;
-      --bg-surface: #111a28;
-      --bg-card: rgba(22, 34, 52, 0.75);
-      --bg-card-hover: rgba(30, 47, 72, 0.85);
-      --border-color: rgba(255, 255, 255, 0.08);
-      --border-glow: rgba(56, 189, 248, 0.35);
-      
-      --accent-cyan: #38bdf8;
-      --accent-emerald: #10b981;
-      --accent-amber: #f59e0b;
-      --accent-rose: #f43f5e;
-      --accent-indigo: #6366f1;
-      
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-dim: #64748b;
-      
-      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --amz-orange:       #FF9900;
+      --amz-orange-dark:  #E88000;
+      --amz-orange-light: #FFF3CD;
+      --amz-navy:         #131921;
+      --amz-navy-alt:     #1A2536;
+      --amz-blue:         #232F3E;
+      --amz-blue-mid:     #37475A;
+      --amz-teal:         #00A8A2;
+      --sidebar-w:        230px;
+      --topbar-h:         56px;
+
+      --bg-main:    #F3F3F3;
+      --bg-card:    #FFFFFF;
+      --border:     #D5D9D9;
+      --border-mid: #C0C7CD;
+      --text-prime: #0F1111;
+      --text-muted: #565959;
+      --text-dim:   #8D9091;
+
+      --green:  #067D62;
+      --green-bg: #E4F5F0;
+      --red:    #C7511F;
+      --red-bg: #FEF0E7;
+      --blue:   #0066C0;
+      --blue-bg:#E7F0F9;
+      --purple: #7A5AF8;
+      --purple-bg: #F4F1FF;
+
+      --font: 'Inter', 'Amazon Ember', -apple-system, Arial, sans-serif;
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    html { font-size: 14px; }
     body {
-      background-color: var(--bg-primary);
-      color: var(--text-main);
-      font-family: var(--font-sans);
+      font-family: var(--font);
+      background: var(--bg-main);
+      color: var(--text-prime);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background-image: 
-        radial-gradient(at 15% 15%, rgba(56, 189, 248, 0.08) 0px, transparent 40%),
-        radial-gradient(at 85% 85%, rgba(16, 185, 129, 0.06) 0px, transparent 40%),
-        radial-gradient(at 50% 50%, rgba(99, 102, 241, 0.05) 0px, transparent 60%);
-      background-attachment: fixed;
     }
 
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: var(--bg-primary); }
-    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: #334155; }
-
-    /* AUTH OVERLAY */
+    /* ── AUTH OVERLAY ── */
     #authOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(10, 15, 24, 0.94);
-      backdrop-filter: blur(16px);
-      z-index: 10000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--amz-navy);
+      display: flex; align-items: center; justify-content: center;
     }
-
-    .auth-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 40px 36px;
-      width: 100%;
-      max-width: 440px;
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 30px rgba(56, 189, 248, 0.1);
-      text-align: center;
-      animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    .auth-wrap {
+      width: 360px;
+      background: #fff;
+      border-radius: 8px;
+      padding: 32px 28px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.5);
     }
-
-    @keyframes popIn {
-      from { transform: scale(0.92); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+    .auth-logo {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 24px;
     }
-
-    .auth-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-      background: rgba(56, 189, 248, 0.12);
-      color: var(--accent-cyan);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      margin-bottom: 20px;
+    .auth-logo-badge {
+      background: var(--amz-orange);
+      color: #000; font-weight: 800; font-size: 12px;
+      padding: 4px 10px; border-radius: 4px; letter-spacing: .02em;
     }
-
-    .auth-title {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 8px;
-      letter-spacing: -0.5px;
-    }
-
-    .auth-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-bottom: 28px;
-      line-height: 1.5;
-    }
-
-    .auth-input-group {
-      position: relative;
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    .auth-label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text-muted);
-      margin-bottom: 6px;
-    }
-
+    .auth-logo-title { font-size: 16px; font-weight: 700; color: var(--amz-navy); }
+    .auth-heading { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+    .auth-sub { color: var(--text-muted); font-size: 13px; margin-bottom: 20px; }
+    .auth-label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
     .auth-input {
-      width: 100%;
-      padding: 13px 16px;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      color: #fff;
-      font-size: 15px;
-      font-family: var(--font-mono);
-      transition: all 0.2s;
+      width: 100%; padding: 9px 12px;
+      border: 1px solid var(--border-mid);
+      border-radius: 4px; font: inherit; font-size: 14px;
+      outline: none; transition: border .2s, box-shadow .2s;
     }
-
-    .auth-input:focus {
-      outline: none;
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
-    }
-
+    .auth-input:focus { border-color: #E88000; box-shadow: 0 0 0 3px rgba(255,153,0,.15); }
     .auth-btn {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #0284c7, #0369a1);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
-      transition: all 0.2s;
+      width: 100%; margin-top: 14px;
+      background: var(--amz-orange);
+      color: #111; font: inherit; font-weight: 700; font-size: 14px;
+      border: none; border-radius: 4px;
+      padding: 10px 0; cursor: pointer;
+      transition: background .15s, box-shadow .15s;
+      box-shadow: 0 2px 5px rgba(255,153,0,.35);
     }
+    .auth-btn:hover { background: var(--amz-orange-dark); }
+    .auth-btn:disabled { opacity: .6; cursor: not-allowed; }
+    .auth-hint { font-size: 11.5px; color: var(--text-dim); margin-top: 12px; text-align: center; }
+    .auth-err { color: #c0392b; font-size: 12.5px; margin-top: 8px; display: none; }
 
-    .auth-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+    /* ── TOP BAR ── */
+    #topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--topbar-h);
+      background: var(--amz-navy);
+      display: flex; align-items: center;
+      padding: 0 18px;
+      gap: 16px;
+      border-bottom: 2px solid var(--amz-orange);
     }
-
-    .auth-hint {
-      margin-top: 16px;
-      font-size: 12px;
-      color: var(--text-dim);
-    }
-
-    /* DASHBOARD LAYOUT */
-    .dashboard-container {
-      max-width: 1380px;
-      margin: 0 auto;
-      padding: 24px 32px 60px;
-      width: 100%;
-    }
-
-    /* TOP NAVBAR */
-    .top-nav {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: 18px;
-      padding: 16px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 28px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
-    }
-
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .nav-logo {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #0284c7, #10b981);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 18px;
-      color: #fff;
-    }
-
-    .nav-title {
-      font-size: 18px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .dev-badge {
-      background: rgba(16, 185, 129, 0.15);
-      color: var(--accent-emerald);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
+    .tb-logo {
+      display: flex; align-items: center; gap: 8px;
       text-decoration: none;
     }
+    .tb-logo-badge {
+      background: var(--amz-orange); color: #000;
+      font-weight: 800; font-size: 12px;
+      padding: 3px 9px; border-radius: 3px;
+    }
+    .tb-logo-text { color: #fff; font-size: 15px; font-weight: 700; }
+    .tb-sep { width: 1px; height: 28px; background: var(--amz-blue-mid); margin: 0 6px; }
+    .tb-label { color: #ccc; font-size: 12px; }
+    .tb-env {
+      background: #1e3a5f; color: var(--amz-orange);
+      font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 3px;
+      border: 1px solid #2d5a8a;
+      letter-spacing: .06em;
+    }
+    .tb-spacer { flex: 1; }
+    .tb-health {
+      display: flex; align-items: center; gap: 6px;
+      color: #ccc; font-size: 12px;
+    }
+    .tb-health-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #ddd; display: inline-block;
+    }
+    .tb-health-dot.ok { background: #2ECC71; box-shadow: 0 0 6px #2ECC71; }
+    .tb-health-dot.err { background: #e74c3c; }
+    #tbUptime { font-family: monospace; font-size: 11.5px; color: #aaa; }
+    .tb-btn {
+      background: var(--amz-blue-mid); color: #fff;
+      border: none; border-radius: 3px;
+      padding: 6px 12px; font: inherit; font-size: 12px; font-weight: 500;
+      cursor: pointer; transition: background .15s;
+    }
+    .tb-btn:hover { background: #4a6278; }
+    .tb-btn-orange {
+      background: var(--amz-orange); color: #000; font-weight: 700;
+    }
+    .tb-btn-orange:hover { background: var(--amz-orange-dark); }
 
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
+    /* ── LAYOUT ── */
+    #shell { display: flex; padding-top: var(--topbar-h); min-height: 100vh; }
+    #sidebar {
+      width: var(--sidebar-w); flex-shrink: 0;
+      background: var(--amz-blue);
+      position: fixed; top: var(--topbar-h); left: 0; bottom: 0;
+      overflow-y: auto; z-index: 90;
+      padding: 12px 0;
+    }
+    #sidebar::-webkit-scrollbar { width: 5px; }
+    #sidebar::-webkit-scrollbar-thumb { background: #37475A; border-radius: 3px; }
+    .sb-section { padding: 8px 0 4px; }
+    .sb-section-label {
+      font-size: 10.5px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: #8BA0B0;
+      padding: 0 20px 6px; display: block;
+    }
+    .sb-link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 20px; color: #D5DBDB;
+      text-decoration: none; font-size: 13.5px;
+      cursor: pointer; border-left: 3px solid transparent;
+      transition: all .15s;
+    }
+    .sb-link:hover { background: rgba(255,255,255,.06); color: #fff; }
+    .sb-link.active {
+      background: rgba(255,153,0,.12);
+      color: var(--amz-orange);
+      border-left-color: var(--amz-orange);
+    }
+    .sb-icon { font-size: 15px; width: 20px; text-align: center; }
+    .sb-badge {
+      margin-left: auto; background: var(--amz-orange);
+      color: #000; font-size: 10px; font-weight: 700;
+      padding: 1px 6px; border-radius: 9px;
+      min-width: 18px; text-align: center;
+    }
+    #main {
+      margin-left: var(--sidebar-w);
+      flex: 1; padding: 24px 28px;
+      min-width: 0;
     }
 
-    .btn-danger {
-      background: rgba(244, 63, 94, 0.15);
-      border: 1px solid rgba(244, 63, 94, 0.3);
-      color: var(--accent-rose);
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
+    /* ── PAGES ── */
+    .page { display: none; }
+    .page.active { display: block; }
 
-    .btn-danger:hover {
-      background: rgba(244, 63, 94, 0.25);
+    /* ── PAGE HEADER ── */
+    .page-hdr {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 22px;
     }
+    .page-hdr-icon {
+      width: 42px; height: 42px; border-radius: 8px;
+      background: var(--amz-orange-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .page-hdr-title { font-size: 22px; font-weight: 800; }
+    .page-hdr-sub { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+    .page-hdr-actions { margin-left: auto; display: flex; gap: 10px; }
 
-    /* STATS GRID */
-    .stats-grid {
+    /* ── KPI CARDS ── */
+    .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 20px;
-      margin-bottom: 28px;
+      grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 14px; margin-bottom: 24px;
     }
-
-    .stat-card {
+    .kpi-card {
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 16px;
-      padding: 22px;
-      backdrop-filter: blur(12px);
-      transition: transform 0.2s, border-color 0.2s;
-      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 6px; padding: 18px 18px 16px;
+      cursor: default;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .kpi-card:hover {
+      border-color: var(--amz-orange);
+      box-shadow: 0 2px 10px rgba(255,153,0,.15);
+    }
+    .kpi-icon { font-size: 22px; margin-bottom: 10px; }
+    .kpi-label { font-size: 11.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+    .kpi-value { font-size: 30px; font-weight: 800; line-height: 1; }
+    .kpi-meta { font-size: 11px; color: var(--text-dim); margin-top: 6px; }
+    .kpi-delta {
+      display: inline-flex; align-items: center; gap: 3px;
+      font-size: 11px; font-weight: 600; margin-top: 6px;
+    }
+    .kpi-delta.up { color: var(--green); }
+    .kpi-delta.neutral { color: var(--text-muted); }
+
+    /* ── CHART GRID ── */
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px; margin-bottom: 24px;
+    }
+    .chart-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-bottom: 24px;
+    }
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px; padding: 18px 20px;
+    }
+    .chart-title {
+      font-size: 14px; font-weight: 700; margin-bottom: 4px;
+    }
+    .chart-sub { font-size: 11.5px; color: var(--text-muted); margin-bottom: 16px; }
+    .chart-wrap { position: relative; }
+
+    /* ── DATA PANEL ── */
+    .data-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 6px; margin-bottom: 20px;
       overflow: hidden;
     }
-
-    .stat-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--border-glow);
+    .data-panel-hdr {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: #FAFAFA;
     }
-
-    .stat-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
+    .data-panel-title { font-size: 14px; font-weight: 700; }
+    .data-panel-count {
+      background: var(--amz-orange-light);
+      color: #8A5A00; font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 9px;
     }
+    .data-panel-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 
-    .stat-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
+    /* ── TOOLBAR ── */
+    .toolbar {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 20px; border-bottom: 1px solid var(--border);
+      background: #fff; flex-wrap: wrap;
     }
-
-    .stat-icon {
-      font-size: 20px;
-      opacity: 0.85;
+    .search-wrap {
+      position: relative; flex: 1; min-width: 200px;
     }
-
-    .stat-value {
-      font-size: 32px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      color: #fff;
+    .search-wrap input {
+      width: 100%; padding: 7px 12px 7px 32px;
+      border: 1px solid var(--border-mid);
+      border-radius: 4px; font: inherit; font-size: 13px;
+      outline: none; transition: border .2s, box-shadow .2s;
     }
-
-    .stat-desc {
-      font-size: 12px;
-      color: var(--text-dim);
-      margin-top: 6px;
+    .search-wrap input:focus { border-color: #E88000; box-shadow: 0 0 0 3px rgba(255,153,0,.15); }
+    .search-icon {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      font-size: 14px; color: var(--text-dim);
     }
-
-    /* TABS */
-    .tabs-nav {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 12px;
-      margin-bottom: 24px;
-      overflow-x: auto;
-    }
-
-    .tab-btn {
-      background: transparent;
-      border: 1px solid transparent;
-      color: var(--text-muted);
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-
-    .tab-btn:hover {
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .tab-btn.active {
-      background: rgba(56, 189, 248, 0.12);
-      color: var(--accent-cyan);
-      border-color: rgba(56, 189, 248, 0.3);
-    }
-
-    .tab-count {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-size: 11px;
-    }
-
-    .tab-btn.active .tab-count {
-      background: rgba(56, 189, 248, 0.25);
-      color: #fff;
-    }
-
-    /* SECTION CARD */
-    .section-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 18px;
-      padding: 24px;
-      backdrop-filter: blur(12px);
-    }
-
-    .table-toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .search-input {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 10px 16px;
-      color: #fff;
-      font-size: 13px;
-      min-width: 280px;
-      font-family: var(--font-sans);
-    }
-
-    .search-input:focus {
+    .filter-sel {
+      padding: 7px 10px;
+      border: 1px solid var(--border-mid);
+      border-radius: 4px; font: inherit; font-size: 13px;
+      background: #fff; cursor: pointer;
       outline: none;
-      border-color: var(--accent-cyan);
     }
-
-    /* TABLE */
-    .table-responsive {
-      overflow-x: auto;
+    .filter-sel:focus { border-color: #E88000; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 4px;
+      font: inherit; font-size: 13px; font-weight: 600;
+      border: 1px solid transparent; cursor: pointer;
+      transition: all .15s; text-decoration: none;
     }
+    .btn-primary { background: var(--amz-orange); color: #000; border-color: #C07000; }
+    .btn-primary:hover { background: var(--amz-orange-dark); }
+    .btn-outline { background: #fff; color: var(--text-prime); border-color: var(--border-mid); }
+    .btn-outline:hover { background: #F7F7F7; border-color: var(--amz-orange); }
+    .btn-danger { background: #fff; color: #c0392b; border-color: #e74c3c; }
+    .btn-danger:hover { background: #fdf2f2; }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
+    .btn-xs { padding: 3px 8px; font-size: 11px; }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 13px;
+    /* ── TABLE ── */
+    .tbl-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th {
+      background: #F7F8F8;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px; text-align: left;
+      font-size: 12px; font-weight: 700;
+      color: var(--text-muted); text-transform: uppercase;
+      letter-spacing: .05em; white-space: nowrap;
+      user-select: none; cursor: pointer;
     }
-
-    th {
-      color: var(--text-muted);
-      font-weight: 600;
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border-color);
-      text-transform: uppercase;
-      font-size: 11px;
-      letter-spacing: 0.6px;
+    thead th:hover { color: var(--amz-orange); }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background .1s;
     }
-
-    td {
-      padding: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      color: var(--text-main);
-      vertical-align: middle;
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #FFFBF3; }
+    tbody td { padding: 11px 14px; vertical-align: middle; }
+    .tbl-empty {
+      text-align: center; padding: 48px 20px;
+      color: var(--text-dim); font-size: 13px;
     }
+    .tbl-empty-icon { font-size: 32px; margin-bottom: 10px; }
 
-    tr:hover td {
-      background: rgba(255, 255, 255, 0.02);
-    }
-
+    /* ── STATUS BADGES ── */
     .badge {
-      display: inline-flex;
-      align-items: center;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
+      display: inline-block;
+      padding: 3px 9px; border-radius: 3px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: .03em; white-space: nowrap;
     }
+    .badge-new     { background: #EBF5FB; color: #1A5276; }
+    .badge-progress{ background: var(--amz-orange-light); color: #8A5A00; }
+    .badge-responded{background: var(--green-bg); color: var(--green); }
+    .badge-archived { background: #F2F3F4; color: var(--text-muted); }
+    .badge-active  { background: var(--green-bg); color: var(--green); }
+    .badge-inactive{ background: var(--red-bg); color: var(--red); }
+    .badge-filed   { background: var(--blue-bg); color: var(--blue); }
+    .badge-drafted { background: var(--purple-bg); color: var(--purple); }
+    .badge-closed  { background: #F2F3F4; color: var(--text-muted); }
+    .badge-followup{ background: var(--red-bg); color: var(--red); }
 
-    .badge-new { background: rgba(56, 189, 248, 0.15); color: var(--accent-cyan); }
-    .badge-progress { background: rgba(245, 158, 11, 0.15); color: var(--accent-amber); }
-    .badge-responded { background: rgba(16, 185, 129, 0.15); color: var(--accent-emerald); }
-    .badge-archived { background: rgba(100, 116, 139, 0.2); color: var(--text-muted); }
-
-    .action-btn {
-      background: transparent;
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 6px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: all 0.2s;
+    /* ── PAGINATION ── */
+    .pagination {
+      display: flex; align-items: center; gap: 4px;
+      padding: 14px 20px; border-top: 1px solid var(--border);
+      font-size: 13px; color: var(--text-muted);
     }
-
-    .action-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: #fff;
+    .page-btn {
+      min-width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      border: 1px solid var(--border-mid);
+      border-radius: 3px; cursor: pointer; font-size: 13px;
+      background: #fff; color: var(--text-prime);
+      transition: all .15s;
     }
+    .page-btn:hover { border-color: var(--amz-orange); color: var(--amz-orange); }
+    .page-btn.active { background: var(--amz-orange); color: #000; border-color: var(--amz-orange); font-weight: 700; }
+    .page-btn:disabled { opacity: .4; cursor: not-allowed; }
+    .page-info { margin-left: auto; font-size: 12px; }
 
-    .action-btn.delete:hover {
-      background: rgba(244, 63, 94, 0.2);
-      color: var(--accent-rose);
-      border-color: rgba(244, 63, 94, 0.4);
+    /* ── ACTIVITY FEED ── */
+    .activity-feed { padding: 8px 0; }
+    .activity-item {
+      display: flex; gap: 12px; padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
     }
-
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--text-dim);
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      margin-top: 5px; flex-shrink: 0;
     }
+    .activity-content { flex: 1; min-width: 0; }
+    .activity-text { font-size: 13px; font-weight: 500; }
+    .activity-text span { color: var(--amz-orange); font-weight: 700; }
+    .activity-meta { font-size: 11.5px; color: var(--text-dim); margin-top: 2px; }
+    .activity-time { font-size: 11px; color: var(--text-dim); white-space: nowrap; }
 
-    .empty-state-icon {
-      font-size: 40px;
-      margin-bottom: 12px;
-      opacity: 0.5;
+    /* ── ROUTE CATALOG CARDS ── */
+    .route-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px; padding: 20px;
     }
+    .route-card {
+      border: 1px solid var(--border);
+      border-radius: 6px; padding: 16px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .route-card:hover { border-color: var(--amz-orange); box-shadow: 0 2px 8px rgba(255,153,0,.12); }
+    .route-card-header { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; }
+    .route-card-icon {
+      width: 36px; height: 36px; border-radius: 6px;
+      background: var(--amz-orange-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .route-card-title { font-size: 13px; font-weight: 700; line-height: 1.3; }
+    .route-card-dept { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+    .route-card-stat {
+      display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px;
+    }
+    .route-tag {
+      background: var(--bg-main); border: 1px solid var(--border);
+      padding: 2px 8px; border-radius: 3px;
+      font-size: 11px; color: var(--text-muted);
+    }
+    .route-portal {
+      display: flex; align-items: center; gap: 5px;
+      margin-top: 10px; font-size: 12px;
+    }
+    .route-portal a { color: var(--blue); text-decoration: none; }
+    .route-portal a:hover { text-decoration: underline; }
 
-    /* MODAL */
+    /* ── INLINE SELECT STATUS ── */
+    .status-sel {
+      padding: 3px 6px; border: 1px solid var(--border-mid);
+      border-radius: 3px; font: inherit; font-size: 12px;
+      background: #fff; cursor: pointer;
+      outline: none;
+    }
+    .status-sel:focus { border-color: var(--amz-orange); }
+
+    /* ── MODAL ── */
     .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
-      z-index: 20000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.55); z-index: 500;
+      display: flex; align-items: center; justify-content: center;
       padding: 20px;
     }
-
     .modal-box {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: 18px;
-      padding: 30px;
-      width: 100%;
-      max-width: 600px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+      background: #fff; border-radius: 8px;
+      width: 100%; max-width: 560px;
+      max-height: 80vh; overflow-y: auto;
+      box-shadow: 0 16px 48px rgba(0,0,0,.4);
     }
-
-    .modal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
+    .modal-hdr {
+      display: flex; align-items: center;
+      padding: 16px 20px; border-bottom: 1px solid var(--border);
     }
-
-    .modal-title {
-      font-size: 18px;
-      font-weight: 700;
-    }
-
+    .modal-title { font-size: 15px; font-weight: 700; }
     .modal-close {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 20px;
-      cursor: pointer;
+      margin-left: auto; background: none; border: none;
+      font-size: 20px; cursor: pointer; color: var(--text-muted);
+      line-height: 1;
+    }
+    .modal-close:hover { color: var(--text-prime); }
+    .modal-body { padding: 20px; }
+    .modal-field { margin-bottom: 14px; }
+    .modal-field-label { font-size: 11.5px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; }
+    .modal-field-value { font-size: 14px; line-height: 1.6; }
+    .modal-ftr {
+      padding: 14px 20px; border-top: 1px solid var(--border);
+      display: flex; gap: 10px; justify-content: flex-end;
     }
 
-    .message-content {
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 16px;
-      font-size: 14px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      margin-bottom: 20px;
-      max-height: 300px;
-      overflow-y: auto;
+    /* ── TOAST ── */
+    #toastStack {
+      position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+      display: flex; flex-direction: column; gap: 10px;
+      pointer-events: none;
+    }
+    .toast-item {
+      background: var(--amz-navy); color: #fff;
+      padding: 12px 18px; border-radius: 6px;
+      font-size: 13px; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,.35);
+      border-left: 4px solid var(--amz-orange);
+      display: flex; align-items: center; gap: 10px;
+      opacity: 0; transform: translateY(16px);
+      transition: all .3s ease;
+      pointer-events: auto; max-width: 340px;
+    }
+    .toast-item.success { border-left-color: #2ECC71; }
+    .toast-item.error   { border-left-color: #e74c3c; }
+    .toast-item.show    { opacity: 1; transform: translateY(0); }
+
+    /* ── STAT ROW ── */
+    .stat-row {
+      display: flex; gap: 6px; align-items: center;
+      font-size: 12px; color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .stat-bar-wrap {
+      flex: 1; height: 6px; background: var(--bg-main);
+      border-radius: 9px; overflow: hidden;
+    }
+    .stat-bar {
+      height: 100%; border-radius: 9px;
+      background: var(--amz-orange);
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #c8c8c8; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      :root { --sidebar-w: 200px; }
+      .chart-grid { grid-template-columns: 1fr; }
+      .chart-grid-3 { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      #sidebar { display: none; }
+      #main { margin-left: 0; padding: 16px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- DEVELOPER LOGIN MODAL -->
-  <div id="authOverlay">
-    <div class="auth-card">
-      <div class="auth-badge">🔒 NyayaSetu Security</div>
-      <h1 class="auth-title">Developer Access</h1>
-      <p class="auth-desc">This portal contains citizen grievance logs, contact records, and database stats. Enter your developer secret to proceed.</p>
-      
-      <form id="authForm">
-        <div class="auth-input-group">
-          <label class="auth-label" for="devSecret">Developer Secret Key</label>
-          <input type="password" id="devSecret" class="auth-input" placeholder="••••••••••••••••" autofocus required>
-        </div>
-        <button type="submit" class="auth-btn">
-          <span>Authenticate Session</span> →
-        </button>
-      </form>
-      <div class="auth-hint">Default key configured in backend <code>.env</code></div>
+<!-- AUTH -->
+<div id="authOverlay">
+  <div class="auth-wrap">
+    <div class="auth-logo">
+      <span class="auth-logo-badge">AWS</span>
+      <span class="auth-logo-title">NyayaSetu Console</span>
+    </div>
+    <h2 class="auth-heading">Sign in to Console</h2>
+    <p class="auth-sub">Enter your administrator access key to proceed.</p>
+    <form id="authForm" autocomplete="off">
+      <label class="auth-label" for="devSecret">Access Key</label>
+      <input class="auth-input" id="devSecret" type="password" placeholder="Enter your access key" autocomplete="new-password" required>
+      <div class="auth-err" id="authErr"></div>
+      <button class="auth-btn" type="submit" id="authBtn">Sign In</button>
+    </form>
+    <p class="auth-hint">Default key: <code>nyayasetu2026</code></p>
+  </div>
+</div>
+
+<!-- TOAST STACK -->
+<div id="toastStack"></div>
+
+<!-- MODAL -->
+<div id="viewModal" class="modal-backdrop" style="display:none">
+  <div class="modal-box">
+    <div class="modal-hdr">
+      <div class="modal-title" id="modalTitle">Record Details</div>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-ftr">
+      <button class="btn btn-outline btn-sm" onclick="closeModal()">Close</button>
     </div>
   </div>
+</div>
 
-  <!-- DASHBOARD CONTAINER -->
-  <div class="dashboard-container" id="dashboard" style="display: none;">
-    
-    <!-- TOP NAVBAR -->
-    <header class="top-nav">
-      <div class="nav-brand">
-        <div class="nav-logo">N</div>
+<!-- TOP BAR -->
+<nav id="topbar">
+  <a class="tb-logo" href="index.html">
+    <span class="tb-logo-badge">NS</span>
+    <span class="tb-logo-text">NyayaSetu</span>
+  </a>
+  <div class="tb-sep"></div>
+  <span class="tb-label">Management Console</span>
+  <span class="tb-env">PRODUCTION</span>
+  <div class="tb-spacer"></div>
+  <div class="tb-health">
+    <span class="tb-health-dot" id="healthDot"></span>
+    <span id="healthLabel">Checking...</span>
+    <span id="tbUptime"></span>
+  </div>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" onclick="refreshAll()">⟳ Refresh</button>
+  <button class="tb-btn tb-btn-orange" onclick="exportData()">↓ Export</button>
+  <div class="tb-sep"></div>
+  <button class="tb-btn" id="btnLogout" onclick="logout()">Sign Out</button>
+</nav>
+
+<!-- SHELL -->
+<div id="shell">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="sb-section">
+      <span class="sb-section-label">Overview</span>
+      <a class="sb-link active" data-page="dashboard" onclick="switchPage('dashboard', this)">
+        <span class="sb-icon">📊</span> Dashboard
+      </a>
+    </div>
+    <div class="sb-section">
+      <span class="sb-section-label">Citizen Data</span>
+      <a class="sb-link" data-page="contacts" onclick="switchPage('contacts', this)">
+        <span class="sb-icon">📨</span> Contact Inquiries
+        <span class="sb-badge" id="sbContacts">—</span>
+      </a>
+      <a class="sb-link" data-page="newsletter" onclick="switchPage('newsletter', this)">
+        <span class="sb-icon">📬</span> Newsletter
+        <span class="sb-badge" id="sbNewsletter">—</span>
+      </a>
+      <a class="sb-link" data-page="tracker" onclick="switchPage('tracker', this)">
+        <span class="sb-icon">📋</span> Action Tracker
+        <span class="sb-badge" id="sbTracker">—</span>
+      </a>
+    </div>
+    <div class="sb-section">
+      <span class="sb-section-label">Platform Catalog</span>
+      <a class="sb-link" data-page="routes" onclick="switchPage('routes', this)">
+        <span class="sb-icon">🏛️</span> Official Routes
+      </a>
+      <a class="sb-link" data-page="problems" onclick="switchPage('problems', this)">
+        <span class="sb-icon">⚖️</span> Problem Index
+      </a>
+    </div>
+    <div class="sb-section">
+      <span class="sb-section-label">System</span>
+      <a class="sb-link" data-page="health" onclick="switchPage('health', this)">
+        <span class="sb-icon">🩺</span> Health Monitor
+      </a>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main id="main">
+
+    <!-- ═══════════ DASHBOARD ═══════════ -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-hdr">
+        <div class="page-hdr-icon">📊</div>
         <div>
-          <div class="nav-title">
-            NyayaSetu Developer Portal
-            <span class="dev-badge">MERN ENGINE</span>
+          <div class="page-hdr-title">Analytics Dashboard</div>
+          <div class="page-hdr-sub" id="dashLastUpdated">Loading data…</div>
+        </div>
+        <div class="page-hdr-actions">
+          <button class="btn btn-outline btn-sm" onclick="refreshAll()">⟳ Refresh</button>
+          <button class="btn btn-primary btn-sm" onclick="exportData()">↓ Export JSON</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">📨</div>
+          <div class="kpi-label">Total Inquiries</div>
+          <div class="kpi-value" id="kpiContacts">—</div>
+          <div class="kpi-delta up" id="kpiContactsDelta">Loading…</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">📬</div>
+          <div class="kpi-label">Subscribers</div>
+          <div class="kpi-value" id="kpiNewsletter">—</div>
+          <div class="kpi-delta up" id="kpiNewsletterDelta">Loading…</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">📋</div>
+          <div class="kpi-label">Tracker Items</div>
+          <div class="kpi-value" id="kpiTracker">—</div>
+          <div class="kpi-delta neutral">Cumulative</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">⚖️</div>
+          <div class="kpi-label">Problems Mapped</div>
+          <div class="kpi-value" id="kpiProblems">—</div>
+          <div class="kpi-delta neutral">In Catalog</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🏛️</div>
+          <div class="kpi-label">Official Routes</div>
+          <div class="kpi-value" id="kpiRoutes">—</div>
+          <div class="kpi-delta neutral">.gov.in mapped</div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW 1 -->
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-title">7-Day Activity Trend</div>
+          <div class="chart-sub">Daily counts: Inquiries, Subscribers, Tracker saves</div>
+          <div class="chart-wrap" style="height:220px">
+            <canvas id="chartTrend"></canvas>
           </div>
-          <div style="font-size: 12px; color: var(--text-dim);">Real-time Citizen Action Admin Console</div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Inquiry Status</div>
+          <div class="chart-sub">Distribution by status</div>
+          <div class="chart-wrap" style="height:220px">
+            <canvas id="chartContactStatus"></canvas>
+          </div>
         </div>
       </div>
-      <div class="nav-actions">
-        <button class="btn-secondary" id="btnRefresh" title="Refresh Live Data">🔄 Refresh</button>
-        <button class="btn-secondary" id="btnExport" title="Export Inquiries to JSON">📥 Export JSON</button>
-        <a href="index.html" class="btn-secondary">🌐 View Site</a>
-        <button class="btn-danger" id="btnLogout">Sign Out</button>
-      </div>
-    </header>
 
-    <!-- STATS OVERVIEW -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-header">
-          <div class="stat-title">Total Inquiries</div>
-          <div class="stat-icon">📬</div>
+      <!-- CHARTS ROW 2 -->
+      <div class="chart-grid-3">
+        <div class="chart-card">
+          <div class="chart-title">Tracker by Category</div>
+          <div class="chart-sub">Problem type breakdown</div>
+          <div class="chart-wrap" style="height:180px">
+            <canvas id="chartTrackerCat"></canvas>
+          </div>
         </div>
-        <div class="stat-value" id="statContacts">0</div>
-        <div class="stat-desc">Citizen contact submissions</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-header">
-          <div class="stat-title">Active Grievances</div>
-          <div class="stat-icon">⚖️</div>
+        <div class="chart-card">
+          <div class="chart-title">Problems by Category</div>
+          <div class="chart-sub">Catalog distribution</div>
+          <div class="chart-wrap" style="height:180px">
+            <canvas id="chartProblemCat"></canvas>
+          </div>
         </div>
-        <div class="stat-value" id="statSubmissions">0</div>
-        <div class="stat-desc">Tracked grievance records</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-header">
-          <div class="stat-title">Newsletter Subscriptions</div>
-          <div class="stat-icon">✉️</div>
+        <div class="chart-card">
+          <div class="chart-title">Tracker by Status</div>
+          <div class="chart-sub">Current workflow state</div>
+          <div class="chart-wrap" style="height:180px">
+            <canvas id="chartTrackerStatus"></canvas>
+          </div>
         </div>
-        <div class="stat-value" id="statNewsletter">0</div>
-        <div class="stat-desc">Subscribed citizen emails</div>
       </div>
 
-      <div class="stat-card">
-        <div class="stat-header">
-          <div class="stat-title">Database Status</div>
-          <div class="stat-icon">🟢</div>
+      <!-- RECENT ACTIVITY -->
+      <div class="chart-grid" style="align-items: start;">
+        <div class="data-panel">
+          <div class="data-panel-hdr">
+            <div class="data-panel-title">Recent Inquiries</div>
+            <a class="btn btn-outline btn-xs" onclick="switchPage('contacts', document.querySelector('[data-page=contacts]'))">View All →</a>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr>
+                <th>Name</th><th>Category</th><th>Status</th><th>When</th>
+              </tr></thead>
+              <tbody id="recentContactsTbl">
+                <tr><td colspan="4" class="tbl-empty">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="stat-value" id="statDb" style="font-size: 22px; color: var(--accent-emerald);">CONNECTED</div>
-        <div class="stat-desc" id="statUptime">Uptime: 0m</div>
-      </div>
-    </div>
 
-    <!-- NAVIGATION TABS -->
-    <div class="tabs-nav">
-      <button class="tab-btn active" data-tab="contacts">
-        📬 Contact Inquiries <span class="tab-count" id="countContacts">0</span>
-      </button>
-      <button class="tab-btn" data-tab="submissions">
-        ⚖️ Grievance Submissions <span class="tab-count" id="countSubmissions">0</span>
-      </button>
-      <button class="tab-btn" data-tab="newsletter">
-        ✉️ Newsletter Subscribers <span class="tab-count" id="countNewsletter">0</span>
-      </button>
-      <button class="tab-btn" data-tab="system">
-        ⚙️ System & Health
-      </button>
-    </div>
+        <div class="data-panel">
+          <div class="data-panel-hdr">
+            <div class="data-panel-title">Recent Subscribers</div>
+            <a class="btn btn-outline btn-xs" onclick="switchPage('newsletter', document.querySelector('[data-page=newsletter]'))">View All →</a>
+          </div>
+          <div class="activity-feed" id="recentSubFeed">
+            <div class="tbl-empty">Loading…</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /dashboard -->
 
-    <!-- TAB 1: CONTACT INQUIRIES -->
-    <div class="section-card tab-content" id="tab-contacts">
-      <div class="table-toolbar">
-        <input type="text" class="search-input" id="searchContacts" placeholder="🔍 Filter by name, email, or message...">
-        <div style="font-size: 13px; color: var(--text-dim);" id="contactsFilterInfo">Showing all records</div>
+    <!-- ═══════════ CONTACTS ═══════════ -->
+    <div class="page" id="page-contacts">
+      <div class="page-hdr">
+        <div class="page-hdr-icon">📨</div>
+        <div>
+          <div class="page-hdr-title">Contact Inquiries</div>
+          <div class="page-hdr-sub">Manage citizen helpdesk submissions</div>
+        </div>
+        <div class="page-hdr-actions">
+          <button class="btn btn-outline btn-sm" onclick="exportTable('contacts')">↓ CSV</button>
+        </div>
       </div>
-      
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Citizen Name</th>
-              <th>Email</th>
-              <th>Inquiry Type</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="contactsTableBody">
-            <tr>
-              <td colspan="6" class="empty-state">
-                <div class="empty-state-icon">⏳</div>
-                <div>Loading contact inquiries...</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- TAB 2: CITIZEN GRIEVANCES -->
-    <div class="section-card tab-content" id="tab-submissions" style="display: none;">
-      <div class="table-toolbar">
-        <input type="text" class="search-input" id="searchSubmissions" placeholder="🔍 Search tracking code, category, name...">
-      </div>
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
-              <th>Tracking Code</th>
+      <div class="data-panel">
+        <div class="toolbar">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input id="contactSearch" type="search" placeholder="Search by name, email, or message…" oninput="filterContacts()">
+          </div>
+          <select class="filter-sel" id="contactStatusFilter" onchange="filterContacts()">
+            <option value="">All Statuses</option>
+            <option value="New">New</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Responded">Responded</option>
+            <option value="Archived">Archived</option>
+          </select>
+          <select class="filter-sel" id="contactFieldFilter" onchange="filterContacts()">
+            <option value="">All Categories</option>
+          </select>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr>
+              <th onclick="sortContacts('id')"># ID</th>
+              <th onclick="sortContacts('name')">Name</th>
+              <th onclick="sortContacts('email')">Email</th>
               <th>Category</th>
-              <th>Citizen</th>
-              <th>Severity</th>
-              <th>Status</th>
-              <th>Created</th>
+              <th>Message Preview</th>
+              <th onclick="sortContacts('status')">Status</th>
+              <th onclick="sortContacts('created_at')">Submitted</th>
               <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="submissionsTableBody">
-            <tr>
-              <td colspan="7" class="empty-state">
-                <div class="empty-state-icon">📭</div>
-                <div>No grievance records found.</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            </tr></thead>
+            <tbody id="contactsTbl">
+              <tr><td colspan="8" class="tbl-empty"><div class="tbl-empty-icon">📭</div>Loading inquiries…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="contactsPagination"></div>
       </div>
     </div>
 
-    <!-- TAB 3: NEWSLETTER SUBSCRIBERS -->
-    <div class="section-card tab-content" id="tab-newsletter" style="display: none;">
-      <div class="table-toolbar">
-        <input type="text" class="search-input" id="searchNewsletter" placeholder="🔍 Filter subscriber email...">
+    <!-- ═══════════ NEWSLETTER ═══════════ -->
+    <div class="page" id="page-newsletter">
+      <div class="page-hdr">
+        <div class="page-hdr-icon">📬</div>
+        <div>
+          <div class="page-hdr-title">Newsletter Subscribers</div>
+          <div class="page-hdr-sub">Manage citizen update subscriptions</div>
+        </div>
+        <div class="page-hdr-actions">
+          <button class="btn btn-outline btn-sm" onclick="exportTable('newsletter')">↓ CSV</button>
+        </div>
       </div>
-      <div class="table-responsive">
-        <table>
-          <thead>
-            <tr>
+      <div class="data-panel">
+        <div class="toolbar">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input id="newsSearch" type="search" placeholder="Search by email…" oninput="filterNewsletter()">
+          </div>
+          <select class="filter-sel" id="newsStatusFilter" onchange="filterNewsletter()">
+            <option value="">All</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr>
+              <th># ID</th>
               <th>Email Address</th>
-              <th>Subscribed Date</th>
+              <th>Source Page</th>
               <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody id="newsletterTableBody">
-            <tr>
-              <td colspan="4" class="empty-state">
-                <div class="empty-state-icon">⏳</div>
-                <div>Loading subscribers...</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              <th>Subscribed On</th>
+              <th>Actions</th>
+            </tr></thead>
+            <tbody id="newsletterTbl">
+              <tr><td colspan="6" class="tbl-empty"><div class="tbl-empty-icon">✉️</div>Loading subscribers…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="newsletterPagination"></div>
       </div>
     </div>
 
-    <!-- TAB 4: SYSTEM & HEALTH -->
-    <div class="section-card tab-content" id="tab-system" style="display: none;">
-      <h3 style="font-size: 16px; margin-bottom: 16px;">Backend Diagnostic Telemetry</h3>
-      <div id="systemHealthData" style="font-family: var(--font-mono); font-size: 13px; line-height: 1.8; color: var(--text-muted); background: rgba(15,23,42,0.8); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">
-        Connecting to diagnostic endpoint...
+    <!-- ═══════════ TRACKER ═══════════ -->
+    <div class="page" id="page-tracker">
+      <div class="page-hdr">
+        <div class="page-hdr-icon">📋</div>
+        <div>
+          <div class="page-hdr-title">Action Tracker</div>
+          <div class="page-hdr-sub">Citizen grievance tracking records</div>
+        </div>
+        <div class="page-hdr-actions">
+          <button class="btn btn-outline btn-sm" onclick="exportTable('tracker')">↓ CSV</button>
+        </div>
+      </div>
+      <div class="data-panel">
+        <div class="toolbar">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input id="trackerSearch" type="search" placeholder="Search by title, category, reference…" oninput="filterTracker()">
+          </div>
+          <select class="filter-sel" id="trackerStatusFilter" onchange="filterTracker()">
+            <option value="">All Statuses</option>
+            <option value="drafted">Drafted</option>
+            <option value="filed">Filed</option>
+            <option value="follow-up">Follow-up</option>
+            <option value="closed">Closed</option>
+          </select>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Reference</th>
+              <th>Status</th>
+              <th>Filed On</th>
+              <th>Saved At</th>
+              <th>Actions</th>
+            </tr></thead>
+            <tbody id="trackerTbl">
+              <tr><td colspan="8" class="tbl-empty"><div class="tbl-empty-icon">📋</div>Loading tracker…</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination" id="trackerPagination"></div>
       </div>
     </div>
 
-  </div>
-
-  <!-- VIEW MESSAGE MODAL -->
-  <div id="viewModal" class="modal-backdrop" style="display: none;">
-    <div class="modal-box">
-      <div class="modal-header">
-        <div class="modal-title" id="modalSender">Inquiry Details</div>
-        <button class="modal-close" onclick="closeModal()">✕</button>
+    <!-- ═══════════ ROUTES ═══════════ -->
+    <div class="page" id="page-routes">
+      <div class="page-hdr">
+        <div class="page-hdr-icon">🏛️</div>
+        <div>
+          <div class="page-hdr-title">Official Route Catalog</div>
+          <div class="page-hdr-sub">Government authority mapping database</div>
+        </div>
       </div>
-      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 12px;">
-        <span id="modalMeta"></span>
-      </div>
-      <div class="message-content" id="modalBody"></div>
-      <div style="display: flex; justify-content: flex-end; gap: 10px;">
-        <button class="btn-secondary" onclick="closeModal()">Close</button>
+      <div class="data-panel">
+        <div class="toolbar">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input id="routeSearch" type="search" placeholder="Search by authority, portal, department…" oninput="filterRoutes()">
+          </div>
+        </div>
+        <div class="route-grid" id="routeGrid">
+          <div class="tbl-empty">Loading routes…</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    const API_BASE = 'http://localhost:5000/api';
-    let currentToken = sessionStorage.getItem('nyayasetu_admin_token') || '';
-    let contactsData = [];
-    let submissionsData = [];
-    let newsletterData = [];
+    <!-- ═══════════ PROBLEMS ═══════════ -->
+    <div class="page" id="page-problems">
+      <div class="page-hdr">
+        <div class="page-hdr-icon">⚖️</div>
+        <div>
+          <div class="page-hdr-title">Problem Index</div>
+          <div class="page-hdr-sub">Citizen problem classification catalog</div>
+        </div>
+      </div>
+      <div class="data-panel">
+        <div class="toolbar">
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input id="problemSearch" type="search" placeholder="Search by title, category, summary…" oninput="filterProblems()">
+          </div>
+          <select class="filter-sel" id="problemCatFilter" onchange="filterProblems()">
+            <option value="">All Categories</option>
+          </select>
+        </div>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr>
+              <th>Slug</th>
+              <th>Problem Title</th>
+              <th>Category</th>
+              <th>Summary</th>
+              <th>Authority Route</th>
+            </tr></thead>
+            <tbody id="problemsTbl">
+              <tr><td colspan="5" class="tbl-empty"><div class="tbl-empty-icon">⚖️</div>Loading problems…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-    // Check token on load
-    if (currentToken) {
-      verifyAndLoad(currentToken);
-    }
+    <!-- ═══════════ HEALTH ═══════════ -->
+    <div class="page" id="page-health">
+      <div class="page-hdr">
+        <div class="page-hdr-icon">🩺</div>
+        <div>
+          <div class="page-hdr-title">System Health Monitor</div>
+          <div class="page-hdr-sub">Backend API & database status</div>
+        </div>
+        <div class="page-hdr-actions">
+          <button class="btn btn-primary btn-sm" onclick="checkHealth()">Run Check</button>
+        </div>
+      </div>
 
-    // Login Form Submit
-    document.getElementById('authForm').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const secret = document.getElementById('devSecret').value.trim();
-      if (!secret) return;
+      <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr)">
+        <div class="kpi-card">
+          <div class="kpi-icon">🟢</div>
+          <div class="kpi-label">API Status</div>
+          <div class="kpi-value" style="font-size:18px" id="healthApiStatus">—</div>
+          <div class="kpi-meta" id="healthApiTime">—</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🗄️</div>
+          <div class="kpi-label">Database</div>
+          <div class="kpi-value" style="font-size:18px" id="healthDb">—</div>
+          <div class="kpi-meta" id="healthDbName">SQLite3</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">⏱️</div>
+          <div class="kpi-label">Server Uptime</div>
+          <div class="kpi-value" style="font-size:18px" id="healthUptime">—</div>
+          <div class="kpi-meta" id="healthEngine">node:sqlite built-in</div>
+        </div>
+      </div>
 
-      const submitBtn = e.target.querySelector('button');
-      submitBtn.textContent = 'Verifying...';
-      submitBtn.disabled = true;
+      <div class="data-panel">
+        <div class="data-panel-hdr">
+          <div class="data-panel-title">Endpoint Diagnostics</div>
+          <button class="btn btn-outline btn-xs" onclick="runDiagnostics()">Run All Tests</button>
+        </div>
+        <div id="diagnosticsLog" style="padding:16px 20px; font-family: monospace; font-size:12.5px; line-height:2; color: var(--text-prime);">
+          Click "Run All Tests" to begin diagnostics.
+        </div>
+      </div>
 
-      try {
-        const res = await fetch(`${API_BASE}/admin/verify`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ secret })
-        });
-        const data = await res.json();
+      <div class="data-panel">
+        <div class="data-panel-hdr">
+          <div class="data-panel-title">Raw Health Response</div>
+        </div>
+        <pre id="healthRaw" style="padding:16px 20px; font-size:12px; background:#0F1111; color:#2ECC71; border-radius:0 0 6px 6px; overflow:auto; max-height:280px;">Loading…</pre>
+      </div>
+    </div>
 
-        if (res.ok && data.success) {
-          currentToken = secret;
-          sessionStorage.setItem('nyayasetu_admin_token', secret);
-          verifyAndLoad(secret);
-        } else {
-          alert('❌ Access Denied: ' + (data.message || 'Invalid secret key'));
-        }
-      } catch (err) {
-        alert('❌ Connection error. Ensure NyayaSetu backend is running at ' + API_BASE);
-      } finally {
-        submitBtn.innerHTML = '<span>Authenticate Session</span> →';
-        submitBtn.disabled = false;
-      }
+  </main><!-- /main -->
+</div><!-- /shell -->
+
+<script>
+'use strict';
+
+const API = 'http://localhost:5000/api/v1';
+let TOKEN = '';
+let analytics = null;
+let contactsData = [], newsletterData = [], trackerData = [];
+let routesData = [], problemsData = [];
+let contactsFiltered = [], newsletterFiltered = [], trackerFiltered = [];
+let routesFiltered = [], problemsFiltered = [];
+let chartTrend, chartContactStatus, chartTrackerCat, chartProblemCat, chartTrackerStatus;
+
+// Sort state
+let contactsSort = { key: 'id', dir: -1 };
+
+// Pagination state
+const PG = { contacts: 1, newsletter: 1, tracker: 1 };
+const PAGE_SZ = 20;
+
+/* ─── Auth ─── */
+document.getElementById('authForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const secret = document.getElementById('devSecret').value.trim();
+  const btn = document.getElementById('authBtn');
+  const err = document.getElementById('authErr');
+  btn.textContent = 'Verifying…'; btn.disabled = true; err.style.display = 'none';
+  try {
+    const r = await fetch(`${API}/admin/verify`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret })
     });
-
-    async function verifyAndLoad(token) {
+    const d = await r.json();
+    if (r.ok && d.ok) {
+      TOKEN = secret;
+      sessionStorage.setItem('ns_admin_token', secret);
       document.getElementById('authOverlay').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-      fetchAllData();
+      loadAll();
+    } else {
+      err.textContent = d.message || 'Invalid access key.';
+      err.style.display = 'block';
     }
+  } catch {
+    err.textContent = 'Cannot reach server. Is it running on port 5000?';
+    err.style.display = 'block';
+  }
+  btn.textContent = 'Sign In'; btn.disabled = false;
+});
 
-    // Sign out
-    document.getElementById('btnLogout').addEventListener('click', () => {
-      sessionStorage.removeItem('nyayasetu_admin_token');
-      currentToken = '';
-      location.reload();
+function logout() {
+  sessionStorage.removeItem('ns_admin_token');
+  location.reload();
+}
+
+/* ─── Page Switching ─── */
+function switchPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (el) el.classList.add('active');
+}
+
+/* ─── Data Fetching ─── */
+async function apiGet(path) {
+  const r = await fetch(`${API}${path}`, {
+    headers: TOKEN ? { 'Authorization': `Bearer ${TOKEN}` } : {}
+  });
+  return r.json();
+}
+
+async function loadAll() {
+  await Promise.all([loadHealth(), loadAnalytics(), loadContacts(), loadNewsletter(), loadTracker()]);
+}
+
+async function refreshAll() {
+  toast('Refreshing data…', 'info');
+  await loadAll();
+  toast('Data refreshed!', 'success');
+}
+
+async function loadHealth() {
+  try {
+    const d = await apiGet('/health');
+    const dot = document.getElementById('healthDot');
+    const lbl = document.getElementById('healthLabel');
+    if (d.ok) {
+      dot.className = 'tb-health-dot ok';
+      lbl.textContent = 'Operational';
+      document.getElementById('tbUptime').textContent = `| ${d.uptimeFormatted || d.uptimeSeconds + 's'}`;
+      document.getElementById('healthApiStatus').textContent = '✅ Online';
+      document.getElementById('healthApiTime').textContent = new Date(d.time).toLocaleTimeString();
+      document.getElementById('healthDb').textContent = d.db === 'connected' ? '✅ Connected' : '⚠️ ' + d.db;
+      document.getElementById('healthDbName').textContent = d.dbName || 'nyayasetu.db';
+      document.getElementById('healthUptime').textContent = d.uptimeFormatted || d.uptimeSeconds + 's';
+      document.getElementById('healthEngine').textContent = d.engine || 'SQLite3';
+      document.getElementById('healthRaw').textContent = JSON.stringify(d, null, 2);
+    }
+  } catch(e) {
+    document.getElementById('healthDot').className = 'tb-health-dot err';
+    document.getElementById('healthLabel').textContent = 'Unreachable';
+    document.getElementById('healthRaw').textContent = 'ERROR: ' + e.message;
+  }
+}
+
+async function checkHealth() { await loadHealth(); toast('Health check complete.', 'success'); }
+
+async function loadAnalytics() {
+  try {
+    const d = await apiGet('/analytics');
+    if (!d.ok) return;
+    analytics = d.data;
+    renderDashboard();
+  } catch(e) { console.error(e); }
+}
+
+async function loadContacts() {
+  try {
+    const d = await apiGet('/contact?limit=200');
+    if (!d.ok) return;
+    contactsData = (d.data || []).map(c => ({ ...c, createdAt: c.created_at || c.createdAt }));
+    contactsFiltered = [...contactsData];
+    renderContactsTable();
+    document.getElementById('sbContacts').textContent = contactsData.length;
+    populateFieldFilter();
+  } catch(e) { console.error(e); }
+}
+
+async function loadNewsletter() {
+  try {
+    const d = await apiGet('/newsletter');
+    if (!d.ok) return;
+    newsletterData = (d.data || []).map(n => ({ ...n, createdAt: n.created_at || n.createdAt }));
+    newsletterFiltered = [...newsletterData];
+    renderNewsletterTable();
+    document.getElementById('sbNewsletter').textContent = newsletterData.length;
+  } catch(e) { console.error(e); }
+}
+
+async function loadTracker() {
+  try {
+    const d = await apiGet('/tracker');
+    if (!d.ok) return;
+    trackerData = (d.data || []).map(t => ({
+      ...t, createdAt: t.created_at || t.createdAt || t.CreatedAt
+    }));
+    trackerFiltered = [...trackerData];
+    renderTrackerTable();
+    document.getElementById('sbTracker').textContent = trackerData.length;
+  } catch(e) { console.error(e); }
+}
+
+/* ─── Dashboard Render ─── */
+function renderDashboard() {
+  if (!analytics) return;
+  const ov = analytics.overview;
+  document.getElementById('kpiContacts').textContent = ov.totalContacts;
+  document.getElementById('kpiNewsletter').textContent = ov.totalNewsletters;
+  document.getElementById('kpiTracker').textContent = ov.totalTracker;
+  document.getElementById('kpiProblems').textContent = ov.totalProblems;
+  document.getElementById('kpiRoutes').textContent = ov.totalRoutes;
+  document.getElementById('dashLastUpdated').textContent = 'Last updated ' + new Date().toLocaleTimeString();
+
+  const trendToday = analytics.trends.dailyContacts[6]?.count || 0;
+  const trendYesterday = analytics.trends.dailyContacts[5]?.count || 0;
+  const contactsDelta = trendToday - trendYesterday;
+  document.getElementById('kpiContactsDelta').textContent = (contactsDelta >= 0 ? '▲' : '▼') + ' ' + Math.abs(contactsDelta) + ' vs yesterday';
+  document.getElementById('kpiContactsDelta').className = 'kpi-delta ' + (contactsDelta >= 0 ? 'up' : 'neutral');
+
+  const newsDelta = (analytics.trends.dailyNewsletter[6]?.count || 0) - (analytics.trends.dailyNewsletter[5]?.count || 0);
+  document.getElementById('kpiNewsletterDelta').textContent = (newsDelta >= 0 ? '▲' : '▼') + ' ' + Math.abs(newsDelta) + ' today';
+
+  renderCharts();
+  renderRecentContacts();
+  renderRecentSubscribers();
+  routesData = analytics.catalog?.routes || [];
+  problemsData = analytics.catalog?.problems || [];
+  routesFiltered = [...routesData];
+  problemsFiltered = [...problemsData];
+  renderRoutesGrid();
+  renderProblemsTable();
+  populateProblemCatFilter();
+}
+
+function renderCharts() {
+  if (!analytics) return;
+  const amzColors = ['#FF9900','#00A8A2','#067D62','#232F3E','#C7511F','#0066C0','#7A5AF8','#E74C3C'];
+  const labels = analytics.trends.dailyContacts.map(d => d.label);
+
+  // Trend
+  const ctxTrend = document.getElementById('chartTrend');
+  if (chartTrend) chartTrend.destroy();
+  chartTrend = new Chart(ctxTrend, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Inquiries', data: analytics.trends.dailyContacts.map(d => d.count), borderColor: '#FF9900', backgroundColor: 'rgba(255,153,0,.08)', tension: .4, pointRadius: 4, pointBackgroundColor: '#FF9900', borderWidth: 2, fill: true },
+        { label: 'Subscribers', data: analytics.trends.dailyNewsletter.map(d => d.count), borderColor: '#00A8A2', backgroundColor: 'rgba(0,168,162,.06)', tension: .4, pointRadius: 4, pointBackgroundColor: '#00A8A2', borderWidth: 2, fill: true },
+        { label: 'Tracker', data: analytics.trends.dailyTracker.map(d => d.count), borderColor: '#7A5AF8', backgroundColor: 'rgba(122,90,248,.05)', tension: .4, pointRadius: 4, pointBackgroundColor: '#7A5AF8', borderWidth: 2, fill: true },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11 } } }, tooltip: { mode: 'index' } },
+      scales: { x: { grid: { display: false }, ticks: { font: { size: 11 } } }, y: { grid: { color: '#f0f0f0' }, ticks: { font: { size: 11 }, stepSize: 1 }, beginAtZero: true } }
+    }
+  });
+
+  // Contact Status Donut
+  const csByStatus = analytics.contactsByStatus || [];
+  const ctxCS = document.getElementById('chartContactStatus');
+  if (chartContactStatus) chartContactStatus.destroy();
+  chartContactStatus = new Chart(ctxCS, {
+    type: 'doughnut',
+    data: {
+      labels: csByStatus.length ? csByStatus.map(c => c.status) : ['No data'],
+      datasets: [{ data: csByStatus.length ? csByStatus.map(c => c.count) : [1], backgroundColor: amzColors, borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11 } } } },
+      cutout: '62%'
+    }
+  });
+
+  // Tracker by category horizontal bar
+  const tCat = analytics.trackerByCategory || [];
+  const ctxTC = document.getElementById('chartTrackerCat');
+  if (chartTrackerCat) chartTrackerCat.destroy();
+  chartTrackerCat = new Chart(ctxTC, {
+    type: 'bar',
+    data: {
+      labels: tCat.length ? tCat.map(c => c.category) : ['No data'],
+      datasets: [{ data: tCat.length ? tCat.map(c => c.count) : [0], backgroundColor: '#FF9900', borderRadius: 4 }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { beginAtZero: true, ticks: { stepSize: 1, font: { size: 10 } }, grid: { color: '#f0f0f0' } }, y: { ticks: { font: { size: 10 } } } }
+    }
+  });
+
+  // Problems by category pie
+  const pCat = analytics.problemsByCategory || [];
+  const ctxPC = document.getElementById('chartProblemCat');
+  if (chartProblemCat) chartProblemCat.destroy();
+  chartProblemCat = new Chart(ctxPC, {
+    type: 'pie',
+    data: {
+      labels: pCat.length ? pCat.map(c => c.category) : ['No data'],
+      datasets: [{ data: pCat.length ? pCat.map(c => c.count) : [1], backgroundColor: amzColors, borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } }
+    }
+  });
+
+  // Tracker by status doughnut
+  const tSt = analytics.trackerByStatus || [];
+  const ctxTS = document.getElementById('chartTrackerStatus');
+  if (chartTrackerStatus) chartTrackerStatus.destroy();
+  chartTrackerStatus = new Chart(ctxTS, {
+    type: 'doughnut',
+    data: {
+      labels: tSt.length ? tSt.map(s => s.status) : ['No data'],
+      datasets: [{ data: tSt.length ? tSt.map(s => s.count) : [1], backgroundColor: ['#FF9900','#00A8A2','#C7511F','#565959'], borderWidth: 2, borderColor: '#fff' }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 10 } } } },
+      cutout: '55%'
+    }
+  });
+}
+
+function renderRecentContacts() {
+  const tbody = document.getElementById('recentContactsTbl');
+  const data = analytics?.recent?.contacts || [];
+  if (!data.length) { tbody.innerHTML = '<tr><td colspan="4" class="tbl-empty">No inquiries yet.</td></tr>'; return; }
+  tbody.innerHTML = data.map(c => `
+    <tr>
+      <td><strong>${esc(c.name)}</strong></td>
+      <td style="color:var(--text-muted); font-size:12px">${esc(c.field || 'General')}</td>
+      <td>${statusBadge(c.status)}</td>
+      <td style="color:var(--text-dim); font-size:11px">${relativeTime(c.createdAt)}</td>
+    </tr>`).join('');
+}
+
+function renderRecentSubscribers() {
+  const el = document.getElementById('recentSubFeed');
+  const data = analytics?.recent?.subscribers || [];
+  if (!data.length) { el.innerHTML = '<div class="tbl-empty">No subscribers yet.</div>'; return; }
+  el.innerHTML = data.map(s => `
+    <div class="activity-item">
+      <div class="activity-dot" style="background:${s.status==='Active'?'#2ECC71':'#e74c3c'}"></div>
+      <div class="activity-content">
+        <div class="activity-text">${esc(s.email)}</div>
+        <div class="activity-meta">via ${esc(s.sourcePage || 'Website')}</div>
+      </div>
+      <div class="activity-time">${relativeTime(s.createdAt)}</div>
+    </div>`).join('');
+}
+
+/* ─── Contacts Table ─── */
+function populateFieldFilter() {
+  const fields = [...new Set(contactsData.map(c => c.field).filter(Boolean))].sort();
+  const sel = document.getElementById('contactFieldFilter');
+  sel.innerHTML = '<option value="">All Categories</option>' + fields.map(f => `<option value="${esc(f)}">${esc(f)}</option>`).join('');
+}
+
+function filterContacts() {
+  const q = document.getElementById('contactSearch').value.toLowerCase();
+  const st = document.getElementById('contactStatusFilter').value;
+  const fi = document.getElementById('contactFieldFilter').value;
+  contactsFiltered = contactsData.filter(c =>
+    (!q || [c.name,c.email,c.message,c.field].some(v => v && v.toLowerCase().includes(q))) &&
+    (!st || c.status === st) &&
+    (!fi || c.field === fi)
+  );
+  sortContactsBy();
+}
+
+function sortContacts(key) {
+  if (contactsSort.key === key) contactsSort.dir *= -1;
+  else { contactsSort.key = key; contactsSort.dir = -1; }
+  sortContactsBy();
+}
+
+function sortContactsBy() {
+  const { key, dir } = contactsSort;
+  contactsFiltered.sort((a, b) => {
+    const av = a[key] || '', bv = b[key] || '';
+    return (av < bv ? -1 : av > bv ? 1 : 0) * dir;
+  });
+  PG.contacts = 1;
+  renderContactsTable();
+}
+
+function renderContactsTable() {
+  const tbody = document.getElementById('contactsTbl');
+  const start = (PG.contacts - 1) * PAGE_SZ;
+  const page = contactsFiltered.slice(start, start + PAGE_SZ);
+  if (!page.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="tbl-empty"><div class="tbl-empty-icon">📭</div>No inquiries match your filters.</td></tr>';
+    document.getElementById('contactsPagination').innerHTML = '';
+    return;
+  }
+  tbody.innerHTML = page.map(c => `
+    <tr>
+      <td style="font-family:monospace; color:var(--text-dim); font-size:11px">#${c.id}</td>
+      <td><strong>${esc(c.name)}</strong></td>
+      <td><a href="mailto:${esc(c.email)}" style="color:var(--blue); text-decoration:none">${esc(c.email)}</a></td>
+      <td><span style="font-size:11.5px; color:var(--text-muted)">${esc(c.field || 'General')}</span></td>
+      <td style="max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; color:var(--text-muted)" title="${esc(c.message)}">${esc((c.message||'').substring(0,60))}…</td>
+      <td>
+        <select class="status-sel" onchange="updateContactStatus(${c.id}, this.value)">
+          ${['New','In Progress','Responded','Archived'].map(s=>`<option ${c.status===s?'selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td style="font-size:11.5px; color:var(--text-dim); white-space:nowrap">${fmtDate(c.createdAt)}</td>
+      <td>
+        <div style="display:flex; gap:6px">
+          <button class="btn btn-outline btn-xs" onclick='showContactModal(${JSON.stringify(c)})'>👁 View</button>
+          <button class="btn btn-danger btn-xs" onclick="deleteContact(${c.id})">🗑</button>
+        </div>
+      </td>
+    </tr>`).join('');
+
+  renderPagination('contacts', contactsFiltered.length);
+}
+
+async function updateContactStatus(id, status) {
+  try {
+    const r = await fetch(`${API}/contact/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${TOKEN}` },
+      body: JSON.stringify({ status })
     });
-
-    // Refresh
-    document.getElementById('btnRefresh').addEventListener('click', fetchAllData);
-
-    // Export Inquiries JSON
-    document.getElementById('btnExport').addEventListener('click', () => {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify({
-        contacts: contactsData,
-        submissions: submissionsData,
-        newsletter: newsletterData,
-        exportedAt: new Date().toISOString()
-      }, null, 2));
-      const dlAnchor = document.createElement('a');
-      dlAnchor.setAttribute("href", dataStr);
-      dlAnchor.setAttribute("download", `nyayasetu-backup-${Date.now()}.json`);
-      dlAnchor.click();
-    });
-
-    // Tabs switching
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
-        
-        btn.classList.add('active');
-        const tabId = btn.dataset.tab;
-        document.getElementById(`tab-${tabId}`).style.display = 'block';
-      });
-    });
-
-    // Fetch All Protected Data
-    async function fetchAllData() {
-      const authHeader = { 'Authorization': `Bearer ${currentToken}` };
-
-      try {
-        // 1. Fetch Health / Stats
-        const healthRes = await fetch(`${API_BASE}/health`);
-        if (healthRes.ok) {
-          const health = await healthRes.json();
-          document.getElementById('statDb').textContent = health.db === 'connected' ? 'CONNECTED' : 'DISCONNECTED';
-          document.getElementById('statDb').style.color = health.db === 'connected' ? 'var(--accent-emerald)' : 'var(--accent-rose)';
-          document.getElementById('statUptime').textContent = `Uptime: ${health.uptimeFormatted || '0s'} • DB: ${health.dbName}`;
-          document.getElementById('systemHealthData').innerHTML = `<pre>${JSON.stringify(health, null, 2)}</pre>`;
-        }
-
-        // 2. Fetch Contacts
-        const contactsRes = await fetch(`${API_BASE}/contact`, { headers: authHeader });
-        if (contactsRes.status === 401) {
-          sessionStorage.removeItem('nyayasetu_admin_token');
-          location.reload();
-          return;
-        }
-        const contactsJson = await contactsRes.json();
-        if (contactsJson.success) {
-          contactsData = contactsJson.data || [];
-          document.getElementById('statContacts').textContent = contactsJson.total || contactsData.length;
-          document.getElementById('countContacts').textContent = contactsData.length;
-          renderContactsTable(contactsData);
-        }
-
-        // 3. Fetch Submissions
-        const subRes = await fetch(`${API_BASE}/submissions`, { headers: authHeader });
-        if (subRes.ok) {
-          const subJson = await subRes.json();
-          submissionsData = subJson.data || [];
-          document.getElementById('statSubmissions').textContent = submissionsData.length;
-          document.getElementById('countSubmissions').textContent = submissionsData.length;
-          renderSubmissionsTable(submissionsData);
-        }
-
-        // 4. Fetch Newsletter
-        const newsRes = await fetch(`${API_BASE}/newsletter`, { headers: authHeader });
-        if (newsRes.ok) {
-          const newsJson = await newsRes.json();
-          newsletterData = newsJson.data || [];
-          document.getElementById('statNewsletter').textContent = newsletterData.length;
-          document.getElementById('countNewsletter').textContent = newsletterData.length;
-          renderNewsletterTable(newsletterData);
-        }
-
-      } catch (err) {
-        console.error('Error fetching admin data:', err);
-      }
+    const d = await r.json();
+    if (d.ok) {
+      const idx = contactsData.findIndex(c => c.id === id);
+      if (idx !== -1) contactsData[idx].status = status;
+      toast('Status updated to "' + status + '"', 'success');
+      filterContacts();
     }
+  } catch { toast('Failed to update status.', 'error'); }
+}
 
-    // Render Contacts
-    function renderContactsTable(list) {
-      const tbody = document.getElementById('contactsTableBody');
-      if (!list || list.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="6" class="empty-state">
-              <div class="empty-state-icon">📭</div>
-              <div>No contact inquiries submitted yet.</div>
-            </td>
-          </tr>
-        `;
-        return;
-      }
-
-      tbody.innerHTML = list.map(c => {
-        const dateStr = new Date(c.createdAt).toLocaleDateString('en-IN', {
-          day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit'
-        });
-        const badgeClass = {
-          'New': 'badge-new',
-          'In Progress': 'badge-progress',
-          'Responded': 'badge-responded',
-          'Archived': 'badge-archived'
-        }[c.status] || 'badge-new';
-
-        return `
-          <tr>
-            <td style="font-family: var(--font-mono); color: var(--text-dim);">${dateStr}</td>
-            <td style="font-weight: 600;">${escapeHtml(c.name)}</td>
-            <td><a href="mailto:${escapeHtml(c.email)}" style="color: var(--accent-cyan); text-decoration: none;">${escapeHtml(c.email)}</a></td>
-            <td><span style="color: var(--text-muted);">${escapeHtml(c.field || 'General Inquiry')}</span></td>
-            <td>
-              <select onchange="updateContactStatus('${c._id}', this.value)" style="background: rgba(15,23,42,0.8); color: #fff; border: 1px solid var(--border-color); border-radius: 6px; padding: 4px 8px; font-size: 12px;">
-                <option value="New" ${c.status === 'New' ? 'selected' : ''}>New</option>
-                <option value="In Progress" ${c.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                <option value="Responded" ${c.status === 'Responded' ? 'selected' : ''}>Responded</option>
-                <option value="Archived" ${c.status === 'Archived' ? 'selected' : ''}>Archived</option>
-              </select>
-            </td>
-            <td>
-              <div style="display: flex; gap: 8px;">
-                <button class="action-btn" onclick="openContactModal('${c._id}')">👁️ View</button>
-                <button class="action-btn delete" onclick="deleteContact('${c._id}')">🗑️</button>
-              </div>
-            </td>
-          </tr>
-        `;
-      }).join('');
+async function deleteContact(id) {
+  if (!confirm('Permanently delete this inquiry record?')) return;
+  try {
+    const r = await fetch(`${API}/contact/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${TOKEN}` } });
+    const d = await r.json();
+    if (d.ok) {
+      contactsData = contactsData.filter(c => c.id !== id);
+      filterContacts();
+      document.getElementById('sbContacts').textContent = contactsData.length;
+      toast('Inquiry deleted.', 'success');
     }
+  } catch { toast('Failed to delete.', 'error'); }
+}
 
-    // Render Submissions
-    function renderSubmissionsTable(list) {
-      const tbody = document.getElementById('submissionsTableBody');
-      if (!list || list.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="7" class="empty-state">
-              <div class="empty-state-icon">⚖️</div>
-              <div>No citizen grievances registered yet.</div>
-            </td>
-          </tr>
-        `;
-        return;
-      }
+function showContactModal(c) {
+  document.getElementById('modalTitle').textContent = 'Inquiry #' + c.id + ' — ' + c.name;
+  document.getElementById('modalBody').innerHTML = `
+    <div class="modal-field"><div class="modal-field-label">From</div><div class="modal-field-value"><strong>${esc(c.name)}</strong> &lt;<a href="mailto:${esc(c.email)}">${esc(c.email)}</a>&gt;</div></div>
+    <div class="modal-field"><div class="modal-field-label">Category</div><div class="modal-field-value">${esc(c.field || 'General')}</div></div>
+    <div class="modal-field"><div class="modal-field-label">Status</div><div class="modal-field-value">${statusBadge(c.status)}</div></div>
+    <div class="modal-field"><div class="modal-field-label">Submitted</div><div class="modal-field-value">${fmtDate(c.createdAt)} (${relativeTime(c.createdAt)})</div></div>
+    <div class="modal-field"><div class="modal-field-label">Message</div><div class="modal-field-value" style="white-space:pre-wrap; background:var(--bg-main); padding:12px; border-radius:4px; font-size:13px">${esc(c.message)}</div></div>
+  `;
+  document.getElementById('viewModal').style.display = 'flex';
+}
 
-      tbody.innerHTML = list.map(s => `
-        <tr>
-          <td><code style="color: var(--accent-cyan); font-family: var(--font-mono);">${s.trackingCode}</code></td>
-          <td>${escapeHtml(s.category || 'General')}</td>
-          <td>${escapeHtml(s.citizen?.name || 'Anonymous')}</td>
-          <td><span class="badge ${s.severity === 'Critical' ? 'badge-archived' : 'badge-new'}">${s.severity || 'Medium'}</span></td>
-          <td><span class="badge badge-progress">${s.status || 'Draft'}</span></td>
-          <td style="color: var(--text-dim); font-size: 12px;">${new Date(s.createdAt).toLocaleDateString()}</td>
-          <td>
-            <button class="action-btn delete" onclick="deleteSubmission('${s.trackingCode}')">🗑️</button>
-          </td>
-        </tr>
-      `).join('');
+/* ─── Newsletter Table ─── */
+function filterNewsletter() {
+  const q = document.getElementById('newsSearch').value.toLowerCase();
+  const st = document.getElementById('newsStatusFilter').value;
+  newsletterFiltered = newsletterData.filter(n =>
+    (!q || n.email.toLowerCase().includes(q)) &&
+    (!st || n.status === st)
+  );
+  PG.newsletter = 1;
+  renderNewsletterTable();
+}
+
+function renderNewsletterTable() {
+  const tbody = document.getElementById('newsletterTbl');
+  const start = (PG.newsletter - 1) * PAGE_SZ;
+  const page = newsletterFiltered.slice(start, start + PAGE_SZ);
+  if (!page.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="tbl-empty"><div class="tbl-empty-icon">✉️</div>No subscribers found.</td></tr>';
+    document.getElementById('newsletterPagination').innerHTML = '';
+    return;
+  }
+  tbody.innerHTML = page.map(n => `
+    <tr>
+      <td style="font-family:monospace; color:var(--text-dim); font-size:11px">#${n.id}</td>
+      <td><a href="mailto:${esc(n.email)}" style="color:var(--blue); text-decoration:none; font-weight:500">${esc(n.email)}</a></td>
+      <td style="font-size:12px; color:var(--text-muted)">${esc(n.sourcePage || 'Website Footer')}</td>
+      <td>${statusBadge(n.status)}</td>
+      <td style="font-size:11.5px; color:var(--text-dim)">${fmtDate(n.createdAt)}</td>
+      <td>
+        <button class="btn btn-danger btn-xs" onclick="deleteSubscriber(${n.id}, '${esc(n.email)}')">Unsubscribe</button>
+      </td>
+    </tr>`).join('');
+  renderPagination('newsletter', newsletterFiltered.length);
+}
+
+async function deleteSubscriber(id, email) {
+  if (!confirm('Remove ' + email + ' from newsletter?')) return;
+  try {
+    const r = await fetch(`${API}/newsletter/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${TOKEN}` } });
+    const d = await r.json();
+    if (d.ok) {
+      newsletterData = newsletterData.filter(n => n.id !== id);
+      filterNewsletter();
+      document.getElementById('sbNewsletter').textContent = newsletterData.length;
+      toast(email + ' unsubscribed.', 'success');
     }
+  } catch { toast('Failed to remove subscriber.', 'error'); }
+}
 
-    // Render Newsletter
-    function renderNewsletterTable(list) {
-      const tbody = document.getElementById('newsletterTableBody');
-      if (!list || list.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="4" class="empty-state">
-              <div class="empty-state-icon">✉️</div>
-              <div>No newsletter subscribers yet.</div>
-            </td>
-          </tr>
-        `;
-        return;
-      }
+/* ─── Tracker Table ─── */
+function filterTracker() {
+  const q = document.getElementById('trackerSearch').value.toLowerCase();
+  const st = document.getElementById('trackerStatusFilter').value;
+  trackerFiltered = trackerData.filter(t =>
+    (!q || [t.title,t.category,t.referenceId,t.notes].some(v => v && v.toLowerCase().includes(q))) &&
+    (!st || t.status === st)
+  );
+  PG.tracker = 1;
+  renderTrackerTable();
+}
 
-      tbody.innerHTML = list.map(n => `
-        <tr>
-          <td style="font-weight: 500;">${escapeHtml(n.email)}</td>
-          <td style="color: var(--text-dim); font-family: var(--font-mono);">${new Date(n.createdAt).toLocaleDateString()}</td>
-          <td><span class="badge badge-responded">${n.status || 'Active'}</span></td>
-          <td>
-            <button class="action-btn delete" onclick="deleteNewsletter('${n._id}')">Unsubscribe / Delete</button>
-          </td>
-        </tr>
-      `).join('');
+function renderTrackerTable() {
+  const tbody = document.getElementById('trackerTbl');
+  const start = (PG.tracker - 1) * PAGE_SZ;
+  const page = trackerFiltered.slice(start, start + PAGE_SZ);
+  if (!page.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="tbl-empty"><div class="tbl-empty-icon">📋</div>No tracker items found.</td></tr>';
+    document.getElementById('trackerPagination').innerHTML = '';
+    return;
+  }
+  tbody.innerHTML = page.map(t => `
+    <tr>
+      <td style="font-family:monospace; color:var(--text-dim); font-size:11px">#${t.id}</td>
+      <td style="font-weight:600; max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap" title="${esc(t.title)}">${esc(t.title)}</td>
+      <td><span style="font-size:11.5px; color:var(--text-muted)">${esc(t.category || '—')}</span></td>
+      <td style="font-family:monospace; font-size:12px; color:var(--blue)">${esc(t.referenceId || '—')}</td>
+      <td>${trackerBadge(t.status)}</td>
+      <td style="font-size:11.5px; color:var(--text-dim)">${t.filingDate || '—'}</td>
+      <td style="font-size:11.5px; color:var(--text-dim)">${fmtDate(t.createdAt)}</td>
+      <td>
+        <div style="display:flex; gap:5px">
+          ${t.portalUrl ? `<a class="btn btn-outline btn-xs" href="${esc(t.portalUrl)}" target="_blank">↗ Portal</a>` : ''}
+          <button class="btn btn-danger btn-xs" onclick="deleteTrackerItem(${t.id})">🗑</button>
+        </div>
+      </td>
+    </tr>`).join('');
+  renderPagination('tracker', trackerFiltered.length);
+}
+
+async function deleteTrackerItem(id) {
+  if (!confirm('Delete this tracker record?')) return;
+  try {
+    const r = await fetch(`${API}/submissions/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${TOKEN}` } });
+    const d = await r.json();
+    if (d.ok) {
+      trackerData = trackerData.filter(t => t.id !== id);
+      filterTracker();
+      document.getElementById('sbTracker').textContent = trackerData.length;
+      toast('Tracker item deleted.', 'success');
     }
+  } catch { toast('Failed to delete tracker item.', 'error'); }
+}
 
-    // Search filters
-    document.getElementById('searchContacts').addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase();
-      const filtered = contactsData.filter(c => 
-        (c.name && c.name.toLowerCase().includes(q)) ||
-        (c.email && c.email.toLowerCase().includes(q)) ||
-        (c.message && c.message.toLowerCase().includes(q)) ||
-        (c.field && c.field.toLowerCase().includes(q))
-      );
-      renderContactsTable(filtered);
-    });
+/* ─── Routes Grid ─── */
+const routeIcons = { nch: '🛒', civic: '🏙️', utility: '⚡', jal: '💧', rbi: '🏦', cyber: '🛡️', myscheme: '🎁', health: '🏥', education: '🎓', default: '🏛️' };
+function getRouteIcon(id) {
+  const k = Object.keys(routeIcons).find(k => id && id.includes(k));
+  return routeIcons[k] || routeIcons.default;
+}
 
-    document.getElementById('searchNewsletter').addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase();
-      const filtered = newsletterData.filter(n => n.email && n.email.toLowerCase().includes(q));
-      renderNewsletterTable(filtered);
-    });
+function filterRoutes() {
+  const q = document.getElementById('routeSearch').value.toLowerCase();
+  routesFiltered = routesData.filter(r =>
+    !q || [r.authorityName, r.portalName, r.department, r.helpline].some(v => v && v.toLowerCase().includes(q))
+  );
+  renderRoutesGrid();
+}
 
-    // Actions
-    async function updateContactStatus(id, status) {
-      try {
-        const res = await fetch(`${API_BASE}/contact/${id}`, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${currentToken}`
-          },
-          body: JSON.stringify({ status })
-        });
-        if (res.ok) fetchAllData();
-      } catch (err) {
-        alert('Failed to update status.');
-      }
+function renderRoutesGrid() {
+  const el = document.getElementById('routeGrid');
+  if (!routesFiltered.length) { el.innerHTML = '<div class="tbl-empty">No routes found.</div>'; return; }
+  el.innerHTML = routesFiltered.map(r => `
+    <div class="route-card">
+      <div class="route-card-header">
+        <div class="route-card-icon">${getRouteIcon(r.id)}</div>
+        <div>
+          <div class="route-card-title">${esc(r.authorityName)}</div>
+          <div class="route-card-dept">${esc(r.department || '')}</div>
+        </div>
+      </div>
+      <div class="route-card-stat">
+        <span class="route-tag">ID: ${esc(r.id)}</span>
+        ${r.helpline ? `<span class="route-tag">📞 ${esc(r.helpline)}</span>` : ''}
+      </div>
+      <div class="route-portal">
+        <span>🔗</span>
+        <a href="${esc(r.portalUrl)}" target="_blank">${esc(r.portalName)}</a>
+      </div>
+    </div>`).join('');
+}
+
+/* ─── Problems Table ─── */
+function populateProblemCatFilter() {
+  const cats = [...new Set(problemsData.map(p => p.category).filter(Boolean))].sort();
+  document.getElementById('problemCatFilter').innerHTML = '<option value="">All Categories</option>' + cats.map(c => `<option>${esc(c)}</option>`).join('');
+}
+
+function filterProblems() {
+  const q = document.getElementById('problemSearch').value.toLowerCase();
+  const cat = document.getElementById('problemCatFilter').value;
+  problemsFiltered = problemsData.filter(p =>
+    (!q || [p.title,p.category,p.summary].some(v => v && v.toLowerCase().includes(q))) &&
+    (!cat || p.category === cat)
+  );
+  renderProblemsTable();
+}
+
+function renderProblemsTable() {
+  const tbody = document.getElementById('problemsTbl');
+  if (!problemsFiltered.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="tbl-empty"><div class="tbl-empty-icon">⚖️</div>No problems found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = problemsFiltered.map(p => `
+    <tr>
+      <td style="font-family:monospace; font-size:11px; color:var(--text-dim)">${esc(p.id)}</td>
+      <td style="font-weight:600">${esc(p.title)}</td>
+      <td><span class="badge badge-new">${esc(p.category)}</span></td>
+      <td style="font-size:12px; color:var(--text-muted); max-width:240px">${esc(p.summary || '')}</td>
+      <td style="font-family:monospace; font-size:11.5px; color:var(--amz-teal)">${esc(p.routeId)}</td>
+    </tr>`).join('');
+}
+
+/* ─── Pagination ─── */
+function renderPagination(key, total) {
+  const pages = Math.ceil(total / PAGE_SZ);
+  const cur = PG[key];
+  const elId = key + 'Pagination';
+  if (pages <= 1) { document.getElementById(elId).innerHTML = `<span style="color:var(--text-dim)">${total} records</span>`; return; }
+
+  let html = `<button class="page-btn" onclick="goPage('${key}',${cur-1})" ${cur<=1?'disabled':''}>‹</button>`;
+  const start = Math.max(1, cur - 2), end = Math.min(pages, cur + 2);
+  if (start > 1) html += `<button class="page-btn" onclick="goPage('${key}',1)">1</button>` + (start > 2 ? '<span style="padding:0 4px;color:var(--text-dim)">…</span>' : '');
+  for (let i = start; i <= end; i++) html += `<button class="page-btn ${i===cur?'active':''}" onclick="goPage('${key}',${i})">${i}</button>`;
+  if (end < pages) html += (end < pages - 1 ? '<span style="padding:0 4px;color:var(--text-dim)">…</span>' : '') + `<button class="page-btn" onclick="goPage('${key}',${pages})">${pages}</button>`;
+  html += `<button class="page-btn" onclick="goPage('${key}',${cur+1})" ${cur>=pages?'disabled':''}>›</button>`;
+  html += `<span class="page-info">${(cur-1)*PAGE_SZ+1}–${Math.min(cur*PAGE_SZ, total)} of ${total}</span>`;
+  document.getElementById(elId).innerHTML = html;
+}
+
+function goPage(key, pg) {
+  PG[key] = pg;
+  if (key === 'contacts') renderContactsTable();
+  else if (key === 'newsletter') renderNewsletterTable();
+  else if (key === 'tracker') renderTrackerTable();
+}
+
+/* ─── Diagnostics ─── */
+async function runDiagnostics() {
+  const log = document.getElementById('diagnosticsLog');
+  log.innerHTML = '';
+  const endpoints = [
+    { label: 'Health Check', method: 'GET', path: '/health' },
+    { label: 'Problems', method: 'GET', path: '/problems' },
+    { label: 'Routes', method: 'GET', path: '/routes/nch-2' },
+    { label: 'Drafts (POST)', method: 'POST', path: '/drafts', body: { complainantName: 'Test', location: 'Delhi', issueType: 'UPI fraud', description: 'Test diagnostic.', reliefSought: 'refund' } },
+    { label: 'Tracker GET', method: 'GET', path: '/tracker' },
+    { label: 'Contacts GET', method: 'GET', path: '/contact' },
+    { label: 'Newsletter GET', method: 'GET', path: '/newsletter' },
+    { label: 'Analytics', method: 'GET', path: '/analytics' },
+    { label: 'Stats', method: 'GET', path: '/stats' },
+  ];
+  for (const ep of endpoints) {
+    const t0 = performance.now();
+    try {
+      const opts = { method: ep.method, headers: { 'Content-Type': 'application/json' } };
+      if (ep.body) opts.body = JSON.stringify(ep.body);
+      const r = await fetch(`${API}${ep.path}`, opts);
+      const ms = (performance.now() - t0).toFixed(0);
+      const d = await r.json();
+      const ok = r.ok && d.ok !== false;
+      log.innerHTML += `<span style="color:${ok?'#2ECC71':'#e74c3c'}">${ok?'✅':'❌'} ${ep.label.padEnd(24, ' ')}</span> <span style="color:#aaa">${r.status} ${ms}ms</span>\n`;
+    } catch(e) {
+      const ms = (performance.now() - t0).toFixed(0);
+      log.innerHTML += `<span style="color:#e74c3c">❌ ${ep.label.padEnd(24,' ')}</span> <span style="color:#aaa">ERROR ${ms}ms — ${e.message}</span>\n`;
     }
+  }
+  log.innerHTML += '\n<span style="color:#aaa">— Diagnostics complete —</span>';
+}
 
-    async function deleteContact(id) {
-      if (!confirm('Are you sure you want to permanently delete this inquiry record?')) return;
-      try {
-        const res = await fetch(`${API_BASE}/contact/${id}`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${currentToken}` }
-        });
-        if (res.ok) fetchAllData();
-      } catch (err) {
-        alert('Failed to delete contact.');
-      }
-    }
+/* ─── Export ─── */
+function exportData() {
+  const data = {
+    exportedAt: new Date().toISOString(),
+    contacts: contactsData,
+    newsletter: newsletterData,
+    tracker: trackerData,
+    analytics: analytics,
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `nyayasetu-export-${Date.now()}.json`;
+  a.click();
+  toast('Export complete.', 'success');
+}
 
-    async function deleteNewsletter(id) {
-      if (!confirm('Remove subscriber?')) return;
-      try {
-        const res = await fetch(`${API_BASE}/newsletter/${id}`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${currentToken}` }
-        });
-        if (res.ok) fetchAllData();
-      } catch (err) {
-        alert('Failed to delete subscriber.');
-      }
-    }
+function exportTable(type) {
+  let rows = [], headers = [];
+  if (type === 'contacts') {
+    headers = ['ID','Name','Email','Field','Message','Status','Created'];
+    rows = contactsData.map(c => [c.id, c.name, c.email, c.field, (c.message||'').replace(/\n/g,' '), c.status, c.createdAt]);
+  } else if (type === 'newsletter') {
+    headers = ['ID','Email','Source','Status','Created'];
+    rows = newsletterData.map(n => [n.id, n.email, n.sourcePage || n.source_page, n.status, n.createdAt]);
+  } else if (type === 'tracker') {
+    headers = ['ID','Title','Category','Reference','Status','Filed','Created'];
+    rows = trackerData.map(t => [t.id, t.title, t.category, t.referenceId, t.status, t.filingDate, t.createdAt]);
+  }
+  const csv = [headers, ...rows].map(r => r.map(v => '"' + String(v||'').replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `nyayasetu-${type}-${Date.now()}.csv`;
+  a.click();
+  toast('CSV exported.', 'success');
+}
 
-    function openContactModal(id) {
-      const c = contactsData.find(item => item._id === id);
-      if (!c) return;
-      document.getElementById('modalSender').textContent = `${c.name} (${c.email})`;
-      document.getElementById('modalMeta').textContent = `Category: ${c.field || 'General'} • Submitted: ${new Date(c.createdAt).toLocaleString()}`;
-      document.getElementById('modalBody').textContent = c.message;
-      document.getElementById('viewModal').style.display = 'flex';
-    }
+/* ─── Helpers ─── */
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
-    function closeModal() {
-      document.getElementById('viewModal').style.display = 'none';
-    }
+function fmtDate(str) {
+  if (!str) return '—';
+  try {
+    const d = new Date(str);
+    if (isNaN(d)) return str;
+    return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+  } catch { return str; }
+}
 
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;');
-    }
-  </script>
+function relativeTime(str) {
+  if (!str) return '—';
+  try {
+    const diff = Date.now() - new Date(str).getTime();
+    if (isNaN(diff)) return str;
+    if (diff < 60000) return 'Just now';
+    if (diff < 3600000) return Math.floor(diff/60000) + 'm ago';
+    if (diff < 86400000) return Math.floor(diff/3600000) + 'h ago';
+    return Math.floor(diff/86400000) + 'd ago';
+  } catch { return str; }
+}
+
+function statusBadge(status) {
+  const map = {
+    'New': 'badge-new', 'In Progress': 'badge-progress', 'Responded': 'badge-responded', 'Archived': 'badge-archived',
+    'Active': 'badge-active', 'Inactive': 'badge-inactive'
+  };
+  return `<span class="badge ${map[status]||'badge-new'}">${esc(status)}</span>`;
+}
+
+function trackerBadge(status) {
+  const map = { 'drafted': 'badge-drafted', 'filed': 'badge-filed', 'follow-up': 'badge-followup', 'closed': 'badge-closed' };
+  return `<span class="badge ${map[status]||'badge-drafted'}">${esc(status)}</span>`;
+}
+
+function closeModal() { document.getElementById('viewModal').style.display = 'none'; }
+
+function toast(msg, type = 'info') {
+  const stack = document.getElementById('toastStack');
+  const el = document.createElement('div');
+  el.className = 'toast-item ' + (type || 'info');
+  el.innerHTML = (type==='success'?'✅':type==='error'?'❌':'ℹ️') + ' ' + msg;
+  stack.appendChild(el);
+  requestAnimationFrame(() => el.classList.add('show'));
+  setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 400); }, 3500);
+}
+
+/* ─── Init ─── */
+const savedToken = sessionStorage.getItem('ns_admin_token');
+if (savedToken) {
+  TOKEN = savedToken;
+  document.getElementById('authOverlay').style.display = 'none';
+  loadAll();
+}
+
+// Auto-refresh health every 30s
+setInterval(loadHealth, 30000);
+</script>
 </body>
 </html>

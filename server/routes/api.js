@@ -604,4 +604,113 @@ router.get("/stats", (_req, res) => {
   }
 });
 
+router.get("/analytics", (_req, res) => {
+  try {
+    const db = getDb();
+
+    const totalContacts = db.prepare("SELECT COUNT(*) AS count FROM contacts").get().count;
+    const totalNewsletters = db.prepare("SELECT COUNT(*) AS count FROM newsletter_subscribers").get().count;
+    const totalTracker = db.prepare("SELECT COUNT(*) AS count FROM tracker_items").get().count;
+    const totalProblems = db.prepare("SELECT COUNT(*) AS count FROM problems").get().count;
+    const totalRoutes = db.prepare("SELECT COUNT(*) AS count FROM routes").get().count;
+
+    const contactsByStatus = db.prepare(
+      "SELECT status, COUNT(*) AS count FROM contacts GROUP BY status ORDER BY count DESC"
+    ).all();
+
+    const trackerByStatus = db.prepare(
+      "SELECT status, COUNT(*) AS count FROM tracker_items GROUP BY status ORDER BY count DESC"
+    ).all();
+
+    const trackerByCategory = db.prepare(
+      "SELECT COALESCE(NULLIF(category,''), 'Uncategorized') AS category, COUNT(*) AS count FROM tracker_items GROUP BY category ORDER BY count DESC LIMIT 8"
+    ).all();
+
+    const problemsByCategory = db.prepare(
+      "SELECT category, COUNT(*) AS count FROM problems GROUP BY category ORDER BY count DESC"
+    ).all();
+
+    // Last 7 days daily counts
+    const dailyContacts = [];
+    const dailyNewsletter = [];
+    const dailyTracker = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const dateStr = d.toISOString().split("T")[0];
+      const label = d.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" });
+
+      const cc = db.prepare("SELECT COUNT(*) AS count FROM contacts WHERE created_at LIKE ?").get(`${dateStr}%`).count;
+      const nc = db.prepare("SELECT COUNT(*) AS count FROM newsletter_subscribers WHERE created_at LIKE ?").get(`${dateStr}%`).count;
+      const tc = db.prepare("SELECT COUNT(*) AS count FROM tracker_items WHERE created_at LIKE ?").get(`${dateStr}%`).count;
+
+      dailyContacts.push({ date: dateStr, label, count: cc });
+      dailyNewsletter.push({ date: dateStr, label, count: nc });
+      dailyTracker.push({ date: dateStr, label, count: tc });
+    }
+
+    // Recent contacts (last 5)
+    const recentContacts = db.prepare(
+      "SELECT id, name, email, field, status, created_at AS createdAt FROM contacts ORDER BY datetime(created_at) DESC LIMIT 5"
+    ).all();
+
+    // Recent newsletter (last 5)
+    const recentSubscribers = db.prepare(
+      "SELECT id, email, source_page AS sourcePage, status, created_at AS createdAt FROM newsletter_subscribers ORDER BY datetime(created_at) DESC LIMIT 5"
+    ).all();
+
+    // Recent tracker (last 5)
+    const recentTracker = db.prepare(
+      "SELECT id, title, category, status, created_at AS createdAt FROM tracker_items ORDER BY datetime(created_at) DESC LIMIT 5"
+    ).all();
+
+    // All route details
+    const routes = db.prepare("SELECT id, authority_name AS authorityName, portal_name AS portalName, portal_url AS portalUrl, helpline, department FROM routes ORDER BY authority_name ASC").all();
+
+    // All problems with route info
+    const problems = db.prepare("SELECT id, title, category, summary, route_id AS routeId FROM problems ORDER BY category ASC, title ASC").all();
+
+    res.json({
+      ok: true,
+      success: true,
+      data: {
+        overview: {
+          totalContacts,
+          totalNewsletters,
+          totalTracker,
+          totalProblems,
+          totalRoutes,
+        },
+        contactsByStatus,
+        trackerByStatus,
+        trackerByCategory,
+        problemsByCategory,
+        trends: {
+          dailyContacts,
+          dailyNewsletter,
+          dailyTracker,
+        },
+        recent: {
+          contacts: recentContacts,
+          subscribers: recentSubscribers,
+          tracker: recentTracker,
+        },
+        catalog: {
+          routes,
+          problems,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Analytics error:", error);
+    res.status(500).json({
+      ok: false,
+      success: false,
+      message: "Server error building analytics.",
+      error: error.message,
+    });
+  }
+});
+
 module.exports = router;
+
