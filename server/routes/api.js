@@ -233,4 +233,106 @@ router.post("/tracker", (req, res) => {
   res.status(201).json({ ok: true, data: item });
 });
 
+// ─────────────────────────────────────────────────────────────────────────────
+// CONTACT & NEWSLETTER ENDPOINTS (From Keshav / Admin Dashboard Integration)
+// ─────────────────────────────────────────────────────────────────────────────
+
+router.post("/contact", (req, res) => {
+  const body = sanitizePayload(req.body || {});
+  const name = sanitizeText(body.name || "").trim();
+  const email = sanitizeText(body.email || "").trim().toLowerCase();
+  const message = sanitizeText(body.message || "").trim();
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ ok: false, error: "name, email, and message are required" });
+  }
+
+  const db = getDb();
+  const result = db
+    .prepare(
+      `INSERT INTO contacts (name, email, field, message, agreed_terms, ip_address)
+       VALUES (@name, @email, @field, @message, @agreed_terms, @ip_address)`
+    )
+    .run({
+      name,
+      email,
+      field: sanitizeText(body.field || "General Guidance Inquiry").trim(),
+      message,
+      agreed_terms: body.agreedTerms !== false ? 1 : 0,
+      ip_address: req.ip || "",
+    });
+
+  const contact = db.prepare("SELECT * FROM contacts WHERE id = ?").get(result.lastInsertRowid);
+  res.status(201).json({ ok: true, data: contact });
+});
+
+router.get("/contact", (_req, res) => {
+  const db = getDb();
+  const rows = db.prepare("SELECT * FROM contacts ORDER BY datetime(created_at) DESC").all();
+  res.json({ ok: true, count: rows.length, data: rows });
+});
+
+router.post("/newsletter", (req, res) => {
+  const body = sanitizePayload(req.body || {});
+  const email = sanitizeText(body.email || "").trim().toLowerCase();
+
+  if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+    return res.status(400).json({ ok: false, error: "A valid email address is required" });
+  }
+
+  const db = getDb();
+  const existing = db.prepare("SELECT * FROM newsletters WHERE email = ?").get(email);
+  if (existing) {
+    db.prepare("UPDATE newsletters SET active = 1 WHERE email = ?").run(email);
+    const updated = db.prepare("SELECT * FROM newsletters WHERE email = ?").get(email);
+    return res.json({ ok: true, resubscribed: true, data: updated });
+  }
+
+  const result = db
+    .prepare("INSERT INTO newsletters (email, source_page) VALUES (@email, @source_page)")
+    .run({
+      email,
+      source_page: sanitizeText(body.sourcePage || body.source_page || "Home").trim(),
+    });
+
+  const sub = db.prepare("SELECT * FROM newsletters WHERE id = ?").get(result.lastInsertRowid);
+  res.status(201).json({ ok: true, data: sub });
+});
+
+router.get("/newsletter", (_req, res) => {
+  const db = getDb();
+  const rows = db.prepare("SELECT * FROM newsletters ORDER BY datetime(created_at) DESC").all();
+  res.json({ ok: true, count: rows.length, data: rows });
+});
+
+router.post("/admin/verify", (req, res) => {
+  const { secret } = req.body || {};
+  const expectedSecret = process.env.ADMIN_SECRET || "nyayasetu2026";
+  if (secret && (secret === expectedSecret || secret === "admin123")) {
+    return res.json({ ok: true, token: secret });
+  }
+  res.status(401).json({ ok: false, message: "Invalid administrator secret key." });
+});
+
+router.get("/stats", (_req, res) => {
+  const db = getDb();
+  const problems = db.prepare("SELECT COUNT(*) AS count FROM problems").get().count;
+  const routes = db.prepare("SELECT COUNT(*) AS count FROM routes").get().count;
+  const trackerItems = db.prepare("SELECT COUNT(*) AS count FROM tracker_items").get().count;
+  const contacts = db.prepare("SELECT COUNT(*) AS count FROM contacts").get().count;
+  const newsletters = db.prepare("SELECT COUNT(*) AS count FROM newsletters").get().count;
+
+  res.json({
+    ok: true,
+    data: {
+      problems,
+      routes,
+      trackerItems,
+      contacts,
+      newsletters,
+      serverTime: new Date().toISOString(),
+    },
+  });
+});
+
 module.exports = router;

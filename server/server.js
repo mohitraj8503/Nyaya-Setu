@@ -26,8 +26,16 @@ app.get("/api/v1/health", (_req, res) => {
     time: new Date().toISOString(),
   });
 });
+app.get("/api/health", (_req, res) => {
+  res.json({
+    ok: true,
+    service: "nyayasetu-api",
+    time: new Date().toISOString(),
+  });
+});
 
 app.use("/api/v1", apiRouter);
+app.use("/api", apiRouter);
 app.use(express.static(ROOT));
 
 app.use("/api", (_req, res) => {

@@ -70,6 +70,36 @@ function createTables(db) {
       portal_url TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
+
+    CREATE TABLE IF NOT EXISTS contacts (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      field TEXT NOT NULL DEFAULT 'General Guidance Inquiry',
+      message TEXT NOT NULL,
+      agreed_terms INTEGER NOT NULL DEFAULT 1,
+      status TEXT NOT NULL DEFAULT 'New',
+      ip_address TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS newsletters (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT NOT NULL UNIQUE,
+      source_page TEXT NOT NULL DEFAULT 'Home',
+      active INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
+    CREATE TABLE IF NOT EXISTS feedback (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+      category TEXT NOT NULL DEFAULT 'General Guidance',
+      feedback_text TEXT NOT NULL DEFAULT '',
+      citizen_role TEXT NOT NULL DEFAULT 'Citizen User',
+      helpful INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
   `);
 }
 
