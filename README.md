@@ -172,6 +172,7 @@ NyayaSetu was designed, architected, and built by **Team Sankalp** under the gui
 - 👨💻 **Keshav Ruhela** — *Web Development Intern*
 - 👩💻 **Manishka Rohilla** — *Web Development Intern*
 - 👨💻 **Ayush Jha** — *Web Development Intern*
+- 👨💻 **Heril Bhuptawat** — *Web Development Intern*
 - 👨💻 **Nitin Sinha** — *Web Development Intern*
 
 **Mentor & Supervision**: **Mohit Raj** (*Mentor — Web Development Internship, Tech Tomorrow*)
