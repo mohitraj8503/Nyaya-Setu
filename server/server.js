@@ -11,6 +11,7 @@ initializeDatabase();
 const app = express();
 const PORT = Number(process.env.PORT) || 5000;
 const ROOT = path.join(__dirname, "..");
+const API_VERSION = "v1";
 
 app.use(
   cors({
@@ -23,6 +24,9 @@ app.get("/api/v1/health", (_req, res) => {
   res.json({
     ok: true,
     service: "nyayasetu-api",
+    apiVersion: API_VERSION,
+    database: "sqlite",
+    environment: process.env.NODE_ENV || "development",
     time: new Date().toISOString(),
   });
 });
@@ -30,6 +34,9 @@ app.get("/api/health", (_req, res) => {
   res.json({
     ok: true,
     service: "nyayasetu-api",
+    apiVersion: API_VERSION,
+    database: "sqlite",
+    environment: process.env.NODE_ENV || "development",
     time: new Date().toISOString(),
   });
 });
