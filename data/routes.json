@@ -183,5 +183,125 @@
       "Escalate on CPGRAMS for department-level service failures."
     ],
     "draft_template": "Subject: Education / scholarship service issue — {{issueType}}\n\nTo,\nThe Nodal Officer / Education Department\n\nRespected Sir/Madam,\n\nI am {{complainantName}} of {{location}}. Institute / portal reference: {{orderId}}.\n\nIssue: {{issueType}}\nDetails: {{description}}\n\nI request resolution on the official portal. I will submit this myself on https://scholarships.gov.in/ or the concerned .gov.in site. NyayaSetu does not collect Aadhaar OTPs or portal passwords.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "rti-online",
+    "authority_name": "RTI Public Information Officer / State Information Commission",
+    "portal_name": "rtionline.gov.in",
+    "portal_url": "https://rtionline.gov.in/",
+    "helpline": "PIO / State RTI helpdesk",
+    "department": "Department of Personnel & Training / Central / State RTI Portal",
+    "checklist": [
+      "Name of the public authority and exact office",
+      "The specific information being requested",
+      "Date range or document reference if known",
+      "RTI fee payment receipt or application number"
+    ],
+    "steps": [
+      "Identify the correct public authority and the exact information sought.",
+      "File the RTI application on https://rtionline.gov.in/ or the state portal if available.",
+      "Track the reply timeline and use the first appeal if the answer is delayed or incomplete."
+    ],
+    "draft_template": "Subject: RTI application — Request for information on {{issueType}}\n\nTo,\nThe Public Information Officer\n{{seller}}\n\nRespected Sir/Madam,\n\nUnder the Right to Information Act, 2005, I request the following information related to {{issueType}}:\n\nInformation sought: {{description}}\nRelevant period / location: {{location}}\n\nI request the information be provided in the prescribed format and within the statutory timeline. I will submit this application on the official RTI portal and keep a copy of the application number for follow-up.\n\nNyayaSetu does not submit this request on your behalf.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "municipal-civic",
+    "authority_name": "Municipal Corporation / Local Civic Body",
+    "portal_name": "citizen service app / local municipal portal",
+    "portal_url": "https://pgportal.gov.in/",
+    "helpline": "Ward office / local civic complaint number",
+    "department": "Urban Local Body / Ward Office",
+    "checklist": [
+      "Ward, street, locality, and landmark",
+      "Photos of the civic defect or encroachment",
+      "Any prior complaint ID and date reported",
+      "Annual / seasonal impact on traffic or public safety"
+    ],
+    "steps": [
+      "Register the complaint with the local municipal ward office or city app.",
+      "Attach photo evidence and the exact address.",
+      "Escalate on CPGRAMS if the issue is not addressed within the stated time."
+    ],
+    "draft_template": "Subject: Municipal civic grievance — {{issueType}} at {{location}}\n\nTo,\nThe Municipal Commissioner / Ward Officer\n\nRespected Sir/Madam,\n\nI am {{complainantName}}, a resident of {{location}}. I request urgent action on {{issueType}}.\n\nDescription: {{description}}\n\nThis issue affects public cleanliness, access, or safety in the area. I request inspection and correction at the earliest. I will file this on the official municipal portal and CPGRAMS if required.\n\nNyayaSetu is only guidance and does not file this complaint on my behalf.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "epfo-claims",
+    "authority_name": "Employees' Provident Fund Organisation",
+    "portal_name": "unifiedportal-mem.epfindia.gov.in",
+    "portal_url": "https://unifiedportal-mem.epfindia.gov.in/",
+    "helpline": "EPFO grievance helpline / regional office",
+    "department": "Ministry of Labour & Employment / EPFO",
+    "checklist": [
+      "UAN number and member ID",
+      "KYC and Aadhaar-linked account status",
+      "Claim type and date of employment separation",
+      "Bank account proof and resignation / exit letter if applicable"
+    ],
+    "steps": [
+      "Check whether your UAN and KYC are active on the EPFO portal.",
+      "Submit the claim online through the EPFO member portal.",
+      "Track the claim and escalate to the regional office if there is a delay or rejection."
+    ],
+    "draft_template": "Subject: EPF / provident fund claim follow-up — UAN {{orderId}}\n\nTo,\nThe EPFO Regional Office / Grievance Cell\n\nRespected Sir/Madam,\n\nI am {{complainantName}} and my UAN is {{orderId}}. I am seeking assistance on {{issueType}}.\n\nService details: {{description}}\n\nI request resolution of my claim / status update and a written response. I will file this through the official EPFO member portal and track the claim status there.\n\nNyayaSetu does not submit claims on my behalf.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "passport-seva",
+    "authority_name": "Passport Seva / Regional Passport Office",
+    "portal_name": "passportindia.gov.in",
+    "portal_url": "https://portal3.passportindia.gov.in/",
+    "helpline": "Passport Seva helpline / regional office",
+    "department": "Ministry of External Affairs / Passport Division",
+    "checklist": [
+      "Application reference number / ARN",
+      "Appointment date and office location",
+      "Document rejection message or police verification update",
+      "ID proof copy, if required for appeal"
+    ],
+    "steps": [
+      "Check the Passport Seva portal for appointment / document status.",
+      "Resubmit or clarify the required document if there is a rejection.",
+      "Escalate to the Passport Seva grievance cell if there is unreasonable delay."
+    ],
+    "draft_template": "Subject: Passport service grievance — ARN {{orderId}}\n\nTo,\nPassport Seva / Regional Passport Office\n\nRespected Sir/Madam,\n\nI am {{complainantName}}. My application reference is {{orderId}} and I am seeking assistance regarding {{issueType}}.\n\nDetails: {{description}}\n\nI request a specific status update and the next required action. I will do this through the official Passport Seva portal only.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "railways-pnr",
+    "authority_name": "Indian Railways / RailMadad",
+    "portal_name": "railmadad.indianrailways.gov.in",
+    "portal_url": "https://railmadad.indianrailways.gov.in/",
+    "helpline": "RailMadad / railway helpline",
+    "department": "Indian Railways",
+    "checklist": [
+      "PNR / ticket details",
+      "Train number, route, and date of travel",
+      "Proof of delay / refund request screenshot",
+      "Passenger coach / station details if relevant"
+    ],
+    "steps": [
+      "Check the PNR and ticket issue on the Indian Railways portal.",
+      "Use RailMadad for service grievances and refunds.",
+      "Keep the complaint ID for follow-up if the refund or service remains pending."
+    ],
+    "draft_template": "Subject: Railway grievance — PNR {{orderId}}\n\nTo,\nIndian Railways / RailMadad Helpdesk\n\nRespected Sir/Madam,\n\nI am {{complainantName}}. My ticket / PNR number is {{orderId}} and I am seeking support for {{issueType}}.\n\nDetails: {{description}}\n\nI request the applicable refund, assistance, or service correction. I will file this through the official RailMadad / Indian Railways portal only.\n\nThank you.\n{{complainantName}}"
+  },
+  {
+    "id": "pension-seva",
+    "authority_name": "Pension / Retirement Grievance Cell",
+    "portal_name": "pensionersportal.gov.in",
+    "portal_url": "https://pensionersportal.gov.in/",
+    "helpline": "Pension grievance helpline / office contact",
+    "department": "Department of Pension & Pensioners' Welfare / State Pension Office",
+    "checklist": [
+      "Pension ID / PPO number",
+      "Bank account and family pension status",
+      "Date of retirement and arrears period",
+      "Document and sanction letter copy"
+    ],
+    "steps": [
+      "Confirm the pension ID and bank account details with the pension office.",
+      "Lodge the issue on the official pension portal or through the office grievance cell.",
+      "Track the complaint and escalate to the next administrative office if there is delay."
+    ],
+    "draft_template": "Subject: Pension grievance — PPO {{orderId}}\n\nTo,\nThe Pension / Retirement Grievance Cell\n\nRespected Sir/Madam,\n\nI am {{complainantName}}. My pension / PPO number is {{orderId}}. I request assistance on {{issueType}}.\n\nDetails: {{description}}\n\nI request the correct arrears, family pension, or service resolution and a written status update. I will enter this on the official pension grievance portal only.\n\nThank you.\n{{complainantName}}"
   }
 ]

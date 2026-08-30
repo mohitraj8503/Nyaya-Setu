@@ -151,5 +151,107 @@
       { "label": "Exam / certificate delay", "value": "exam or certificate delay" },
       { "label": "Admission related", "value": "admission related grievance" }
     ]
+  },
+  {
+    "id": "q-rti-1",
+    "route_id": "rti-online",
+    "sort_order": 1,
+    "prompt": "What type of information are you requesting?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Government file / office record", "value": "government record" },
+      { "label": "Public project / tender information", "value": "public project or tender" },
+      { "label": "Departmental action or policy info", "value": "departmental policy or action" },
+      { "label": "Other public information request", "value": "other information request" }
+    ]
+  },
+  {
+    "id": "q-rti-2",
+    "route_id": "rti-online",
+    "sort_order": 2,
+    "prompt": "Have you identified the public authority?",
+    "question_key": "priorComplaint",
+    "options": [
+      { "label": "Yes, I know the office and department", "value": "authority-known" },
+      { "label": "I need help identifying the correct PIO", "value": "authority-unclear" },
+      { "label": "Not yet", "value": "not-yet" }
+    ]
+  },
+  {
+    "id": "q-muni-1",
+    "route_id": "municipal-civic",
+    "sort_order": 1,
+    "prompt": "What local civic issue is affecting your area?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Garbage / sanitation problem", "value": "garbage or sanitation" },
+      { "label": "Drainage / waterlogging", "value": "drainage or waterlogging" },
+      { "label": "Street light / road issue", "value": "road or street light issue" },
+      { "label": "Encroachment / illegal construction", "value": "encroachment or illegal construction" }
+    ]
+  },
+  {
+    "id": "q-epf-1",
+    "route_id": "epfo-claims",
+    "sort_order": 1,
+    "prompt": "What EPF issue do you need help with?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Withdrawal or claim rejection", "value": "claim rejection or withdrawal issue" },
+      { "label": "UAN / member portal login issue", "value": "UAN or portal issue" },
+      { "label": "KYC or bank account mismatch", "value": "KYC or bank mismatch" },
+      { "label": "Need status / follow-up", "value": "claim status update" }
+    ]
+  },
+  {
+    "id": "q-epf-2",
+    "route_id": "epfo-claims",
+    "sort_order": 2,
+    "prompt": "Have you checked your UAN / KYC status?",
+    "question_key": "priorComplaint",
+    "options": [
+      { "label": "Yes, KYC is already verified", "value": "kyc-verified" },
+      { "label": "Yes, but my claim is still pending", "value": "claim-pending" },
+      { "label": "Not yet", "value": "not-yet" }
+    ]
+  },
+  {
+    "id": "q-passport-1",
+    "route_id": "passport-seva",
+    "sort_order": 1,
+    "prompt": "What is the Passport Seva issue?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Appointment or slot issue", "value": "appointment slot issue" },
+      { "label": "Document rejection", "value": "document rejection" },
+      { "label": "Police verification delay", "value": "police verification delay" },
+      { "label": "Passport status / tracking", "value": "status or service tracking" }
+    ]
+  },
+  {
+    "id": "q-rail-1",
+    "route_id": "railways-pnr",
+    "sort_order": 1,
+    "prompt": "What railway service problem are you facing?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Train delay or bad service", "value": "delay or poor service" },
+      { "label": "Refund / cancellation issue", "value": "refund or cancellation" },
+      { "label": "Reservation / ticket problem", "value": "reservation issue" },
+      { "label": "Passenger complaint / assistance", "value": "passenger assistance" }
+    ]
+  },
+  {
+    "id": "q-pension-1",
+    "route_id": "pension-seva",
+    "sort_order": 1,
+    "prompt": "What pension issue needs attention?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Payment or arrears delay", "value": "pension payment delay" },
+      { "label": "Family pension issue", "value": "family pension issue" },
+      { "label": "Bank account / PPO mismatch", "value": "PPO or bank mismatch" },
+      { "label": "Need status update", "value": "status update" }
+    ]
   }
 ]

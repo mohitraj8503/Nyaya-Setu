@@ -1,7 +1,22 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config({ path: path.join(__dirname, ".env") });
+const dotenv = require("dotenv");
+
+const envFiles = [
+  ".env",
+  `.env.${process.env.NODE_ENV || "development"}`,
+  ".env.local",
+];
+
+for (const file of envFiles) {
+  const filePath = path.join(__dirname, file);
+  if (filePath && filePath !== path.join(__dirname, ".env")) {
+    dotenv.config({ path: filePath, override: false });
+  }
+}
+
+dotenv.config({ path: path.join(__dirname, ".env"), override: false });
 
 const { initializeDatabase } = require("./db/setup");
 const apiRouter = require("./routes/api");

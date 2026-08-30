@@ -79,5 +79,59 @@
     "summary": "Scholarship portals, school/college service issues, and education department grievances.",
     "keywords": "scholarship, school, college, nsp, education, exam, admission",
     "route_id": "education-nsp"
+  },
+  {
+    "id": "rti-request",
+    "slug": "right-to-information-rti-requests",
+    "title": "RTI Request & Public Information Access",
+    "category": "Governance",
+    "summary": "File a Right to Information request for government records, decisions, and public service data via rtionline.gov.in.",
+    "keywords": "rti, information, public record, government office, pio, second appeal",
+    "route_id": "rti-online"
+  },
+  {
+    "id": "municipal-civic",
+    "slug": "municipal-civic-grievances",
+    "title": "Municipal Civic Grievances",
+    "category": "Civic",
+    "summary": "Garbage, drainage, encroachment, unsafe streets, and local civic complaint escalation.",
+    "keywords": "municipal, nagar nigam, garbage, drainage, encroachment, civic complaint",
+    "route_id": "municipal-civic"
+  },
+  {
+    "id": "epf-withdrawal",
+    "slug": "epf-withdrawal-and-claims",
+    "title": "EPF / Provident Fund Claims",
+    "category": "Employment",
+    "summary": "Provident fund withdrawal, UAN issues, and claim support through EPFO unified portals.",
+    "keywords": "epf, provident fund, uan, epfo, withdrawal, pension, claim",
+    "route_id": "epfo-claims"
+  },
+  {
+    "id": "passport-service",
+    "slug": "passport-and-identity-service-delays",
+    "title": "Passport & Identity Service Delays",
+    "category": "Identity",
+    "summary": "Passport appointments, document rejections, and police verification delays through Passport Seva.",
+    "keywords": "passport, appointment, passport seva, police verification, document rejection",
+    "route_id": "passport-seva"
+  },
+  {
+    "id": "railway-service",
+    "slug": "railway-service-and-pnr-grievances",
+    "title": "Railway Service & PNR Grievances",
+    "category": "Transport",
+    "summary": "Train delays, refund issues, and passenger service complaints via Indian Railways grievance portals.",
+    "keywords": "railway, pnr, train delay, refund, rail madad, reservation",
+    "route_id": "railways-pnr"
+  },
+  {
+    "id": "pension-claims",
+    "slug": "pension-and-retirement-benefits",
+    "title": "Pension & Retirement Benefits",
+    "category": "Social Security",
+    "summary": "Pension arrears, family pension issues, and retirement benefit follow-up with government portals.",
+    "keywords": "pension, retirement, family pension, benefit, old age, grievance",
+    "route_id": "pension-seva"
   }
 ]

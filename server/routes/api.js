@@ -1,5 +1,6 @@
 const express = require("express");
 const { getDb } = require("../db/setup");
+const { sendStatusChangeEmail } = require("../services/notifier");
 
 const router = express.Router();
 
@@ -92,29 +93,105 @@ function sanitizePayload(value) {
   return value;
 }
 
+function generateTrackingCode() {
+  const now = new Date();
+  const dateStamp = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0"),
+  ].join("");
+  const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase();
+  return `NS-${dateStamp}-${randomPart}`;
+}
+
+function normalizeStatus(status) {
+  const value = sanitizeText(status || "drafted").trim().toLowerCase();
+  if (["drafted", "new", "created"].includes(value)) return "drafted";
+  if (["in-progress", "in_progress", "in progress", "submitted", "filed"].includes(value)) return "in-progress";
+  if (["follow-up", "followup", "follow_up", "follow up"].includes(value)) return "follow-up";
+  if (["resolved", "closed", "completed"].includes(value)) return "resolved";
+  return value || "drafted";
+}
+
+function getStatusTimeline(item) {
+  const status = normalizeStatus(item.status);
+  const createdAt = item.createdAt || item.created_at || new Date().toISOString();
+  const filingDate = item.filingDate || item.filing_date || "";
+
+  const timeline = [
+    {
+      label: "Draft created",
+      date: createdAt,
+      description: "Citizen saved the issue and prepared the next action.",
+    },
+  ];
+
+  if (status === "in-progress" || status === "follow-up" || status === "resolved") {
+    timeline.push({
+      label: "Filed / submitted",
+      date: filingDate || createdAt,
+      description: "Complaint or grievance has been filed on the official portal.",
+    });
+  }
+
+  if (status === "follow-up") {
+    timeline.push({
+      label: "Follow-up needed",
+      date: filingDate || createdAt,
+      description: "Citizen should check acknowledgement, submit missing documents, or request escalation.",
+    });
+  }
+
+  if (status === "resolved") {
+    timeline.push({
+      label: "Resolution / closure",
+      date: filingDate || createdAt,
+      description: "The complaint has reached a resolved or closed stage.",
+    });
+  }
+
+  return timeline;
+}
+
+function getNextAction(status, notes) {
+  const normalizedStatus = normalizeStatus(status);
+  const trimmedNotes = sanitizeText(notes || "").trim();
+
+  const actions = {
+    drafted: "Gather the exact reference ID, portal URL, and required documents before filing.",
+    "in-progress": "Check the official portal for acknowledgement and confirm all required documents were uploaded.",
+    "follow-up": trimmedNotes || "Follow up with the concerned office within 7 days and keep a copy of the submission receipt.",
+    resolved: "Save the final acknowledgement and note the resolution outcome for future reference.",
+  };
+
+  return actions[normalizedStatus] || "Review the status and continue with the next official follow-up step.";
+}
+
 router.get("/problems", (req, res) => {
   const db = getDb();
-  const query = String(req.query.q || req.query.query || "").trim();
+  const query = String(req.query.q || req.query.query || req.query.search || "").trim();
+  const category = String(req.query.category || "").trim();
 
-  let rows;
-  if (query) {
-    const like = `%${query}%`;
-    rows = db
-      .prepare(
-        `
-        SELECT * FROM problems
-        WHERE title LIKE @like
-           OR category LIKE @like
-           OR summary LIKE @like
-           OR keywords LIKE @like
-           OR id LIKE @like
-        ORDER BY title ASC
-      `
+  const likeQuery = query ? `%${query}%` : "%";
+  const categoryLike = category ? `%${category}%` : "%";
+
+  const sql = `
+    SELECT * FROM problems
+    WHERE category LIKE @categoryLike
+      AND (
+        title LIKE @likeQuery
+        OR category LIKE @likeQuery
+        OR summary LIKE @likeQuery
+        OR keywords LIKE @likeQuery
+        OR id LIKE @likeQuery
       )
-      .all({ like });
-  } else {
-    rows = db.prepare("SELECT * FROM problems ORDER BY title ASC").all();
-  }
+    ORDER BY title ASC
+  `;
+
+  const rows = db.prepare(sql).all({
+    categoryLike,
+    likeQuery,
+  });
 
   res.json({ ok: true, count: rows.length, data: rows.map(mapProblem) });
 });
@@ -176,20 +253,73 @@ const generateDraft = (req, res) => {
 router.post("/drafts/generate", generateDraft);
 router.post("/drafts", generateDraft);
 
-router.get("/tracker", (_req, res) => {
+router.get("/tracker", (req, res) => {
   const db = getDb();
+  const rawPage = Number(req.query.page || 1);
+  const rawLimit = Number(req.query.limit || 10);
+
+  const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
+  const limit = Number.isFinite(rawLimit) && rawLimit > 0 ? rawLimit : 10;
+  const offset = (page - 1) * limit;
+
+  const totalCount = db.prepare("SELECT COUNT(*) AS count FROM tracker_items").get().count;
   const rows = db
     .prepare(
       `
-      SELECT id, title, category, reference_id AS referenceId, filing_date AS filingDate,
-             status, notes, portal_url AS portalUrl, created_at AS createdAt
+      SELECT id, title, category, reference_id AS referenceId, tracking_code AS trackingCode,
+             filing_date AS filingDate, status, notes, portal_url AS portalUrl, email,
+             created_at AS createdAt
       FROM tracker_items
       ORDER BY datetime(created_at) DESC
+      LIMIT @limit OFFSET @offset
     `
     )
-    .all();
+    .all({ limit, offset });
 
-  res.json({ ok: true, count: rows.length, data: rows });
+  const enrichedRows = rows.map((item) => ({
+    ...item,
+    timeline: getStatusTimeline(item),
+    nextAction: getNextAction(item.status, item.notes),
+  }));
+
+  res.json({
+    ok: true,
+    count: totalCount,
+    page,
+    limit,
+    totalPages: Math.max(1, Math.ceil(totalCount / limit)),
+    hasNextPage: page * limit < totalCount,
+    data: enrichedRows,
+  });
+});
+
+router.get("/tracker/:id", (req, res) => {
+  const db = getDb();
+  const item = db
+    .prepare(
+      `
+      SELECT id, title, category, reference_id AS referenceId, tracking_code AS trackingCode,
+             filing_date AS filingDate, status, notes, portal_url AS portalUrl,
+             created_at AS createdAt
+      FROM tracker_items
+      WHERE id = ?
+    `
+    )
+    .get(req.params.id);
+
+  if (!item) {
+    res.status(404).json({ ok: false, error: "Tracker item not found" });
+    return;
+  }
+
+  res.json({
+    ok: true,
+    data: {
+      ...item,
+      timeline: getStatusTimeline(item),
+      nextAction: getNextAction(item.status, item.notes),
+    },
+  });
 });
 
 router.post("/tracker", (req, res) => {
@@ -202,35 +332,124 @@ router.post("/tracker", (req, res) => {
   }
 
   const db = getDb();
+  const trackingCode = sanitizeText(body.trackingCode || body.tracking_code || "").trim() || generateTrackingCode();
+  const status = normalizeStatus(body.status || "drafted");
+
   const result = db
     .prepare(
       `
-      INSERT INTO tracker_items (title, category, reference_id, filing_date, status, notes, portal_url)
-      VALUES (@title, @category, @reference_id, @filing_date, @status, @notes, @portal_url)
+      INSERT INTO tracker_items (title, category, reference_id, tracking_code, filing_date, status, notes, portal_url, email)
+      VALUES (@title, @category, @reference_id, @tracking_code, @filing_date, @status, @notes, @portal_url, @email)
     `
     )
     .run({
       title,
       category: sanitizeText(body.category || "").trim(),
       reference_id: sanitizeText(body.referenceId || body.reference_id || "").trim(),
+      tracking_code: trackingCode,
       filing_date: sanitizeText(body.filingDate || body.filing_date || "").trim(),
-      status: sanitizeText(body.status || "drafted").trim(),
+      status,
       notes: sanitizeText(body.notes || "").trim(),
       portal_url: sanitizeText(body.portalUrl || body.portal_url || "").trim(),
+      email: sanitizeText(body.email || "").trim(),
     });
 
   const item = db
     .prepare(
       `
-      SELECT id, title, category, reference_id AS referenceId, filing_date AS filingDate,
-             status, notes, portal_url AS portalUrl, created_at AS createdAt
+      SELECT id, title, category, reference_id AS referenceId, tracking_code AS trackingCode,
+             filing_date AS filingDate, status, notes, portal_url AS portalUrl, email,
+             created_at AS createdAt
       FROM tracker_items
       WHERE id = ?
     `
     )
     .get(result.lastInsertRowid);
 
-  res.status(201).json({ ok: true, data: item });
+  res.status(201).json({
+    ok: true,
+    data: {
+      ...item,
+      timeline: getStatusTimeline(item),
+      nextAction: getNextAction(item.status, item.notes),
+    },
+  });
+});
+
+router.put("/tracker/:id", (req, res) => {
+  const db = getDb();
+  const currentItem = db
+    .prepare("SELECT * FROM tracker_items WHERE id = ?")
+    .get(req.params.id);
+
+  if (!currentItem) {
+    res.status(404).json({ ok: false, error: "Tracker item not found" });
+    return;
+  }
+
+  const body = sanitizePayload(req.body || {});
+  const oldStatus = currentItem.status || "drafted";
+  const newStatus = normalizeStatus(body.status || oldStatus);
+
+  if (!body.status) {
+    res.status(400).json({ ok: false, error: "status is required" });
+    return;
+  }
+
+  db.prepare(
+    `
+    UPDATE tracker_items
+    SET status = @status,
+        notes = @notes,
+        email = @email
+    WHERE id = @id
+    `
+  ).run({
+    status: newStatus,
+    notes: sanitizeText(body.notes !== undefined ? body.notes : currentItem.notes || "").trim(),
+    email: sanitizeText(body.email !== undefined ? body.email : currentItem.email || "").trim(),
+    id: req.params.id,
+  });
+
+  const updatedItem = db
+    .prepare(
+      `
+      SELECT id, title, category, reference_id AS referenceId, tracking_code AS trackingCode,
+             filing_date AS filingDate, status, notes, portal_url AS portalUrl,
+             email, created_at AS createdAt
+      FROM tracker_items
+      WHERE id = ?
+    `
+    )
+    .get(req.params.id);
+
+  const emailToSend = sanitizeText(updatedItem.email || "").trim();
+  if (emailToSend) {
+    sendStatusChangeEmail(emailToSend, updatedItem, oldStatus, newStatus);
+  }
+
+  res.json({
+    ok: true,
+    data: {
+      ...updatedItem,
+      timeline: getStatusTimeline(updatedItem),
+      nextAction: getNextAction(updatedItem.status, updatedItem.notes),
+    },
+  });
+});
+
+router.delete("/tracker/:id", (req, res) => {
+  const db = getDb();
+  const item = db.prepare("SELECT id FROM tracker_items WHERE id = ?").get(req.params.id);
+
+  if (!item) {
+    res.status(404).json({ ok: false, error: "Tracker item not found" });
+    return;
+  }
+
+  db.prepare("DELETE FROM tracker_items WHERE id = ?").run(req.params.id);
+
+  res.json({ ok: true, deletedId: Number(req.params.id) });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────

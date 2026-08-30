@@ -46,5 +46,8 @@
     saveTrackerItem: function (item) {
       return request("/tracker", { method: "POST", body: item });
     },
+    updateTrackerItem: function (id, item) {
+      return request("/tracker/" + encodeURIComponent(id), { method: "PUT", body: item });
+    },
   };
 })(window);

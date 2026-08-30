@@ -64,10 +64,12 @@ function createTables(db) {
       title TEXT NOT NULL,
       category TEXT,
       reference_id TEXT,
+      tracking_code TEXT,
       filing_date TEXT,
       status TEXT NOT NULL DEFAULT 'drafted',
       notes TEXT,
       portal_url TEXT,
+      email TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
 
@@ -101,6 +103,24 @@ function createTables(db) {
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
   `);
+
+}
+
+function ensureTrackerColumns(db) {
+  const columns = db.prepare("PRAGMA table_info(tracker_items)").all();
+  const hasTrackingCode = columns.some((column) => column.name === "tracking_code");
+  const hasEmail = columns.some((column) => column.name === "email");
+
+  if (!hasTrackingCode) {
+    db.exec("ALTER TABLE tracker_items ADD COLUMN tracking_code TEXT;");
+  }
+
+  if (!hasEmail) {
+    db.exec("ALTER TABLE tracker_items ADD COLUMN email TEXT;");
+  }
+
+  db.exec("CREATE INDEX IF NOT EXISTS idx_tracker_tracking_code ON tracker_items (tracking_code);");
+  db.exec("CREATE INDEX IF NOT EXISTS idx_tracker_created_at ON tracker_items (created_at);");
 }
 
 function seedIfEmpty(db) {
@@ -177,6 +197,7 @@ function seedIfEmpty(db) {
 function initializeDatabase() {
   const db = getDb();
   createTables(db);
+  ensureTrackerColumns(db);
   seedIfEmpty(db);
   return db;
 }

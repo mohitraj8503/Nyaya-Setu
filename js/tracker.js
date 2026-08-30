@@ -53,6 +53,15 @@
         var link = item.portalUrl
           ? '<a href="' + escapeHtml(item.portalUrl) + '" target="_blank" rel="noopener noreferrer">Open portal</a>'
           : "";
+        var statusSelect =
+          '<label class="nyaya-status-field">Status<select data-id="' +
+          escapeHtml(String(item.id)) +
+          '" class="nyaya-status-select">' +
+          '<option value="drafted" ' + (item.status === "drafted" ? "selected" : "") + '>Drafted</option>' +
+          '<option value="in-progress" ' + (item.status === "in-progress" ? "selected" : "") + '>Submitted</option>' +
+          '<option value="follow-up" ' + (item.status === "follow-up" ? "selected" : "") + '>Follow-up</option>' +
+          '<option value="resolved" ' + (item.status === "resolved" ? "selected" : "") + '>Resolved</option>' +
+          '</select></label>';
         return (
           '<article class="nyaya-tracker-item">' +
           "<h3>" +
@@ -74,11 +83,35 @@
           "<p>" +
           escapeHtml(item.notes || "") +
           "</p>" +
+          statusSelect +
           link +
           "</article>"
         );
       })
       .join("");
+
+    var selects = listEl.querySelectorAll(".nyaya-status-select");
+    selects.forEach(function (select) {
+      select.addEventListener("change", function (event) {
+        var id = event.target.getAttribute("data-id");
+        var nextStatus = event.target.value;
+        if (!id || !nextStatus) {
+          return;
+        }
+
+        statusEl.className = "nyaya-status";
+        statusEl.textContent = "Updating status...";
+
+        window.NyayaAPI.updateTrackerItem(id, { status: nextStatus })
+          .then(function () {
+            loadTracker();
+          })
+          .catch(function (error) {
+            statusEl.textContent = (error && error.message) || "Could not update status.";
+            statusEl.className = "nyaya-status is-error";
+          });
+      });
+    });
   }
 
   function loadTracker() {
