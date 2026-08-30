@@ -25,8 +25,110 @@ function getDb() {
   return dbInstance;
 }
 
+function migrateFeedbackTable(db) {
+  const tableInfo = db.prepare("PRAGMA table_info(feedback)").all();
+
+  if (tableInfo.length === 0) {
+    db.exec(`
+      CREATE TABLE feedback (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        tracker_id INTEGER,
+        rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+        comment TEXT NOT NULL DEFAULT '',
+        created_at TEXT NOT NULL DEFAULT (datetime('now')),
+        FOREIGN KEY (tracker_id) REFERENCES tracker_items(id)
+      );
+    `);
+    return;
+  }
+
+  const columns = tableInfo.map((column) => column.name);
+  const hasTrackerId = columns.includes("tracker_id");
+  const hasComment = columns.includes("comment");
+  const hasRating = columns.includes("rating");
+  const hasCreatedAt = columns.includes("created_at");
+
+  if (hasTrackerId && hasComment && hasRating && hasCreatedAt) {
+    return;
+  }
+
+  const legacyRows = db.prepare("SELECT * FROM feedback").all();
+  db.exec("ALTER TABLE feedback RENAME TO feedback_legacy;");
+
+  db.exec(`
+    CREATE TABLE feedback (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      tracker_id INTEGER,
+      rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
+      comment TEXT NOT NULL DEFAULT '',
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (tracker_id) REFERENCES tracker_items(id)
+    );
+  `);
+
+  if (legacyRows.length > 0) {
+    const migrationValues = legacyRows
+      .map((row) => {
+        const trackerId = row.tracker_id ?? row.trackerId ?? null;
+        const rating = Number(row.rating ?? 0);
+        const comment = String(row.comment ?? row.feedback_text ?? row.feedbackText ?? "");
+        const createdAt = row.created_at || row.createdAt || new Date().toISOString();
+
+        return `(${row.id}, ${trackerId === null ? "NULL" : Number(trackerId)}, ${Number.isFinite(rating) && rating >= 1 && rating <= 5 ? rating : 1}, ${JSON.stringify(comment)}, ${JSON.stringify(createdAt)})`;
+      })
+      .join(", ");
+
+    if (migrationValues) {
+      db.exec(`INSERT INTO feedback (id, tracker_id, rating, comment, created_at) VALUES ${migrationValues};`);
+    }
+  }
+
+  db.exec("DROP TABLE feedback_legacy;");
+}
+
+function migrateTrackerTable(db) {
+  const trackerInfo = db.prepare("PRAGMA table_info(tracker_items)").all();
+  if (trackerInfo.length === 0) {
+    return;
+  }
+
+  const columns = trackerInfo.map((column) => column.name);
+  if (!columns.includes("user_id")) {
+    const anonymousUser = db.prepare("SELECT id FROM users WHERE email = ?").get("anonymous@nyayasetu.local");
+    if (!anonymousUser) {
+      db.prepare("INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)")
+        .run("Anonymous User", "anonymous@nyayasetu.local", "anonymous");
+    }
+
+    const userRow = db.prepare("SELECT id FROM users WHERE email = ?").get("anonymous@nyayasetu.local");
+    db.exec("ALTER TABLE tracker_items ADD COLUMN user_id INTEGER;");
+    db.prepare("UPDATE tracker_items SET user_id = ? WHERE user_id IS NULL").run(userRow.id);
+  }
+}
+
+function migrateUsersTable(db) {
+  const tableInfo = db.prepare("PRAGMA table_info(users)").all();
+  if (tableInfo.length === 0) {
+    return;
+  }
+
+  const columns = tableInfo.map((column) => column.name);
+  if (!columns.includes("role")) {
+    db.exec("ALTER TABLE users ADD COLUMN role TEXT NOT NULL DEFAULT 'user';");
+  }
+}
+
 function createTables(db) {
   db.exec(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      role TEXT NOT NULL DEFAULT 'user',
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+
     CREATE TABLE IF NOT EXISTS problems (
       id TEXT PRIMARY KEY,
       slug TEXT NOT NULL,
@@ -55,6 +157,7 @@ function createTables(db) {
       title TEXT NOT NULL DEFAULT '',
       content TEXT NOT NULL DEFAULT '',
       status TEXT NOT NULL DEFAULT 'draft',
+      file_path TEXT DEFAULT '',
       created_at TEXT NOT NULL DEFAULT (datetime('now')),
       updated_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
@@ -83,6 +186,7 @@ function createTables(db) {
 
     CREATE TABLE IF NOT EXISTS tracker_items (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
       title TEXT NOT NULL,
       category TEXT,
       reference_id TEXT,
@@ -90,7 +194,8 @@ function createTables(db) {
       status TEXT NOT NULL DEFAULT 'drafted',
       notes TEXT,
       portal_url TEXT,
-      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      FOREIGN KEY (user_id) REFERENCES users(id)
     );
 
     CREATE TABLE IF NOT EXISTS contacts (
@@ -112,17 +217,11 @@ function createTables(db) {
       active INTEGER NOT NULL DEFAULT 1,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
-
-    CREATE TABLE IF NOT EXISTS feedback (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
-      category TEXT NOT NULL DEFAULT 'General Guidance',
-      feedback_text TEXT NOT NULL DEFAULT '',
-      citizen_role TEXT NOT NULL DEFAULT 'Citizen User',
-      helpful INTEGER NOT NULL DEFAULT 1,
-      created_at TEXT NOT NULL DEFAULT (datetime('now'))
-    );
   `);
+
+  migrateTrackerTable(db);
+  migrateFeedbackTable(db);
+  migrateUsersTable(db);
 }
 
 function seedIfEmpty(db) {

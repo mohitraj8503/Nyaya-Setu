@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
+const rateLimit = require("express-rate-limit");
 require("dotenv").config({ path: path.join(__dirname, ".env") });
 
 const { initializeDatabase } = require("./db/setup");
@@ -18,6 +19,20 @@ app.use(
     origin: process.env.CORS_ORIGIN || "*",
   })
 );
+
+const apiLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 100,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    ok: false,
+    error: "Too many requests from this IP. Please try again later.",
+  },
+  skipSuccessfulRequests: false,
+});
+
+app.use(apiLimiter);
 app.use(express.json({ limit: "256kb" }));
 
 app.get("/api/v1/health", (_req, res) => {

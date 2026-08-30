@@ -1,0 +1,151 @@
+{
+  "platform": {
+    "name": "NyayaSetu",
+    "summary": "NyayaSetu is a citizen guidance platform that helps people identify the right government authority for their grievance, understand the likely process, and prepare a clearer complaint before they approach an official channel.",
+    "what_it_is": "NyayaSetu is an independent, citizen-friendly service designed to help everyday Indians figure out where to go when a public-service problem feels confusing or overwhelming. It does not replace the government system; it helps people find the right path, the right authority, and the right next step.",
+    "why_it_exists": "Many people do not know which department, portal, or complaint route fits their issue. Search results can send them to the wrong websites, and official procedures are often written in confusing language. NyayaSetu exists to reduce that uncertainty, guide people toward official channels, and make the grievance process easier to understand.",
+    "goal": "NyayaSetu helps citizens find the right grievance route, understand what information may matter, and prepare a more complete complaint draft before they approach an official government process.",
+    "user_value": "The experience is designed to feel simple and reassuring: users can look up a problem, answer a few guidance questions, get a suggested route, and keep track of their complaint progress without getting lost in paperwork or portal confusion."
+  },
+  "core_features": [
+    {
+      "name": "Problem search",
+      "plain_language": "A simple search that helps people find the issue they are facing and match it to the right category.",
+      "description": "Users can type a few words about their problem or browse categories to find the issue they are dealing with and see the most relevant grievance route.",
+      "user_flow": [
+        "Open the site and search for your issue using a few key words like 'water supply', 'refund', or 'pothole'.",
+        "Browse the available categories if you are not sure exactly how to describe your problem.",
+        "Pick the issue that best fits your situation and move to the next step."
+      ],
+      "friendly_example": "Need help with a delayed refund? Just type a few words, pick the matching category, and NyayaSetu will help narrow it down."
+    },
+    {
+      "name": "Route lookup with guidance questions",
+      "plain_language": "A guided path that asks a few quick questions to help point the user toward the correct authority or official process.",
+      "description": "NyayaSetu matches the user's selected issue to a guided route and asks short questions to narrow down the likely authority, procedure, and next steps.",
+      "user_flow": [
+        "Select the problem category that matches your case.",
+        "Answer a few short questions about what happened and what kind of issue you are facing.",
+        "Review the suggested route, steps, and likely authority or official portal relevant to your problem."
+      ],
+      "friendly_example": "If you are not sure whether your problem belongs to the municipality, a consumer body, or a state utility, the guided questions help narrow that down in a few steps."
+    },
+    {
+      "name": "Complaint draft generation",
+      "plain_language": "A complaint builder that helps people organize their issue into a clearer complaint format before they file it on an official portal.",
+      "description": "The platform helps users create a structured complaint draft based on their issue, answers, and the information they want to include in the complaint.",
+      "user_flow": [
+        "Head over to the Draft page, pick your issue, and answer a few quick questions.",
+        "Choose the details that matter most, such as the problem type, location, and the relief you are seeking.",
+        "NyayaSetu will help shape a complaint draft you can review, edit, and use as a clearer starting point before you file it on the official government channel."
+      ],
+      "friendly_example": "Head over to the Draft page, pick your issue, answer a few quick questions, and I'll help you put together a proper complaint."
+    },
+    {
+      "name": "Personal complaint tracker",
+      "plain_language": "A personal tracker where users can save their grievance details, reference numbers, and follow-up notes in one place.",
+      "description": "Users can save complaint reference information, notes, and the progress of their case in a simple personal tracker so they can keep an eye on what is happening.",
+      "user_flow": [
+        "Open the personal tracker page after you have a complaint or reference number.",
+        "Add the complaint details, date, reference ID, and status.",
+        "Update the tracker as you follow up, so you have a clear record of what happened and what needs attention next."
+      ],
+      "friendly_example": "Use the tracker as your personal checklist so you can keep track of your complaint reference, updates, and next steps without losing the thread."
+    }
+  ],
+  "problem_categories_seeded": [
+    {
+      "id": "consumer-refunds",
+      "slug": "consumer-grievance-and-refunds",
+      "title": "Consumer Grievance & Refunds",
+      "category": "Consumer",
+      "summary": "Delayed refunds, defective goods, and e-commerce disputes mapped to National Consumer Helpline 2.0.",
+      "keywords": "refund, amazon, flipkart, defective, nch, consumer, order, e-commerce, warranty",
+      "route_id": "nch-2"
+    },
+    {
+      "id": "road-repair",
+      "slug": "public-infrastructure-and-road-repair",
+      "title": "Public Infrastructure & Road Repair",
+      "category": "Civic",
+      "summary": "Damaged locality roads, potholes, and civic infrastructure complaints for municipal / CPGRAMS channels.",
+      "keywords": "pothole, road, street light, civic, municipality, nagar nigam, drainage",
+      "route_id": "civic-cpgrams"
+    },
+    {
+      "id": "electricity-utility",
+      "slug": "electricity-and-utility-issues",
+      "title": "Electricity & Utility Issues",
+      "category": "Utilities",
+      "summary": "Billing errors, outages, and DISCOM escalation with state electricity boards and CPGRAMS.",
+      "keywords": "electricity, bill, outage, discom, meter, power cut, utility",
+      "route_id": "utility-discom"
+    },
+    {
+      "id": "water-supply",
+      "slug": "municipal-water-supply",
+      "title": "Municipal Water Supply",
+      "category": "Civic",
+      "summary": "Irregular water supply, contamination, and Jal Board / civic body escalation.",
+      "keywords": "water, jal board, tanker, contamination, leakage, municipal",
+      "route_id": "jal-board"
+    },
+    {
+      "id": "digital-payments",
+      "slug": "digital-payment-and-banking",
+      "title": "Digital Payment & Banking",
+      "category": "Finance",
+      "summary": "Failed UPI, unauthorized debit, and banking complaints via RBI Ombudsman and cybercrime 1930.",
+      "keywords": "upi, banking, rbi, ombudsman, debit, fraud, 1930, neft, failed payment",
+      "route_id": "rbi-ombudsman"
+    },
+    {
+      "id": "cyber-fraud",
+      "slug": "cyber-crime-and-digital-fraud",
+      "title": "Cyber Crime & Digital Fraud",
+      "category": "Cyber",
+      "summary": "Online financial fraud, phishing, and account freeze assistance via cybercrime.gov.in.",
+      "keywords": "cyber, fraud, phishing, otp, scam, 1930, freeze, UPI fraud",
+      "route_id": "cybercrime-1930"
+    },
+    {
+      "id": "schemes",
+      "slug": "scheme-and-benefit-discovery",
+      "title": "Scheme & Benefit Discovery",
+      "category": "Welfare",
+      "summary": "Find official central and state welfare schemes and eligibility via myScheme.",
+      "keywords": "scheme, subsidy, myscheme, pension, scholarship, welfare, pm kisan",
+      "route_id": "myscheme"
+    },
+    {
+      "id": "public-health",
+      "slug": "public-health-and-hospital",
+      "title": "Public Health & Hospital Guidance",
+      "category": "Health",
+      "summary": "Public hospital service issues, referral delays, and health grievance channels.",
+      "keywords": "hospital, health, ayushman, pharmacy, ambulance, opd",
+      "route_id": "health-cpgrams"
+    },
+    {
+      "id": "education",
+      "slug": "student-and-education-guidance",
+      "title": "Student & Education Guidance",
+      "category": "Education",
+      "summary": "Scholarship portals, school/college service issues, and education department grievances.",
+      "keywords": "scholarship, school, college, nsp, education, exam, admission",
+      "route_id": "education-nsp"
+    }
+  ],
+  "disclaimer": {
+    "gentle_text": "NyayaSetu is here to guide, simplify, and help you prepare a clearer complaint. It points people toward official government channels and helps organize the information that usually matters most, but it does not file complaints on a person’s behalf or act as an official representative.",
+    "what_it_does": "NyayaSetu helps you search for a problem, understand likely routes, generate a complaint draft, and keep track of follow-up steps in a more organized way.",
+    "what_it_does_not_do": "NyayaSetu does not submit complaints, register grievances, or speak for the user on official government portals. It is also not a substitute for legal advice or professional legal guidance.",
+    "reassurance": "For the final filing step, official rules, deadlines, and any legal questions, it is always best to check the official government portal or speak with a qualified professional. In that sense, NyayaSetu is a helpful guide and drafting companion, not a replacement for the formal process itself."
+  },
+  "user_journey": {
+    "search": "Open the site, type a few words about your issue, or choose a matching category to start finding the right path.",
+    "route": "Pick the relevant problem, answer the guided questions, and review the suggested authority and next steps so you know where to go next.",
+    "draft": "Go to the Draft page, pick your issue, answer a few quick questions, and let the system help you prepare a clearer complaint draft.",
+    "tracker": "Open the personal tracker, add your complaint reference and status, and update it as you move through the process so nothing slips through the cracks."
+  }
+}
