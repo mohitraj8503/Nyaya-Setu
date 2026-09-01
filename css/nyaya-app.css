@@ -1060,14 +1060,15 @@
 }
 
 /* ==========================================================================
-   Real Clean Footer Design System
+   Real Clean Footer Design System (Emerald Gradient Theme)
    ========================================================================== */
 .nyaya-footer-root {
-  background: #0f172a;
-  color: #94a3b8;
+  background: linear-gradient(135deg, #0e2017 0%, #153223 50%, #0c1a12 100%);
+  color: #a7f3d0;
   padding: 36px 0 28px;
   font-family: inherit;
-  border-top: 1px solid #1e293b;
+  border-top: 2px solid rgba(47, 133, 90, 0.3);
+  box-shadow: inset 0 20px 30px -15px rgba(0, 0, 0, 0.4);
 }
 
 .nyaya-footer-content {
@@ -1104,24 +1105,25 @@
   font-weight: 700;
   letter-spacing: 0.02em;
   color: #ffffff !important;
-  background: #1e293b;
-  border: 1px solid #334155;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: var(--nyaya-radius-pill);
   text-decoration: none;
   transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
 }
 
 .nyaya-footer-portal-btn:hover {
   background: var(--nyaya-primary);
-  border-color: var(--nyaya-primary);
+  border-color: #6ee7b7;
   color: #ffffff !important;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(47, 133, 90, 0.3);
+  box-shadow: 0 4px 14px rgba(47, 133, 90, 0.4);
 }
 
 .nyaya-footer-divider {
   height: 1px;
-  background: #1e293b;
+  background: rgba(255, 255, 255, 0.1);
   margin: 16px 0 20px;
   width: 100%;
 }
@@ -1137,13 +1139,13 @@
 }
 
 .nyaya-footer-copy {
-  color: #cbd5e1;
+  color: #d1fae5;
   font-weight: 600;
   white-space: nowrap;
 }
 
 .nyaya-footer-disclaimer {
-  color: #64748b;
+  color: #94a3b8;
   max-width: 680px;
   text-align: right;
 }
