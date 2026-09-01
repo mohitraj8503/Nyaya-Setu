@@ -131,11 +131,8 @@
 
           <!-- Main CTA Submit Button -->
           <div class="nyaya-action-row">
-            <button type="button" id="btn-process-ai" class="button is-primary nyaya-cta-btn">
-              <div class="button-text-effect">
-                <div class="button-text is-primary-button">✨ Analyze & Route with AI</div>
-                <div class="button-text is-primary-button">✨ Analyze & Route with AI</div>
-              </div>
+            <button type="button" id="btn-process-ai" class="nyaya-cta-btn">
+              ✨ Analyze & Route with AI Pipeline
             </button>
           </div>
 
@@ -416,19 +413,12 @@
           <pre id="draft-letter-preview" class="nyaya-letter-box">${escapeHtml(drafts.en || drafts.local || drafts.hi)}</pre>
         </div>
 
-        <!-- Final Action CTA Row -->
         <div class="nyaya-submission-cta-row">
-          <button type="button" id="btn-execute-submit" class="button is-primary nyaya-submit-btn">
-            <div class="button-text-effect">
-              <div class="button-text is-primary-button">🚀 Submit Complaint via ${rt.channel || "PORTAL"}</div>
-              <div class="button-text is-primary-button">🚀 Submit Complaint via ${rt.channel || "PORTAL"}</div>
-            </div>
+          <button type="button" id="btn-execute-submit" class="nyaya-submit-btn">
+            🚀 Submit Official Complaint via ${rt.channel || "PORTAL"}
           </button>
-          <a href="#nyaya-tracker-mount" class="button is-secondary nyaya-track-anchor-btn">
-            <div class="button-text-effect">
-              <div class="button-text is-secondary">📊 View in Case Dashboard</div>
-              <div class="button-text is-secondary">📊 View in Case Dashboard</div>
-            </div>
+          <a href="#nyaya-tracker-mount" class="nyaya-track-anchor-btn">
+            📊 View in Case Tracker
           </a>
         </div>
 

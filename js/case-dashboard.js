@@ -22,11 +22,8 @@
               <span class="nyaya-search-icon">🔍</span>
               <input type="text" id="dashboard-search-input" class="nyaya-input" value="NS-2026-000184" placeholder="Enter Case Tracking Number (NS-YYYY-XXXXXX)...">
             </div>
-            <button type="button" id="btn-dashboard-search" class="button is-primary nyaya-track-search-btn">
-              <div class="button-text-effect">
-                <div class="button-text is-primary-button">Track Status</div>
-                <div class="button-text is-primary-button">Track Status</div>
-              </div>
+            <button type="button" id="btn-dashboard-search" class="nyaya-track-search-btn">
+              Track Status
             </button>
           </div>
 
@@ -154,10 +151,10 @@
           <div class="pill-button">[ Citizen Escalation Safeguard ]</div>
           <p class="nyaya-escalation-desc">If the grievance remains unaddressed past the 48-hour SLA deadline, NyayaSetu automatically triggers Level 2 escalation to the Zonal Assistant Municipal Commissioner.</p>
           <div class="nyaya-escalation-actions">
-            <button type="button" id="btn-manual-escalate" class="button is-secondary nyaya-btn-escalate">
+            <button type="button" id="btn-manual-escalate" class="nyaya-btn-escalate">
               🚨 Request Supervisory Escalation
             </button>
-            <button type="button" id="btn-copy-dossier" class="button is-secondary nyaya-btn-copy">
+            <button type="button" id="btn-copy-dossier" class="nyaya-btn-copy">
               📋 Copy Complaint Dossier
             </button>
           </div>

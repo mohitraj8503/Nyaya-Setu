@@ -1,20 +1,20 @@
 /* ==========================================================================
-   NyayaSetu 2.0 Design System — Webflow Enviro Theme Matching
+   NyayaSetu 2.0 Design System — Compact, Pixel-Perfect Webflow Theme Integration
    ========================================================================== */
 
 :root {
-  --nyaya-brand-green: #2f855a;
-  --nyaya-brand-dark: #1b4332;
-  --nyaya-brand-light: #f2f9f4;
-  --nyaya-brand-border: #d1fae5;
-  --nyaya-brand-glow: rgba(47, 133, 90, 0.15);
+  --nyaya-primary: #2f855a;
+  --nyaya-primary-dark: #22543d;
+  --nyaya-primary-light: #f2f9f4;
+  --nyaya-primary-border: #d1fae5;
+  --nyaya-primary-glow: rgba(47, 133, 90, 0.12);
   
-  --nyaya-charcoal: #111827;
+  --nyaya-charcoal: #1f2937;
   --nyaya-text-muted: #4b5563;
   --nyaya-text-subtle: #6b7280;
   
   --nyaya-surface: #ffffff;
-  --nyaya-surface-subtle: #f9fafb;
+  --nyaya-surface-subtle: #f8fafc;
   --nyaya-border-default: #e5e7eb;
   --nyaya-border-focus: #2f855a;
   
@@ -25,145 +25,158 @@
   --nyaya-blue: #2563eb;
   --nyaya-blue-bg: #eff6ff;
   
-  --nyaya-radius-card: 24px;
+  --nyaya-radius-card: 18px;
   --nyaya-radius-pill: 9999px;
-  --nyaya-shadow-card: 0 20px 40px -15px rgba(17, 24, 39, 0.07), 0 0 0 1px rgba(0, 0, 0, 0.04);
+  --nyaya-shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(47, 133, 90, 0.08);
 }
 
 .nyaya-app-shell {
   width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 24px 60px;
+  padding: 10px 0 40px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: var(--nyaya-charcoal);
   box-sizing: border-box;
 }
 
 .nyaya-portal-container {
-  width: 100%;
-  margin-bottom: 48px;
+  max-width: 1020px;
+  margin: 0 auto;
 }
 
-/* Section Header Matching Webflow */
+/* Section Headers */
 .nyaya-section-header {
   text-align: left;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .nyaya-section-header .pill-button {
   display: inline-block;
-  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nyaya-primary);
+  background: var(--nyaya-surface);
+  border: 1px solid #d7eadc;
+  border-radius: var(--nyaya-radius-pill);
+  padding: 4px 14px;
+  margin-bottom: 10px;
 }
 
 .nyaya-section-header .section-heading {
-  margin: 0 0 8px;
-  font-size: 32px;
+  margin: 0 0 6px;
+  font-size: 26px;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.25;
   color: var(--nyaya-charcoal);
 }
 
 .nyaya-section-header .about-text {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--nyaya-text-muted);
-  line-height: 1.6;
-  max-width: 800px;
+  line-height: 1.5;
   margin: 0;
 }
 
-/* Main Cards */
+/* Main Compact Card */
 .nyaya-card {
   background: var(--nyaya-surface);
-  border: 1px solid var(--nyaya-border-default);
+  border: 1px solid #eef7f0;
   border-radius: var(--nyaya-radius-card);
   box-shadow: var(--nyaya-shadow-card);
-  padding: 36px;
+  padding: 24px 28px;
   position: relative;
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .nyaya-card:hover {
-  box-shadow: 0 24px 48px -12px rgba(17, 24, 39, 0.1), 0 0 0 1px rgba(47, 133, 90, 0.15);
+  border-color: #d7eadc;
+  box-shadow: 0 14px 35px -10px rgba(0, 0, 0, 0.08);
 }
 
-/* Mode Selection Grid */
+/* Compact Mode Selector Grid */
 .nyaya-mode-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-bottom: 28px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .nyaya-mode-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .nyaya-mode-card {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 16px 20px;
-  background: var(--nyaya-surface-subtle);
-  border: 2px solid var(--nyaya-border-default);
-  border-radius: 18px;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #fbfdfc;
+  border: 1.5px solid #e2efe6;
+  border-radius: 12px;
   cursor: pointer;
   text-align: left;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
 }
 
 .nyaya-mode-card:hover {
-  border-color: var(--nyaya-brand-green);
+  border-color: var(--nyaya-primary);
   background: #f4fbf6;
-  transform: translateY(-2px);
 }
 
 .nyaya-mode-card.is-active {
-  border-color: var(--nyaya-brand-green);
-  background: var(--nyaya-brand-light);
-  box-shadow: 0 8px 20px var(--nyaya-brand-glow);
+  border-color: var(--nyaya-primary);
+  background: var(--nyaya-primary-light);
+  box-shadow: 0 4px 12px var(--nyaya-primary-glow);
 }
 
 .nyaya-mode-icon-wrap {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
   background: #ffffff;
-  border: 1px solid var(--nyaya-border-default);
+  border: 1px solid #d7eadc;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--nyaya-brand-green);
+  color: var(--nyaya-primary);
   flex-shrink: 0;
 }
 
 .nyaya-mode-card.is-active .nyaya-mode-icon-wrap {
-  background: var(--nyaya-brand-green);
+  background: var(--nyaya-primary);
   color: #ffffff;
-  border-color: var(--nyaya-brand-green);
+  border-color: var(--nyaya-primary);
 }
 
 .nyaya-mode-text strong {
   display: block;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--nyaya-charcoal);
+  line-height: 1.2;
 }
 
 .nyaya-mode-text span {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--nyaya-text-subtle);
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
-/* Form Controls */
+/* Compact Forms */
 .nyaya-form-group {
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .nyaya-label {
   display: block;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--nyaya-charcoal);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .nyaya-textarea,
@@ -171,67 +184,58 @@
 .nyaya-select {
   width: 100%;
   box-sizing: border-box;
-  background: var(--nyaya-surface);
-  border: 1px solid var(--nyaya-border-default);
-  border-radius: 14px;
-  padding: 14px 18px;
+  background: #ffffff;
+  border: 1px solid #d7eadc;
+  border-radius: 10px;
+  padding: 10px 14px;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--nyaya-charcoal);
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nyaya-textarea:focus,
 .nyaya-input:focus,
 .nyaya-select:focus {
   outline: none;
-  border-color: var(--nyaya-brand-green);
-  box-shadow: 0 0 0 4px var(--nyaya-brand-glow);
-  background: #ffffff;
+  border-color: var(--nyaya-primary);
+  box-shadow: 0 0 0 3px var(--nyaya-primary-glow);
 }
 
 .nyaya-textarea {
   resize: vertical;
-  min-height: 110px;
-  line-height: 1.6;
+  min-height: 85px;
+  line-height: 1.5;
 }
 
-/* Voice Recording Box */
+/* Voice Recorder Box */
 .nyaya-voice-recorder-box {
-  background: var(--nyaya-brand-light);
-  border: 2px dashed var(--nyaya-brand-border);
-  border-radius: 20px;
-  padding: 36px 24px;
+  background: var(--nyaya-primary-light);
+  border: 1.5px dashed var(--nyaya-primary-border);
+  border-radius: 14px;
+  padding: 24px 16px;
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 .nyaya-voice-record-btn {
-  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   background: #ffffff;
-  border: 2px solid var(--nyaya-brand-green);
+  border: 2px solid var(--nyaya-primary);
   border-radius: var(--nyaya-radius-pill);
-  padding: 16px 32px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 25px var(--nyaya-brand-glow);
-}
-
-.nyaya-mic-symbol {
-  font-size: 24px;
-}
-
-.nyaya-mic-label {
-  font-size: 15px;
+  padding: 12px 24px;
+  font-size: 14px;
   font-weight: 700;
-  color: var(--nyaya-brand-dark);
+  color: var(--nyaya-primary-dark);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px var(--nyaya-primary-glow);
 }
 
 .nyaya-voice-record-btn:hover {
-  transform: scale(1.03);
+  transform: scale(1.02);
   background: #f7fee7;
 }
 
@@ -242,44 +246,41 @@
   animation: pulse-ring 1.5s infinite;
 }
 
-.nyaya-voice-record-btn.is-recording .nyaya-mic-label {
-  color: #ffffff;
-}
-
 @keyframes pulse-ring {
   0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.6); }
-  70% { box-shadow: 0 0 0 18px rgba(220, 38, 38, 0); }
+  70% { box-shadow: 0 0 0 14px rgba(220, 38, 38, 0); }
   100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
 }
 
 .nyaya-audio-player {
-  margin: 18px auto 0;
+  margin: 14px auto 0;
   display: block;
-  max-width: 420px;
+  max-width: 360px;
+  height: 38px;
 }
 
 .nyaya-hint-text {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--nyaya-text-muted);
-  margin: 14px 0 0;
+  margin: 10px 0 0;
 }
 
 /* Upload Dropzone */
 .nyaya-upload-dropzone {
   position: relative;
-  background: var(--nyaya-surface-subtle);
-  border: 2px dashed var(--nyaya-border-default);
-  border-radius: 20px;
-  padding: 36px 20px;
+  background: #fbfdfc;
+  border: 1.5px dashed #d7eadc;
+  border-radius: 14px;
+  padding: 24px 16px;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 .nyaya-upload-dropzone:hover {
-  border-color: var(--nyaya-brand-green);
-  background: var(--nyaya-brand-light);
+  border-color: var(--nyaya-primary);
+  background: var(--nyaya-primary-light);
 }
 
 .nyaya-file-input {
@@ -293,48 +294,54 @@
 }
 
 .nyaya-upload-symbol {
-  font-size: 32px;
+  font-size: 26px;
   display: block;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .nyaya-evidence-preview-img {
-  max-width: 220px;
-  border-radius: 12px;
-  border: 1px solid var(--nyaya-border-default);
-  margin-top: 14px;
+  max-width: 160px;
+  border-radius: 8px;
+  border: 1px solid #d7eadc;
+  margin-top: 10px;
 }
 
 .nyaya-file-badge {
   display: inline-block;
   background: #dcfce7;
   color: #166534;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  padding: 4px 10px;
-  border-radius: 6px;
-  margin-top: 8px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  margin-top: 6px;
 }
 
-/* Controls Row */
+/* Compact Controls Row */
 .nyaya-controls-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-  margin-bottom: 20px;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 640px) {
+  .nyaya-controls-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .nyaya-pin-input-wrap {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .nyaya-btn-gps {
-  background: var(--nyaya-surface-subtle);
-  border: 1px solid var(--nyaya-border-default);
-  border-radius: 12px;
-  padding: 0 16px;
-  font-size: 13px;
+  background: #f1f5f9;
+  border: 1px solid #d7eadc;
+  border-radius: 10px;
+  padding: 0 14px;
+  font-size: 12px;
   font-weight: 600;
   color: var(--nyaya-charcoal);
   cursor: pointer;
@@ -343,21 +350,21 @@
 }
 
 .nyaya-btn-gps:hover {
-  background: #e5e7eb;
-  border-color: #d1d5db;
+  background: #e2efe6;
+  border-color: var(--nyaya-primary);
 }
 
 .nyaya-jurisdiction-banner {
-  background: var(--nyaya-surface-subtle);
-  border: 1px solid var(--nyaya-border-default);
-  border-radius: 14px;
-  padding: 12px 18px;
-  font-size: 14px;
+  background: #f7fcf8;
+  border: 1px solid #eef7f0;
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 13px;
   color: var(--nyaya-text-muted);
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 24px;
+  gap: 8px;
+  margin-bottom: 18px;
 }
 
 .nyaya-jurisdiction-banner strong {
@@ -366,33 +373,43 @@
 
 /* CTA Action Button */
 .nyaya-action-row {
-  margin-top: 24px;
+  margin-top: 18px;
 }
 
 .nyaya-cta-btn {
   width: 100%;
-  padding: 18px 24px;
-  font-size: 16px;
+  padding: 14px 20px;
+  font-size: 15px;
   font-weight: 700;
   border-radius: var(--nyaya-radius-pill);
   justify-content: center;
+  background: var(--nyaya-primary);
+  color: #ffffff !important;
   cursor: pointer;
   text-align: center;
+  border: 0;
+  box-shadow: 0 6px 18px var(--nyaya-primary-glow);
+  transition: all 0.2s ease;
 }
 
-/* Status Notifications */
+.nyaya-cta-btn:hover {
+  background: var(--nyaya-primary-dark);
+  transform: translateY(-1px);
+}
+
+/* Status Messages */
 .nyaya-status-message {
-  padding: 14px 20px;
-  border-radius: 14px;
-  margin-top: 20px;
-  font-size: 14px;
-  line-height: 1.5;
+  padding: 10px 16px;
+  border-radius: 10px;
+  margin-top: 14px;
+  font-size: 13px;
+  line-height: 1.4;
 }
 
 .nyaya-status-message.is-active {
-  background: var(--nyaya-brand-light);
-  border: 1px solid var(--nyaya-brand-border);
-  color: var(--nyaya-brand-dark);
+  background: var(--nyaya-primary-light);
+  border: 1px solid var(--nyaya-primary-border);
+  color: var(--nyaya-primary-dark);
 }
 
 .nyaya-status-message.is-error {
@@ -401,11 +418,11 @@
   color: #991b1b;
 }
 
-/* Review Container */
+/* Review Wrapper */
 .nyaya-review-wrapper {
-  margin-top: 36px;
-  padding-top: 32px;
-  border-top: 1px solid var(--nyaya-border-default);
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #eef7f0;
 }
 
 .nyaya-review-header-bar {
@@ -413,40 +430,40 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
 .nyaya-case-id-wrap {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .nyaya-tag-label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--nyaya-text-subtle);
   letter-spacing: 0.05em;
 }
 
 .nyaya-tag-value {
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--nyaya-charcoal);
-  background: var(--nyaya-surface-subtle);
-  border: 1px solid var(--nyaya-border-default);
-  padding: 4px 12px;
-  border-radius: 8px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 3px 10px;
+  border-radius: 6px;
 }
 
 .nyaya-badge {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.05em;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 3px 8px;
+  border-radius: 4px;
 }
 
 .nyaya-badge.is-critical { background: #fee2e2; color: #991b1b; }
@@ -459,113 +476,114 @@
 }
 
 .nyaya-gauge-label {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--nyaya-text-muted);
 }
 
 .nyaya-gauge-track {
-  width: 140px;
-  height: 8px;
+  width: 120px;
+  height: 6px;
   background: #e5e7eb;
   border-radius: var(--nyaya-radius-pill);
   overflow: hidden;
-  margin-top: 4px;
+  margin-top: 3px;
 }
 
 .nyaya-gauge-bar {
   height: 100%;
-  background: linear-gradient(90deg, #10b981, var(--nyaya-brand-green));
+  background: linear-gradient(90deg, #10b981, var(--nyaya-primary));
 }
 
-/* Clarification Box */
+/* Clarification Card */
 .nyaya-clarification-card {
   background: var(--nyaya-amber-bg);
   border: 1px solid #fde68a;
-  border-radius: 18px;
-  padding: 22px;
-  margin-bottom: 24px;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 18px;
 }
 
 .nyaya-clarify-prompt {
-  font-size: 15px;
+  font-size: 14px;
   color: #92400e;
-  margin: 10px 0 14px;
+  margin: 6px 0 10px;
 }
 
 .nyaya-clarify-input-row {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 /* Facts Matrix */
 .nyaya-facts-matrix {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-  margin-bottom: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .nyaya-fact-box {
-  background: var(--nyaya-surface-subtle);
-  border: 1px solid var(--nyaya-border-default);
-  border-radius: 16px;
-  padding: 16px 18px;
+  background: #fbfdfc;
+  border: 1px solid #eef7f0;
+  border-radius: 12px;
+  padding: 12px 14px;
 }
 
 .nyaya-fact-label {
   display: block;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--nyaya-text-subtle);
-  margin-bottom: 6px;
+  margin-bottom: 3px;
 }
 
 .nyaya-fact-content {
   margin: 0;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--nyaya-charcoal);
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 /* Target Authority Dossier */
 .nyaya-authority-dossier {
-  background: var(--nyaya-brand-light);
-  border: 1px solid var(--nyaya-brand-border);
-  border-radius: 20px;
-  padding: 24px;
-  margin-bottom: 28px;
+  background: var(--nyaya-primary-light);
+  border: 1px solid var(--nyaya-primary-border);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 20px;
 }
 
 .nyaya-dossier-body {
   display: flex;
-  gap: 20px;
+  gap: 14px;
   align-items: flex-start;
   flex-wrap: wrap;
-  margin-top: 14px;
+  margin-top: 10px;
 }
 
 .nyaya-dossier-icon {
-  font-size: 40px;
+  font-size: 32px;
   background: #ffffff;
-  padding: 12px;
-  border-radius: 16px;
-  border: 1px solid var(--nyaya-brand-border);
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--nyaya-primary-border);
 }
 
 .nyaya-dossier-details {
   flex: 1;
-  min-width: 260px;
+  min-width: 220px;
 }
 
 .nyaya-dossier-details h4 {
-  margin: 0 0 4px;
-  font-size: 20px;
-  color: var(--nyaya-brand-dark);
+  margin: 0 0 2px;
+  font-size: 16px;
+  color: var(--nyaya-primary-dark);
 }
 
 .nyaya-dossier-office {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--nyaya-text-muted);
 }
@@ -573,23 +591,23 @@
 .nyaya-dossier-meta {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-size: 13px;
+  gap: 2px;
+  font-size: 12px;
   color: var(--nyaya-text-muted);
 }
 
 .nyaya-dossier-meta a {
-  color: var(--nyaya-brand-green);
+  color: var(--nyaya-primary);
   text-decoration: underline;
 }
 
 .nyaya-channel-chip {
   display: inline-block;
-  background: var(--nyaya-brand-dark);
+  background: var(--nyaya-primary-dark);
   color: #ffffff;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -600,27 +618,27 @@
 .nyaya-dossier-channel-tag small {
   display: block;
   color: var(--nyaya-text-subtle);
-  font-size: 11px;
-  margin-top: 4px;
+  font-size: 10px;
+  margin-top: 2px;
 }
 
 /* Formal Complaint Draft */
 .nyaya-draft-section {
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 
 .nyaya-draft-nav {
   display: flex;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 .nyaya-draft-tab {
-  background: var(--nyaya-surface-subtle);
-  border: 1px solid var(--nyaya-border-default);
-  padding: 8px 18px;
-  border-radius: 10px;
-  font-size: 14px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -633,64 +651,81 @@
 }
 
 .nyaya-letter-box {
-  background: var(--nyaya-surface-subtle);
-  border: 1px solid var(--nyaya-border-default);
-  border-radius: 16px;
-  padding: 22px;
+  background: #fbfdfc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
   font-family: inherit;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 13px;
+  line-height: 1.5;
   white-space: pre-wrap;
   color: var(--nyaya-charcoal);
-  max-height: 300px;
+  max-height: 220px;
   overflow-y: auto;
 }
 
 .nyaya-submission-cta-row {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
 .nyaya-submit-btn,
 .nyaya-track-anchor-btn {
-  padding: 16px 28px;
-  font-size: 15px;
+  padding: 12px 22px;
+  font-size: 14px;
   font-weight: 700;
   border-radius: var(--nyaya-radius-pill);
   text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nyaya-submit-btn {
+  background: #15803d;
+  color: #ffffff !important;
+  border: 0;
+}
+
+.nyaya-track-anchor-btn {
+  background: #ffffff;
+  color: var(--nyaya-primary) !important;
+  border: 1.5px solid var(--nyaya-primary);
 }
 
 .nyaya-confirmation-banner {
-  background: var(--nyaya-brand-light);
-  border: 1px solid var(--nyaya-brand-border);
-  border-radius: 16px;
-  padding: 20px;
-  margin-top: 20px;
+  background: var(--nyaya-primary-light);
+  border: 1px solid var(--nyaya-primary-border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 16px;
 }
 
 .nyaya-confirmation-banner h4 {
-  margin: 0 0 8px;
-  color: var(--nyaya-brand-dark);
+  margin: 0 0 6px;
+  color: var(--nyaya-primary-dark);
+  font-size: 15px;
 }
 
 .nyaya-confirmation-banner p {
-  margin: 4px 0;
-  font-size: 14px;
+  margin: 2px 0;
+  font-size: 13px;
 }
 
 /* ==========================================================================
-   Case Dashboard & Timeline Styles
+   Case Dashboard & Timeline — Compact & High-Contrast
    ========================================================================== */
 
 .nyaya-tracker-card {
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .nyaya-search-bar-wrap {
   display: flex;
-  gap: 12px;
-  margin-bottom: 28px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .nyaya-search-input-field {
@@ -700,21 +735,27 @@
 
 .nyaya-search-icon {
   position: absolute;
-  left: 16px;
+  left: 14px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 16px;
+  font-size: 14px;
   color: var(--nyaya-text-subtle);
 }
 
 .nyaya-search-input-field .nyaya-input {
-  padding-left: 46px;
+  padding-left: 38px;
+  height: 44px;
 }
 
 .nyaya-track-search-btn {
-  padding: 14px 28px;
+  padding: 10px 22px;
   border-radius: var(--nyaya-radius-pill);
   font-weight: 700;
+  font-size: 14px;
+  background: var(--nyaya-primary);
+  color: #ffffff !important;
+  border: 0;
+  cursor: pointer;
   white-space: nowrap;
 }
 
@@ -723,37 +764,37 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 16px;
-  margin-bottom: 24px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--nyaya-border-default);
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eef7f0;
 }
 
 .nyaya-dossier-case-id {
-  font-size: 26px;
-  margin: 4px 0;
+  font-size: 20px;
+  margin: 2px 0;
   color: var(--nyaya-charcoal);
 }
 
 .nyaya-dossier-dept {
   margin: 0;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--nyaya-text-muted);
 }
 
 .nyaya-dossier-badges {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 .nyaya-status-badge {
-  padding: 6px 14px;
+  padding: 4px 12px;
   border-radius: var(--nyaya-radius-pill);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
 .nyaya-status-badge.status-green { background: #dcfce7; color: #15803d; }
@@ -761,78 +802,78 @@
 .nyaya-status-badge.status-orange { background: #ffedd5; color: #c2410c; }
 
 .nyaya-sla-pill {
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
   font-weight: 700;
 }
 
-.nyaya-sla-pill.is-on-track { background: var(--nyaya-brand-light); color: var(--nyaya-brand-dark); border: 1px solid var(--nyaya-brand-border); }
+.nyaya-sla-pill.is-on-track { background: var(--nyaya-primary-light); color: var(--nyaya-primary-dark); border: 1px solid var(--nyaya-primary-border); }
 .nyaya-sla-pill.is-breached { background: var(--nyaya-amber-bg); color: #9a3412; border: 1px solid #fde68a; }
 
 .nyaya-dossier-matrix {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 14px;
-  margin-bottom: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
 .nyaya-matrix-item {
-  background: var(--nyaya-surface-subtle);
-  border: 1px solid var(--nyaya-border-default);
-  border-radius: 14px;
-  padding: 14px 16px;
+  background: #fbfdfc;
+  border: 1px solid #eef7f0;
+  border-radius: 10px;
+  padding: 10px 14px;
 }
 
 .nyaya-matrix-label {
   display: block;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
   color: var(--nyaya-text-subtle);
   letter-spacing: 0.05em;
 }
 
 .nyaya-matrix-value {
-  margin: 4px 0 0;
-  font-size: 15px;
+  margin: 3px 0 0;
+  font-size: 13px;
   font-weight: 700;
   color: var(--nyaya-charcoal);
 }
 
 /* Stepper Timeline */
 .nyaya-stepper-section {
-  background: var(--nyaya-surface-subtle);
-  border: 1px solid var(--nyaya-border-default);
-  border-radius: 20px;
-  padding: 24px;
-  margin-bottom: 24px;
+  background: #fbfdfc;
+  border: 1px solid #eef7f0;
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 18px;
 }
 
 .nyaya-stepper-title {
-  margin: 0 0 20px;
-  font-size: 18px;
+  margin: 0 0 16px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--nyaya-charcoal);
 }
 
 .nyaya-stepper-timeline {
   position: relative;
-  padding-left: 28px;
+  padding-left: 24px;
 }
 
 .nyaya-stepper-timeline::before {
   content: "";
   position: absolute;
-  top: 8px;
-  bottom: 8px;
-  left: 7px;
+  top: 6px;
+  bottom: 6px;
+  left: 6px;
   width: 2px;
   background: #cbd5e1;
 }
 
 .nyaya-timeline-item {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .nyaya-timeline-item:last-child {
@@ -841,37 +882,37 @@
 
 .nyaya-timeline-node-marker {
   position: absolute;
-  left: -28px;
-  top: 4px;
-  width: 16px;
-  height: 16px;
+  left: -24px;
+  top: 3px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: #94a3b8;
-  border: 3px solid #ffffff;
+  border: 2px solid #ffffff;
   box-shadow: 0 0 0 1px #cbd5e1;
 }
 
 .nyaya-timeline-node-marker.is-active {
-  background: var(--nyaya-brand-green);
-  box-shadow: 0 0 0 3px var(--nyaya-brand-glow);
+  background: var(--nyaya-primary);
+  box-shadow: 0 0 0 2px var(--nyaya-primary-glow);
 }
 
 .nyaya-timeline-card {
   background: #ffffff;
-  border: 1px solid var(--nyaya-border-default);
-  border-radius: 14px;
-  padding: 14px 18px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
 }
 
 .nyaya-timeline-top {
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 13px;
 }
 
 .nyaya-timeline-event-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   color: var(--nyaya-charcoal);
 }
@@ -879,53 +920,90 @@
 .nyaya-actor-chip {
   background: #e2e8f0;
   color: #334155;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 4px;
-  letter-spacing: 0.05em;
+  padding: 2px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.04em;
 }
 
 .nyaya-timeline-date {
   margin-left: auto;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--nyaya-text-subtle);
 }
 
 .nyaya-timeline-details {
-  margin: 6px 0 0;
-  font-size: 13px;
+  margin: 4px 0 0;
+  font-size: 12px;
   color: var(--nyaya-text-muted);
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
-/* Escalation Safeguard Card */
+/* Escalation Safeguard Card — High Contrast & Clean */
 .nyaya-escalation-card {
-  background: var(--nyaya-amber-bg);
+  background: #fffbeb;
   border: 1px solid #fde68a;
-  border-radius: 20px;
-  padding: 24px;
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.nyaya-escalation-card .pill-button {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #92400e;
+  background: #fef3c7;
+  border: 1px solid #fde68a;
+  border-radius: var(--nyaya-radius-pill);
+  padding: 3px 10px;
+  margin-bottom: 6px;
 }
 
 .nyaya-escalation-desc {
-  margin: 10px 0 16px;
-  font-size: 14px;
+  margin: 6px 0 14px;
+  font-size: 13px;
   color: #92400e;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 .nyaya-escalation-actions {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
-.nyaya-btn-escalate,
+.nyaya-btn-escalate {
+  background: #b45309 !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  padding: 10px 18px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  border-radius: var(--nyaya-radius-pill) !important;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.nyaya-btn-escalate:hover {
+  background: #92400e !important;
+}
+
 .nyaya-btn-copy {
-  padding: 12px 22px;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: var(--nyaya-radius-pill);
+  background: #ffffff !important;
+  color: #2f855a !important;
+  border: 1.5px solid #2f855a !important;
+  padding: 10px 18px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  border-radius: var(--nyaya-radius-pill) !important;
+  cursor: pointer;
+}
+
+.nyaya-btn-copy:hover {
+  background: #f0fdf4 !important;
 }
 
 /* Utilities */
