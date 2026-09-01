@@ -797,265 +797,631 @@
 
 .nyaya-track-search-btn:hover {
   background: #c94428;
+/* ==========================================================================
+   Apple & Google Inspired Live Case Tracker Design System
+   ========================================================================== */
+
+.nyaya-apple-tracker-shell {
+  padding: 36px 40px;
 }
 
-.nyaya-dossier-top-bar {
+@media (max-width: 768px) {
+  .nyaya-apple-tracker-shell {
+    padding: 20px 18px;
+  }
+}
+
+/* Spotlight Search Bar (Apple Spotlight & Google Search Inspired) */
+.nyaya-spotlight-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1.5px solid #d7eadc;
+  border-radius: var(--nyaya-radius-pill);
+  padding: 6px 8px 6px 18px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  margin-bottom: 28px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nyaya-spotlight-bar:focus-within {
+  background: #ffffff;
+  border-color: var(--nyaya-primary);
+  box-shadow: 0 8px 30px rgba(47, 133, 90, 0.12), 0 0 0 3px rgba(47, 133, 90, 0.1);
+}
+
+.nyaya-spotlight-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.nyaya-spotlight-icon {
+  color: var(--nyaya-primary);
+  flex-shrink: 0;
+}
+
+.nyaya-spotlight-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--nyaya-charcoal);
+  outline: none;
+}
+
+.nyaya-spotlight-input::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.nyaya-kbd-badge {
+  background: #e2e8f0;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .nyaya-kbd-badge {
+    display: none;
+  }
+}
+
+.nyaya-spotlight-btn {
+  background: #e05638;
+  color: #ffffff !important;
+  border: 0;
+  border-radius: var(--nyaya-radius-pill);
+  padding: 12px 26px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(224, 86, 56, 0.25);
+  transition: all 0.2s ease;
+}
+
+.nyaya-spotlight-btn:hover {
+  background: #c94428;
+  transform: translateY(-1px);
+}
+
+/* Apple Header Card */
+.nyaya-apple-header-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 20px;
+  background: #fbfdfc;
+  border: 1px solid #d9ebde;
+  border-radius: 20px;
+  padding: 24px 28px;
   margin-bottom: 22px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #eef7f0;
 }
 
-.nyaya-dossier-case-id {
-  font-size: 22px;
-  margin: 2px 0;
-  color: var(--nyaya-charcoal);
+.nyaya-apple-header-left {
+  flex: 1;
+  min-width: 260px;
 }
 
-.nyaya-dossier-dept {
-  margin: 0;
-  font-size: 14px;
-  color: var(--nyaya-text-muted);
-}
-
-.nyaya-dossier-badges {
+.nyaya-apple-case-pill-wrap {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  margin-bottom: 6px;
   flex-wrap: wrap;
 }
 
-.nyaya-status-badge {
-  padding: 5px 14px;
+.nyaya-apple-case-id {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--nyaya-charcoal);
+  letter-spacing: 0.02em;
+}
+
+.nyaya-apple-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
   border-radius: var(--nyaya-radius-pill);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.04em;
 }
 
-.nyaya-status-badge.status-green { background: #dcfce7; color: #15803d; }
-.nyaya-status-badge.status-blue { background: #dbeafe; color: #1d4ed8; }
-.nyaya-status-badge.status-orange { background: #ffedd5; color: #c2410c; }
+.nyaya-apple-status-pill.is-progress {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
 
-.nyaya-sla-pill {
-  padding: 5px 12px;
-  border-radius: 8px;
-  font-size: 12px;
+.nyaya-apple-status-pill.is-resolved {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.nyaya-status-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+  animation: pulse-ring 2s infinite;
+}
+
+.nyaya-apple-case-title {
+  margin: 4px 0 6px;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--nyaya-charcoal);
+}
+
+.nyaya-apple-assigned-text {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--nyaya-text-muted);
+}
+
+.nyaya-apple-assigned-text strong {
+  color: var(--nyaya-primary-dark);
+}
+
+/* Apple SLA Countdown Ring Widget */
+.nyaya-apple-sla-widget {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #ffffff;
+  border: 1px solid #d7eadc;
+  border-radius: 16px;
+  padding: 12px 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.nyaya-sla-ring-outer {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nyaya-sla-circle {
+  transform: rotate(-90deg);
+}
+
+.nyaya-sla-circle-bg {
+  fill: none;
+  stroke: #e2e8f0;
+  stroke-width: 5;
+}
+
+.nyaya-sla-circle-bar {
+  fill: none;
+  stroke: var(--nyaya-primary);
+  stroke-width: 5;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.nyaya-apple-sla-widget.is-breached .nyaya-sla-circle-bar {
+  stroke: var(--nyaya-amber);
+}
+
+.nyaya-sla-ring-label {
+  position: absolute;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.nyaya-sla-ring-label strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--nyaya-charcoal);
+}
+
+.nyaya-sla-ring-label small {
+  font-size: 10px;
+  color: var(--nyaya-text-subtle);
   font-weight: 700;
 }
 
-.nyaya-sla-pill.is-on-track { background: var(--nyaya-primary-light); color: var(--nyaya-primary-dark); border: 1px solid var(--nyaya-primary-border); }
-.nyaya-sla-pill.is-breached { background: var(--nyaya-amber-bg); color: #9a3412; border: 1px solid #fde68a; }
+.nyaya-sla-text-wrap {
+  display: flex;
+  flex-direction: column;
+}
 
-/* 4-Column Matrix Filling Full Card Width */
-.nyaya-dossier-matrix {
+.nyaya-sla-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--nyaya-text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.nyaya-sla-deadline {
+  font-size: 13.5px;
+  color: var(--nyaya-charcoal);
+  margin-top: 3px;
+}
+
+/* Horizontal Multi-Stage Progress Stepper */
+.nyaya-apple-stepper-card {
+  position: relative;
+  background: #fbfdfc;
+  border: 1px solid #d9ebde;
+  border-radius: 20px;
+  padding: 24px 20px;
+  margin-bottom: 22px;
+}
+
+.nyaya-stepper-track-bg {
+  position: absolute;
+  top: 38px;
+  left: 5%;
+  right: 5%;
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.nyaya-stepper-track-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, var(--nyaya-primary));
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.nyaya-stepper-stages-row {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+.nyaya-stepper-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 18%;
+}
+
+.nyaya-stage-node {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  color: #64748b;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+}
+
+.nyaya-stepper-stage.is-done .nyaya-stage-node {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.nyaya-stepper-stage.is-active .nyaya-stage-node {
+  background: var(--nyaya-primary);
+  border-color: var(--nyaya-primary);
+  color: #ffffff;
+  box-shadow: 0 0 0 5px rgba(47, 133, 90, 0.2);
+}
+
+.nyaya-stage-title {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--nyaya-charcoal);
+  line-height: 1.2;
+}
+
+.nyaya-stage-sub {
+  display: block;
+  font-size: 10.5px;
+  color: var(--nyaya-text-subtle);
+  margin-top: 3px;
+}
+
+@media (max-width: 700px) {
+  .nyaya-stage-sub {
+    display: none;
+  }
+}
+
+/* 4 Glass Metrics Grid */
+.nyaya-apple-metrics-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 24px;
+  gap: 14px;
+  margin-bottom: 22px;
 }
 
 @media (max-width: 900px) {
-  .nyaya-dossier-matrix {
+  .nyaya-apple-metrics-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 540px) {
-  .nyaya-dossier-matrix {
+@media (max-width: 520px) {
+  .nyaya-apple-metrics-grid {
     grid-template-columns: 1fr;
   }
 }
 
-.nyaya-matrix-item {
+.nyaya-metric-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
   background: #fbfdfc;
-  border: 1px solid #eef7f0;
-  border-radius: 12px;
-  padding: 12px 16px;
+  border: 1px solid #d9ebde;
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
-.nyaya-matrix-label {
+.nyaya-metric-icon-wrap {
+  font-size: 22px;
+  background: #ffffff;
+  border: 1px solid #d7eadc;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.nyaya-metric-label {
   display: block;
   font-size: 11px;
   font-weight: 700;
   color: var(--nyaya-text-subtle);
-  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
 }
 
-.nyaya-matrix-value {
-  margin: 4px 0 0;
-  font-size: 14px;
+.nyaya-metric-value {
+  display: block;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--nyaya-charcoal);
+  line-height: 1.35;
 }
 
-/* Stepper Timeline */
-.nyaya-stepper-section {
+.nyaya-ref-copy-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nyaya-mini-copy-btn {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 3px 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+}
+
+.nyaya-mini-copy-btn:hover {
+  background: #e2e8f0;
+  color: var(--nyaya-primary);
+}
+
+/* Live iOS Style Milestone Notification Stream */
+.nyaya-apple-timeline-card {
   background: #fbfdfc;
-  border: 1px solid #eef7f0;
-  border-radius: 16px;
-  padding: 22px 24px;
+  border: 1px solid #d9ebde;
+  border-radius: 20px;
+  padding: 24px 28px;
   margin-bottom: 22px;
 }
 
-.nyaya-stepper-title {
-  margin: 0 0 18px;
+.nyaya-timeline-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eef7f0;
+}
+
+.nyaya-timeline-title {
+  margin: 0;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--nyaya-charcoal);
-}
-
-.nyaya-stepper-timeline {
-  position: relative;
-  padding-left: 28px;
-}
-
-.nyaya-stepper-timeline::before {
-  content: "";
-  position: absolute;
-  top: 8px;
-  bottom: 8px;
-  left: 7px;
-  width: 2px;
-  background: #cbd5e1;
-}
-
-.nyaya-timeline-item {
-  position: relative;
-  margin-bottom: 16px;
-}
-
-.nyaya-timeline-item:last-child {
-  margin-bottom: 0;
-}
-
-.nyaya-timeline-node-marker {
-  position: absolute;
-  left: -28px;
-  top: 4px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #94a3b8;
-  border: 2px solid #ffffff;
-  box-shadow: 0 0 0 1px #cbd5e1;
-}
-
-.nyaya-timeline-node-marker.is-active {
-  background: var(--nyaya-primary);
-  box-shadow: 0 0 0 3px var(--nyaya-primary-glow);
-}
-
-.nyaya-timeline-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 12px 18px;
-}
-
-.nyaya-timeline-top {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 14px;
+  gap: 8px;
 }
 
-.nyaya-timeline-event-name {
-  font-size: 14px;
-  font-weight: 700;
+.nyaya-timeline-title svg {
+  color: var(--nyaya-primary);
+}
+
+.nyaya-verified-shield {
+  background: #dcfce7;
+  color: #166534;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 10px;
+  border-radius: var(--nyaya-radius-pill);
+}
+
+.nyaya-apple-feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.nyaya-feed-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.nyaya-feed-badge-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #d7eadc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.nyaya-feed-item.is-latest .nyaya-feed-badge-icon {
+  background: var(--nyaya-primary-light);
+  border-color: var(--nyaya-primary);
+}
+
+.nyaya-feed-bubble {
+  flex: 1;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 18px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.nyaya-feed-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.nyaya-feed-title {
+  font-size: 13.5px;
+  font-weight: 800;
   color: var(--nyaya-charcoal);
 }
 
-.nyaya-actor-chip {
-  background: #e2e8f0;
-  color: #334155;
+.nyaya-feed-actor-tag {
+  background: #f1f5f9;
+  color: #475569;
   font-size: 10px;
   font-weight: 800;
-  padding: 2px 8px;
+  padding: 2px 7px;
   border-radius: 4px;
   letter-spacing: 0.04em;
 }
 
-.nyaya-timeline-date {
+.nyaya-feed-time {
   margin-left: auto;
   font-size: 12px;
   color: var(--nyaya-text-subtle);
 }
 
-.nyaya-timeline-details {
-  margin: 6px 0 0;
+.nyaya-feed-body {
+  margin: 0;
   font-size: 13px;
   color: var(--nyaya-text-muted);
   line-height: 1.5;
 }
 
-/* Escalation Safeguard Card — Full Width */
-.nyaya-escalation-card {
-  background: #fffbeb;
-  border: 1px solid #fde68a;
-  border-radius: 16px;
-  padding: 20px 24px;
+/* Apple Safeguard & Action Bar */
+.nyaya-apple-action-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+  border: 1.5px solid #fde68a;
+  border-radius: 20px;
+  padding: 22px 28px;
 }
 
-.nyaya-escalation-card .pill-button {
-  display: inline-block;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #92400e;
-  background: #fef3c7;
-  border: 1px solid #fde68a;
-  border-radius: var(--nyaya-radius-pill);
-  padding: 3px 12px;
-  margin-bottom: 8px;
+.nyaya-action-card-text {
+  flex: 1;
+  min-width: 280px;
 }
 
-.nyaya-escalation-desc {
-  margin: 6px 0 16px;
-  font-size: 14px;
+.nyaya-action-card-text h4 {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 800;
   color: #92400e;
+}
+
+.nyaya-action-card-text p {
+  margin: 0;
+  font-size: 13.5px;
+  color: #a16207;
   line-height: 1.5;
 }
 
-.nyaya-escalation-actions {
+.nyaya-action-card-buttons {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-.nyaya-btn-escalate {
+.nyaya-apple-btn-escalate {
   background: #b45309 !important;
   color: #ffffff !important;
   border: 0 !important;
-  padding: 12px 22px !important;
+  padding: 12px 24px !important;
   font-size: 14px !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   border-radius: var(--nyaya-radius-pill) !important;
   cursor: pointer;
-  transition: background 0.2s ease;
+  box-shadow: 0 4px 14px rgba(180, 83, 9, 0.3) !important;
+  transition: all 0.2s ease;
 }
 
-.nyaya-btn-escalate:hover {
+.nyaya-apple-btn-escalate:hover {
   background: #92400e !important;
+  transform: translateY(-1px);
 }
 
-.nyaya-btn-copy {
+.nyaya-apple-btn-secondary {
   background: #ffffff !important;
   color: #2f855a !important;
   border: 1.5px solid #2f855a !important;
   padding: 12px 22px !important;
   font-size: 14px !important;
-  font-weight: 700 !important;
+  font-weight: 800 !important;
   border-radius: var(--nyaya-radius-pill) !important;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.nyaya-btn-copy:hover {
+.nyaya-apple-btn-secondary:hover {
   background: #f0fdf4 !important;
 }
 
