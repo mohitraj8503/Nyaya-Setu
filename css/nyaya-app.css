@@ -106,7 +106,6 @@
     border-radius: 16px;
   }
 }
-}
 
 .nyaya-card:hover {
   border-color: #d7eadc;
@@ -797,6 +796,8 @@
 
 .nyaya-track-search-btn:hover {
   background: #c94428;
+}
+
 /* ==========================================================================
    Apple & Google Inspired Live Case Tracker Design System
    ========================================================================== */
