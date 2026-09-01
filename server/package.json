@@ -1,0 +1,26 @@
+{
+  "name": "nyayasetu-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NyayaSetu Express + SQLite API and static frontend host",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "start:local": "powershell -NoProfile -ExecutionPolicy Bypass -File ./start-local.ps1",
+    "start:dev": "set NODE_ENV=development && node server.js",
+    "start:prod": "set NODE_ENV=production && node server.js",
+    "seed": "node db/setup.js",
+    "test": "node test/api.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "nodemailer": "^7.0.0"
+  }
+}

@@ -1,0 +1,33 @@
+from backend.app.models.models import (
+    User,
+    Authority,
+    Officer,
+    Jurisdiction,
+    Case,
+    CaseEvent,
+    RoutingRule,
+    Submission,
+    Escalation,
+    Notification,
+    Feedback,
+    Contact,
+    Newsletter,
+    AuditLog,
+)
+
+__all__ = [
+    "User",
+    "Authority",
+    "Officer",
+    "Jurisdiction",
+    "Case",
+    "CaseEvent",
+    "RoutingRule",
+    "Submission",
+    "Escalation",
+    "Notification",
+    "Feedback",
+    "Contact",
+    "Newsletter",
+    "AuditLog",
+]

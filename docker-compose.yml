@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgis/postgis:16-3.4
+    container_name: nyayasetu-postgres
+    environment:
+      POSTGRES_DB: nyayasetu
+      POSTGRES_USER: nyayasetu
+      POSTGRES_PASSWORD: nyayasetu_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: nyayasetu-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: nyayasetu-backend
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://nyayasetu:nyayasetu_dev@postgres:5432/nyayasetu
+      REDIS_URL: redis://redis:6379/0
+      ENV: development
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./backend:/app/backend
+      - ./data:/app/data
+    restart: unless-stopped
+
+volumes:
+  pgdata:

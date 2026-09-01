@@ -1,0 +1,45 @@
+{
+  "rules": [
+    {
+      "severity": "critical",
+      "conditions": {
+        "keywords": ["sparking", "fire", "live wire", "unconscious", "poisoning", "violence", "threat", "cyber theft", "urgent", "emergency"],
+        "domains": ["public_safety", "law_cyber"],
+        "categories": ["electrical_hazards", "cyber_fraud", "food_adulteration"]
+      },
+      "max_sla_hours": 24,
+      "escalation_trigger_hours": 12,
+      "requires_instant_sms": true
+    },
+    {
+      "severity": "high",
+      "conditions": {
+        "keywords": ["overflowing sewage", "blocked drain", "contaminated water", "hospital", "school area", "bribe demand", "harassment"],
+        "categories": ["garbage_collection", "drainage_sewage", "water_supply", "bribe_demand", "fire_safety"]
+      },
+      "max_sla_hours": 48,
+      "escalation_trigger_hours": 24,
+      "requires_instant_sms": true
+    },
+    {
+      "severity": "medium",
+      "conditions": {
+        "keywords": ["pothole", "street light", "meter billing", "refund delay", "pension delay"],
+        "categories": ["roads_potholes", "street_lighting", "electricity_billing", "consumer_dispute", "pension_schemes"]
+      },
+      "max_sla_hours": 168,
+      "escalation_trigger_hours": 72,
+      "requires_instant_sms": false
+    },
+    {
+      "severity": "low",
+      "conditions": {
+        "keywords": ["footpath encroachment", "general inquiry", "delayed response"],
+        "categories": ["encroachment", "public_toilets"]
+      },
+      "max_sla_hours": 360,
+      "escalation_trigger_hours": 168,
+      "requires_instant_sms": false
+    }
+  ]
+}

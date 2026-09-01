@@ -1,0 +1,257 @@
+[
+  {
+    "id": "q-nch-1",
+    "route_id": "nch-2",
+    "sort_order": 1,
+    "prompt": "What best describes your consumer issue?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Refund delayed after return / cancellation", "value": "delayed refund" },
+      { "label": "Defective or wrong product delivered", "value": "defective or wrong product" },
+      { "label": "Seller not responding after payment", "value": "non-delivery after payment" },
+      { "label": "Warranty / service not honoured", "value": "warranty not honoured" }
+    ]
+  },
+  {
+    "id": "q-nch-2",
+    "route_id": "nch-2",
+    "sort_order": 2,
+    "prompt": "Have you already written to the seller or marketplace?",
+    "question_key": "priorComplaint",
+    "options": [
+      { "label": "Yes, I have a chat or email trail", "value": "yes-written" },
+      { "label": "Only phone calls, no written proof", "value": "calls-only" },
+      { "label": "Not yet", "value": "not-yet" }
+    ]
+  },
+  {
+    "id": "q-civic-1",
+    "route_id": "civic-cpgrams",
+    "sort_order": 1,
+    "prompt": "What civic issue needs action?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Pothole or damaged road", "value": "damaged road / pothole" },
+      { "label": "Broken street light", "value": "non-functional street light" },
+      { "label": "Blocked drain / waterlogging", "value": "blocked drain / waterlogging" },
+      { "label": "Garbage not collected", "value": "uncollected garbage" }
+    ]
+  },
+  {
+    "id": "q-civic-2",
+    "route_id": "civic-cpgrams",
+    "sort_order": 2,
+    "prompt": "Did you already complain to the municipality?",
+    "question_key": "priorComplaint",
+    "options": [
+      { "label": "Yes, I have a local docket number", "value": "local-docket" },
+      { "label": "Yes, but no acknowledgement", "value": "no-ack" },
+      { "label": "Not yet", "value": "not-yet" }
+    ]
+  },
+  {
+    "id": "q-util-1",
+    "route_id": "utility-discom",
+    "sort_order": 1,
+    "prompt": "What is the electricity issue?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Wrong or inflated bill", "value": "billing dispute" },
+      { "label": "Power outage / no supply", "value": "power outage" },
+      { "label": "Meter not working", "value": "faulty meter" },
+      { "label": "New connection delay", "value": "connection delay" }
+    ]
+  },
+  {
+    "id": "q-water-1",
+    "route_id": "jal-board",
+    "sort_order": 1,
+    "prompt": "What is the water supply issue?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "No water / irregular supply", "value": "irregular or no water supply" },
+      { "label": "Contaminated water", "value": "contaminated water" },
+      { "label": "Pipeline leakage", "value": "pipeline leakage" },
+      { "label": "Tanker not arriving", "value": "tanker not provided" }
+    ]
+  },
+  {
+    "id": "q-bank-1",
+    "route_id": "rbi-ombudsman",
+    "sort_order": 1,
+    "prompt": "What kind of payment or banking issue is this?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "UPI debit but payee not credited", "value": "failed UPI (debited, not credited)" },
+      { "label": "Unauthorized transaction", "value": "unauthorized transaction" },
+      { "label": "ATM / card issue", "value": "ATM or card dispute" },
+      { "label": "Loan / account service delay", "value": "bank service delay" }
+    ]
+  },
+  {
+    "id": "q-bank-2",
+    "route_id": "rbi-ombudsman",
+    "sort_order": 2,
+    "prompt": "Have you already lodged a complaint with the bank?",
+    "question_key": "priorComplaint",
+    "options": [
+      { "label": "Yes, waiting for bank response", "value": "bank-pending" },
+      { "label": "Yes, bank rejected or closed it", "value": "bank-rejected" },
+      { "label": "Not yet — I will contact the bank first", "value": "not-yet" }
+    ]
+  },
+  {
+    "id": "q-cyber-1",
+    "route_id": "cybercrime-1930",
+    "sort_order": 1,
+    "prompt": "What happened?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Money lost to online fraud / fake UPI", "value": "online financial fraud" },
+      { "label": "Phishing link or fake website", "value": "phishing" },
+      { "label": "Social media / OTP scam", "value": "OTP / social engineering scam" },
+      { "label": "Other cyber complaint", "value": "other cyber complaint" }
+    ]
+  },
+  {
+    "id": "q-scheme-1",
+    "route_id": "myscheme",
+    "sort_order": 1,
+    "prompt": "Which area of benefit are you exploring?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Education / scholarship", "value": "education scheme" },
+      { "label": "Agriculture / farmer support", "value": "agriculture scheme" },
+      { "label": "Health / insurance", "value": "health scheme" },
+      { "label": "Housing / other welfare", "value": "housing or other welfare scheme" }
+    ]
+  },
+  {
+    "id": "q-health-1",
+    "route_id": "health-cpgrams",
+    "sort_order": 1,
+    "prompt": "What is the health-service issue?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "OPD / admission delay", "value": "OPD or admission delay" },
+      { "label": "Medicine / diagnostic unavailability", "value": "unavailable medicine or diagnostics" },
+      { "label": "Staff / facility grievance", "value": "facility service grievance" },
+      { "label": "Scheme / Ayushman related", "value": "health scheme service issue" }
+    ]
+  },
+  {
+    "id": "q-edu-1",
+    "route_id": "education-nsp",
+    "sort_order": 1,
+    "prompt": "What do you need help with?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Scholarship application stuck", "value": "scholarship portal issue" },
+      { "label": "School / college service complaint", "value": "institute service complaint" },
+      { "label": "Exam / certificate delay", "value": "exam or certificate delay" },
+      { "label": "Admission related", "value": "admission related grievance" }
+    ]
+  },
+  {
+    "id": "q-rti-1",
+    "route_id": "rti-online",
+    "sort_order": 1,
+    "prompt": "What type of information are you requesting?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Government file / office record", "value": "government record" },
+      { "label": "Public project / tender information", "value": "public project or tender" },
+      { "label": "Departmental action or policy info", "value": "departmental policy or action" },
+      { "label": "Other public information request", "value": "other information request" }
+    ]
+  },
+  {
+    "id": "q-rti-2",
+    "route_id": "rti-online",
+    "sort_order": 2,
+    "prompt": "Have you identified the public authority?",
+    "question_key": "priorComplaint",
+    "options": [
+      { "label": "Yes, I know the office and department", "value": "authority-known" },
+      { "label": "I need help identifying the correct PIO", "value": "authority-unclear" },
+      { "label": "Not yet", "value": "not-yet" }
+    ]
+  },
+  {
+    "id": "q-muni-1",
+    "route_id": "municipal-civic",
+    "sort_order": 1,
+    "prompt": "What local civic issue is affecting your area?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Garbage / sanitation problem", "value": "garbage or sanitation" },
+      { "label": "Drainage / waterlogging", "value": "drainage or waterlogging" },
+      { "label": "Street light / road issue", "value": "road or street light issue" },
+      { "label": "Encroachment / illegal construction", "value": "encroachment or illegal construction" }
+    ]
+  },
+  {
+    "id": "q-epf-1",
+    "route_id": "epfo-claims",
+    "sort_order": 1,
+    "prompt": "What EPF issue do you need help with?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Withdrawal or claim rejection", "value": "claim rejection or withdrawal issue" },
+      { "label": "UAN / member portal login issue", "value": "UAN or portal issue" },
+      { "label": "KYC or bank account mismatch", "value": "KYC or bank mismatch" },
+      { "label": "Need status / follow-up", "value": "claim status update" }
+    ]
+  },
+  {
+    "id": "q-epf-2",
+    "route_id": "epfo-claims",
+    "sort_order": 2,
+    "prompt": "Have you checked your UAN / KYC status?",
+    "question_key": "priorComplaint",
+    "options": [
+      { "label": "Yes, KYC is already verified", "value": "kyc-verified" },
+      { "label": "Yes, but my claim is still pending", "value": "claim-pending" },
+      { "label": "Not yet", "value": "not-yet" }
+    ]
+  },
+  {
+    "id": "q-passport-1",
+    "route_id": "passport-seva",
+    "sort_order": 1,
+    "prompt": "What is the Passport Seva issue?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Appointment or slot issue", "value": "appointment slot issue" },
+      { "label": "Document rejection", "value": "document rejection" },
+      { "label": "Police verification delay", "value": "police verification delay" },
+      { "label": "Passport status / tracking", "value": "status or service tracking" }
+    ]
+  },
+  {
+    "id": "q-rail-1",
+    "route_id": "railways-pnr",
+    "sort_order": 1,
+    "prompt": "What railway service problem are you facing?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Train delay or bad service", "value": "delay or poor service" },
+      { "label": "Refund / cancellation issue", "value": "refund or cancellation" },
+      { "label": "Reservation / ticket problem", "value": "reservation issue" },
+      { "label": "Passenger complaint / assistance", "value": "passenger assistance" }
+    ]
+  },
+  {
+    "id": "q-pension-1",
+    "route_id": "pension-seva",
+    "sort_order": 1,
+    "prompt": "What pension issue needs attention?",
+    "question_key": "issueType",
+    "options": [
+      { "label": "Payment or arrears delay", "value": "pension payment delay" },
+      { "label": "Family pension issue", "value": "family pension issue" },
+      { "label": "Bank account / PPO mismatch", "value": "PPO or bank mismatch" },
+      { "label": "Need status update", "value": "status update" }
+    ]
+  }
+]

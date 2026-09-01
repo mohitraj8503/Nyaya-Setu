@@ -1,0 +1,40 @@
+{
+  "channels": {
+    "PORTAL": {
+      "name": "Official Government Portal",
+      "description": "Direct submission or guided prefill into official portals (CPGRAMS, Aaple Sarkar, etc.)",
+      "enabled": true,
+      "requires_ack_tracking": true
+    },
+    "EMAIL": {
+      "name": "Nodal Officer SMTP Dispatch",
+      "description": "Standardized official grievance notification sent directly to designated officer inbox",
+      "enabled": true,
+      "requires_ack_tracking": true
+    },
+    "API": {
+      "name": "Direct Government API",
+      "description": "Automated machine-to-machine filing via official open grievance APIs",
+      "enabled": true,
+      "requires_ack_tracking": true
+    },
+    "WHATSAPP": {
+      "name": "WhatsApp Citizen Channel",
+      "description": "Interactive tracking and two-way grievance resolution updates via WhatsApp Business API",
+      "enabled": true,
+      "requires_ack_tracking": false
+    },
+    "SMS": {
+      "name": "SMS Notification Gateway",
+      "description": "Universal status alerts, tracking ID delivery, and escalation notifications via SMS",
+      "enabled": true,
+      "requires_ack_tracking": false
+    },
+    "MANUAL": {
+      "name": "Assisted Manual Submission Pack",
+      "description": "Structured downloadable PDF complaint dossier with evidence index and checklist for physical submission",
+      "enabled": true,
+      "requires_ack_tracking": false
+    }
+  }
+}

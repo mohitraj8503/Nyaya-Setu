@@ -1,0 +1,103 @@
+{
+  "rules": [
+    {
+      "id": "RULE-CIVIC-NAGPUR-WARD12",
+      "category": "roads_potholes",
+      "subcategory": null,
+      "state_code": "MH",
+      "district": "Nagpur",
+      "ward": "Ward 12 (Ramdaspeth)",
+      "authority_id": "AUTH-MH-NAG-WARD-12-CIVIC",
+      "priority": 100,
+      "channel": "EMAIL"
+    },
+    {
+      "id": "RULE-GARBAGE-NAGPUR-WARD12",
+      "category": "garbage_collection",
+      "subcategory": null,
+      "state_code": "MH",
+      "district": "Nagpur",
+      "ward": "Ward 12 (Ramdaspeth)",
+      "authority_id": "AUTH-MH-NAG-WARD-12-CIVIC",
+      "priority": 100,
+      "channel": "EMAIL"
+    },
+    {
+      "id": "RULE-DRAINAGE-NAGPUR-WARD12",
+      "category": "drainage_sewage",
+      "subcategory": null,
+      "state_code": "MH",
+      "district": "Nagpur",
+      "ward": "Ward 12 (Ramdaspeth)",
+      "authority_id": "AUTH-MH-NAG-WARD-12-CIVIC",
+      "priority": 100,
+      "channel": "EMAIL"
+    },
+    {
+      "id": "RULE-CIVIC-NAGPUR-GENERAL",
+      "category": "street_lighting",
+      "subcategory": null,
+      "state_code": "MH",
+      "district": "Nagpur",
+      "ward": null,
+      "authority_id": "AUTH-MH-NAG-MC-001",
+      "priority": 50,
+      "channel": "PORTAL"
+    },
+    {
+      "id": "RULE-FOOD-MAHARASHTRA",
+      "category": "food_adulteration",
+      "subcategory": null,
+      "state_code": "MH",
+      "district": "Nagpur",
+      "ward": null,
+      "authority_id": "AUTH-MH-NAG-FDA-001",
+      "priority": 90,
+      "channel": "PORTAL"
+    },
+    {
+      "id": "RULE-ELECTRICITY-MSEDCL",
+      "category": "electrical_hazards",
+      "subcategory": null,
+      "state_code": "MH",
+      "district": "Nagpur",
+      "ward": null,
+      "authority_id": "AUTH-MH-NAG-DISCOM-001",
+      "priority": 90,
+      "channel": "PORTAL"
+    },
+    {
+      "id": "RULE-CYBER-NATIONAL",
+      "category": "cyber_fraud",
+      "subcategory": null,
+      "state_code": null,
+      "district": null,
+      "ward": null,
+      "authority_id": "AUTH-CENTRAL-CYBER-001",
+      "priority": 10,
+      "channel": "API"
+    },
+    {
+      "id": "RULE-CONSUMER-NATIONAL",
+      "category": "consumer_dispute",
+      "subcategory": null,
+      "state_code": null,
+      "district": null,
+      "ward": null,
+      "authority_id": "AUTH-CENTRAL-NCH-001",
+      "priority": 10,
+      "channel": "PORTAL"
+    },
+    {
+      "id": "RULE-SCHEMES-CENTRAL",
+      "category": "pension_schemes",
+      "subcategory": null,
+      "state_code": null,
+      "district": null,
+      "ward": null,
+      "authority_id": "AUTH-CENTRAL-CPGRAMS-001",
+      "priority": 10,
+      "channel": "PORTAL"
+    }
+  ]
+}

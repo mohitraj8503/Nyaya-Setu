@@ -1,0 +1,84 @@
+{
+  "sla_policies": [
+    {
+      "category": "electrical_hazards",
+      "sla_days": 1,
+      "reminder_hours_before": 6,
+      "escalation_levels": 3,
+      "escalation_window_hours": 24
+    },
+    {
+      "category": "cyber_fraud",
+      "sla_days": 1,
+      "reminder_hours_before": 6,
+      "escalation_levels": 2,
+      "escalation_window_hours": 24
+    },
+    {
+      "category": "garbage_collection",
+      "sla_days": 2,
+      "reminder_hours_before": 12,
+      "escalation_levels": 3,
+      "escalation_window_hours": 48
+    },
+    {
+      "category": "drainage_sewage",
+      "sla_days": 2,
+      "reminder_hours_before": 12,
+      "escalation_levels": 3,
+      "escalation_window_hours": 48
+    },
+    {
+      "category": "food_adulteration",
+      "sla_days": 3,
+      "reminder_hours_before": 12,
+      "escalation_levels": 2,
+      "escalation_window_hours": 72
+    },
+    {
+      "category": "street_lighting",
+      "sla_days": 3,
+      "reminder_hours_before": 12,
+      "escalation_levels": 2,
+      "escalation_window_hours": 72
+    },
+    {
+      "category": "roads_potholes",
+      "sla_days": 7,
+      "reminder_hours_before": 24,
+      "escalation_levels": 3,
+      "escalation_window_hours": 168
+    },
+    {
+      "category": "electricity_billing",
+      "sla_days": 7,
+      "reminder_hours_before": 24,
+      "escalation_levels": 2,
+      "escalation_window_hours": 168
+    },
+    {
+      "category": "bribe_demand",
+      "sla_days": 10,
+      "reminder_hours_before": 48,
+      "escalation_levels": 3,
+      "escalation_window_hours": 240
+    },
+    {
+      "category": "consumer_dispute",
+      "sla_days": 15,
+      "reminder_hours_before": 48,
+      "escalation_levels": 2,
+      "escalation_window_hours": 360
+    },
+    {
+      "category": "pension_schemes",
+      "sla_days": 15,
+      "reminder_hours_before": 48,
+      "escalation_levels": 2,
+      "escalation_window_hours": 360
+    }
+  ],
+  "default_sla_days": 7,
+  "default_reminder_hours": 24,
+  "max_escalation_level": 3
+}

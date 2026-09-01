@@ -1,0 +1,74 @@
+{
+  "pincodes": {
+    "440010": {
+      "state": "Maharashtra",
+      "state_code": "MH",
+      "district": "Nagpur",
+      "municipality": "Nagpur Municipal Corporation",
+      "ward": "Ward 12 (Ramdaspeth)",
+      "zone": "Dharampeth Zone 2",
+      "lat": 21.1399,
+      "lng": 79.0734
+    },
+    "440001": {
+      "state": "Maharashtra",
+      "state_code": "MH",
+      "district": "Nagpur",
+      "municipality": "Nagpur Municipal Corporation",
+      "ward": "Ward 10 (Civil Lines)",
+      "zone": "Dharampeth Zone 2",
+      "lat": 21.1524,
+      "lng": 79.0801
+    },
+    "110001": {
+      "state": "Delhi",
+      "state_code": "DL",
+      "district": "New Delhi",
+      "municipality": "New Delhi Municipal Council",
+      "ward": "Connaught Place",
+      "zone": "Central",
+      "lat": 28.6315,
+      "lng": 77.2167
+    },
+    "400001": {
+      "state": "Maharashtra",
+      "state_code": "MH",
+      "district": "Mumbai",
+      "municipality": "Brihanmumbai Municipal Corporation",
+      "ward": "A Ward (Fort / Colaba)",
+      "zone": "South Mumbai",
+      "lat": 18.9388,
+      "lng": 72.8354
+    },
+    "560001": {
+      "state": "Karnataka",
+      "state_code": "KA",
+      "district": "Bengaluru Urban",
+      "municipality": "Bruhat Bengaluru Mahanagara Palike",
+      "ward": "Ward 111 (Shantala Nagar)",
+      "zone": "East",
+      "lat": 12.9716,
+      "lng": 77.5946
+    }
+  },
+  "states": [
+    {
+      "code": "MH",
+      "name": "Maharashtra",
+      "capital": "Mumbai",
+      "pgr_portal": "https://aaplesarkar.maharashtra.gov.in"
+    },
+    {
+      "code": "DL",
+      "name": "Delhi",
+      "capital": "New Delhi",
+      "pgr_portal": "https://pgms.delhi.gov.in"
+    },
+    {
+      "code": "KA",
+      "name": "Karnataka",
+      "capital": "Bengaluru",
+      "pgr_portal": "https://ipgrs.karnataka.gov.in"
+    }
+  ]
+}

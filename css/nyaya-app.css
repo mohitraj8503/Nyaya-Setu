@@ -1,0 +1,792 @@
+/* NyayaSetu 2.0 Unified Design System */
+:root {
+  --nyaya-green-primary: #2f855a;
+  --nyaya-green-dark: #22543d;
+  --nyaya-green-light: #f0fdf4;
+  --nyaya-green-border: #bbf7d0;
+  --nyaya-green-glow: rgba(47, 133, 90, 0.15);
+  
+  --nyaya-amber: #d97706;
+  --nyaya-amber-light: #fffbeb;
+  --nyaya-red: #dc2626;
+  --nyaya-red-light: #fef2f2;
+  --nyaya-blue: #2563eb;
+  --nyaya-blue-light: #eff6ff;
+  
+  --nyaya-gray-50: #f8fafc;
+  --nyaya-gray-100: #f1f5f9;
+  --nyaya-gray-200: #e2e8f0;
+  --nyaya-gray-700: #334155;
+  --nyaya-gray-900: #0f172a;
+}
+
+.nyaya-app-shell {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 16px 20px 60px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--nyaya-gray-900);
+}
+
+.nyaya-app-card {
+  background: #ffffff;
+  border: 1px solid var(--nyaya-green-border);
+  border-radius: 24px;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.06);
+  padding: 32px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.nyaya-glow-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, var(--nyaya-green-primary), #10b981, #06b6d4);
+}
+
+.nyaya-header-badge {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.nyaya-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.nyaya-pill-ai {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.nyaya-pill-lang {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #7dd3fc;
+}
+
+.nyaya-pill-track {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.nyaya-pill-sla {
+  background: #f3e8ff;
+  color: #6b21a8;
+  border: 1px solid #d8b4fe;
+}
+
+.nyaya-main-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--nyaya-gray-900);
+  margin: 0 0 8px;
+  line-height: 1.3;
+}
+
+.nyaya-lead-text {
+  font-size: 16px;
+  color: var(--nyaya-gray-700);
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+/* Intake Mode Selection */
+.nyaya-input-modes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.nyaya-mode-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 18px 16px;
+  border: 2px solid var(--nyaya-gray-200);
+  background: var(--nyaya-gray-50);
+  border-radius: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.nyaya-mode-btn:hover {
+  border-color: var(--nyaya-green-primary);
+  background: #f7fee7;
+  transform: translateY(-2px);
+}
+
+.nyaya-mode-btn.is-active {
+  border-color: var(--nyaya-green-primary);
+  background: var(--nyaya-green-light);
+  box-shadow: 0 8px 20px var(--nyaya-green-glow);
+}
+
+.nyaya-mode-icon {
+  font-size: 28px;
+  margin-bottom: 6px;
+}
+
+.nyaya-mode-btn strong {
+  font-size: 15px;
+  color: var(--nyaya-gray-900);
+}
+
+.nyaya-mode-btn small {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Voice Recording Box */
+.nyaya-voice-box {
+  background: var(--nyaya-green-light);
+  border: 2px dashed var(--nyaya-green-border);
+  border-radius: 20px;
+  padding: 36px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.nyaya-mic-button {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border: 3px solid var(--nyaya-green-primary);
+  border-radius: 9999px;
+  padding: 20px 36px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--nyaya-green-dark);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 25px var(--nyaya-green-glow);
+}
+
+.nyaya-mic-button .nyaya-mic-icon {
+  font-size: 32px;
+  margin-bottom: 4px;
+}
+
+.nyaya-mic-button:hover {
+  transform: scale(1.04);
+}
+
+.nyaya-mic-button.is-recording {
+  background: var(--nyaya-red);
+  border-color: #991b1b;
+  color: #ffffff;
+  animation: pulse-recording 1.5s infinite;
+}
+
+@keyframes pulse-recording {
+  0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.6); }
+  70% { box-shadow: 0 0 0 20px rgba(220, 38, 38, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+.nyaya-audio-player {
+  margin-top: 16px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.nyaya-voice-hint {
+  font-size: 13px;
+  color: #475569;
+  margin-top: 12px;
+}
+
+/* Form inputs */
+.nyaya-textarea,
+.nyaya-input,
+.nyaya-select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 14px 16px;
+  font: inherit;
+  font-size: 15px;
+  background: #ffffff;
+  color: var(--nyaya-gray-900);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nyaya-textarea:focus,
+.nyaya-input:focus,
+.nyaya-select:focus {
+  outline: none;
+  border-color: var(--nyaya-green-primary);
+  box-shadow: 0 0 0 4px var(--nyaya-green-glow);
+}
+
+.nyaya-controls-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin: 20px 0 16px;
+}
+
+.nyaya-control-item label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--nyaya-gray-700);
+  margin-bottom: 6px;
+}
+
+.nyaya-pincode-wrap {
+  display: flex;
+  gap: 8px;
+}
+
+.nyaya-gps-btn {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nyaya-gps-btn:hover {
+  background: #e2e8f0;
+}
+
+.nyaya-location-badge {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--nyaya-gray-700);
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+.nyaya-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 14px;
+  padding: 14px 24px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.nyaya-btn-primary {
+  background: var(--nyaya-green-primary);
+  color: #ffffff !important;
+  box-shadow: 0 8px 20px var(--nyaya-green-glow);
+}
+
+.nyaya-btn-primary:hover {
+  background: var(--nyaya-green-dark);
+  transform: translateY(-1px);
+}
+
+.nyaya-btn-success {
+  background: #15803d;
+  color: #ffffff !important;
+}
+
+.nyaya-btn-secondary {
+  background: #475569;
+  color: #ffffff !important;
+}
+
+.nyaya-btn-warning {
+  background: #d97706;
+  color: #ffffff !important;
+}
+
+.nyaya-btn-outline {
+  background: #ffffff;
+  color: var(--nyaya-green-primary) !important;
+  border: 2px solid var(--nyaya-green-primary);
+}
+
+.nyaya-btn-large {
+  width: 100%;
+  padding: 18px;
+  font-size: 17px;
+  border-radius: 16px;
+}
+
+/* Status Box */
+.nyaya-status {
+  padding: 14px 18px;
+  border-radius: 14px;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.nyaya-status.is-active {
+  background: var(--nyaya-green-light);
+  border: 1px solid var(--nyaya-green-border);
+  color: var(--nyaya-green-dark);
+}
+
+.nyaya-status.is-error {
+  background: var(--nyaya-red-light);
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+}
+
+/* Review Section */
+.nyaya-review-card {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 2px solid var(--nyaya-gray-100);
+}
+
+.nyaya-review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.nyaya-case-tag {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--nyaya-gray-900);
+  background: #f1f5f9;
+  padding: 6px 14px;
+  border-radius: 8px;
+}
+
+.nyaya-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-left: 8px;
+}
+
+.nyaya-badge-sev-critical {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.nyaya-badge-sev-high {
+  background: #ffedd5;
+  color: #9a3412;
+}
+
+.nyaya-badge-sev-medium {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.nyaya-badge-sev-low {
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.nyaya-conf-meter {
+  font-size: 13px;
+  color: #475569;
+}
+
+.nyaya-bar-wrap {
+  width: 140px;
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.nyaya-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, var(--nyaya-green-primary));
+}
+
+/* Facts Grid */
+.nyaya-facts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.nyaya-fact-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.nyaya-fact-card small {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.nyaya-fact-card p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--nyaya-gray-900);
+}
+
+/* Target Authority Card */
+.nyaya-authority-card {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.nyaya-auth-body {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.nyaya-auth-avatar {
+  font-size: 36px;
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid #bbf7d0;
+}
+
+.nyaya-auth-info {
+  flex: 1;
+  min-width: 240px;
+}
+
+.nyaya-auth-info h4 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  color: #14532d;
+}
+
+.nyaya-auth-office {
+  margin: 0 0 6px;
+  font-weight: 600;
+  color: var(--nyaya-gray-700);
+}
+
+.nyaya-auth-meta {
+  margin: 0;
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.nyaya-channel-pill {
+  display: inline-block;
+  background: #166534;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+/* Clarification Box */
+.nyaya-clarify-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 24px;
+}
+
+.nyaya-clarify-q {
+  margin: 6px 0 12px;
+  font-size: 15px;
+  color: #78350f;
+}
+
+.nyaya-clarify-row {
+  display: flex;
+  gap: 10px;
+}
+
+/* Letter Preview */
+.nyaya-draft-box {
+  margin-bottom: 24px;
+}
+
+.nyaya-draft-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.nyaya-tab-btn {
+  background: #f1f5f9;
+  border: 0;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nyaya-tab-btn.is-active {
+  background: var(--nyaya-gray-900);
+  color: #ffffff;
+}
+
+.nyaya-letter-pre {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  padding: 18px;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  color: #1e293b;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.nyaya-final-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Dashboard & Timeline */
+.nyaya-dashboard-card {
+  border-color: #cbd5e1;
+}
+
+.nyaya-track-search-row {
+  display: flex;
+  gap: 12px;
+  margin: 18px 0 24px;
+}
+
+.nyaya-case-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.nyaya-case-title {
+  font-size: 22px;
+  margin: 0;
+  color: var(--nyaya-gray-900);
+}
+
+.nyaya-case-sub {
+  margin: 4px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.nyaya-status-pill {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.nyaya-status-green { background: #dcfce7; color: #15803d; }
+.nyaya-status-blue { background: #dbeafe; color: #1d4ed8; }
+.nyaya-status-orange { background: #ffedd5; color: #c2410c; }
+
+.nyaya-sla-breach-badge {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nyaya-sla-ok-badge {
+  background: #f0fdf4;
+  color: #166534;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.nyaya-dash-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.nyaya-dash-fact {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.nyaya-dash-fact small {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.nyaya-dash-fact p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* Timeline */
+.nyaya-timeline-wrap {
+  margin: 24px 0;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 20px;
+}
+
+.nyaya-timeline-header {
+  margin: 0 0 18px;
+  font-size: 16px;
+  color: var(--nyaya-gray-900);
+}
+
+.nyaya-timeline {
+  position: relative;
+  padding-left: 24px;
+}
+
+.nyaya-timeline::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 6px;
+  width: 2px;
+  background: #cbd5e1;
+}
+
+.nyaya-timeline-node {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.nyaya-timeline-node:last-child {
+  margin-bottom: 0;
+}
+
+.nyaya-timeline-dot {
+  position: absolute;
+  left: -24px;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #94a3b8;
+  border: 2px solid #ffffff;
+}
+
+.nyaya-timeline-dot.is-active {
+  background: var(--nyaya-green-primary);
+  box-shadow: 0 0 0 3px var(--nyaya-green-glow);
+}
+
+.nyaya-timeline-content {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.nyaya-timeline-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.nyaya-actor-tag {
+  background: #e2e8f0;
+  color: #334155;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.nyaya-timeline-time {
+  margin-left: auto;
+  color: #64748b;
+  font-size: 12px;
+}
+
+.nyaya-timeline-desc {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--nyaya-gray-700);
+}
+
+.nyaya-next-action-card {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 18px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.nyaya-next-action-card p {
+  margin: 6px 0 14px;
+  font-size: 14px;
+  color: #92400e;
+}
+
+.nyaya-action-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Utilities */
+.nyaya-hidden {
+  display: none !important;
+}

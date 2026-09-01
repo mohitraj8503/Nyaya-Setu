@@ -1,0 +1,206 @@
+{
+  "domains": [
+    {
+      "id": "civic_infrastructure",
+      "name": "Civic Infrastructure",
+      "name_hi": "नागरिक अवसंरचना",
+      "categories": [
+        {
+          "id": "roads_potholes",
+          "name": "Roads & Potholes",
+          "name_hi": "सड़कें एवं गड्ढे",
+          "description": "Damaged roads, major potholes, broken pavements, unsafe dividers",
+          "department": "Public Works / Municipal Roads Department",
+          "default_sla_days": 7,
+          "severity_default": "medium",
+          "keywords": ["pothole", "road", "broken road", "asphalt", "crater", "divider", "footpath", "सड़क", "गड्ढा", "मार्ग"]
+        },
+        {
+          "id": "street_lighting",
+          "name": "Street Lights",
+          "name_hi": "स्ट्रीट लाइट",
+          "description": "Dark streets, broken light fixtures, fluctuating or non-functional public lights",
+          "department": "Municipal Electrical Department",
+          "default_sla_days": 3,
+          "severity_default": "medium",
+          "keywords": ["street light", "dark", "light pole", "no lights", "bulb", "बिजली", "स्ट्रीट लाइट", "अंधेरा"]
+        },
+        {
+          "id": "garbage_collection",
+          "name": "Garbage Collection & Sanitation",
+          "name_hi": "कचरा संग्रहण एवं स्वच्छता",
+          "description": "Uncollected waste heaps, open dumping, overflowing bins, missed door-to-door collection",
+          "department": "Municipal Solid Waste Management",
+          "default_sla_days": 2,
+          "severity_default": "high",
+          "keywords": ["garbage", "trash", "waste", "dump", "dustbin", "cleaning", "कचरा", "कूड़ा", "सफाई", "दुर्गंध"]
+        },
+        {
+          "id": "drainage_sewage",
+          "name": "Drainage & Open Sewage",
+          "name_hi": "जल निकासी एवं सीवेज",
+          "description": "Blocked drains, overflowing sewage, contaminated open gutters, monsoon waterlogging",
+          "department": "Municipal Drainage & Sewerage Dept",
+          "default_sla_days": 2,
+          "severity_default": "high",
+          "keywords": ["drain", "sewage", "gutter", "waterlogging", "overflow", "नाली", "सीवर", "जलभराव"]
+        },
+        {
+          "id": "water_supply",
+          "name": "Public Water Supply",
+          "name_hi": "सार्वजनिक जल आपूर्ति",
+          "description": "No drinking water, contaminated tap water, pipeline bursts, low pressure",
+          "department": "Jal Board / Municipal Water Works",
+          "default_sla_days": 3,
+          "severity_default": "high",
+          "keywords": ["water", "drinking water", "pipeline leak", "dirty water", "tap", "पानी", "जल", "नल", "गंदा पानी"]
+        },
+        {
+          "id": "public_toilets",
+          "name": "Public Toilets",
+          "name_hi": "सार्वजनिक शौचालय",
+          "description": "Unusable public toilets, lack of water, broken sanitation fixtures",
+          "department": "Municipal Health & Sanitation Dept",
+          "default_sla_days": 2,
+          "severity_default": "medium",
+          "keywords": ["toilet", "urinal", "public toilet", "sanitation", "शौचालय", "टॉयलेट"]
+        },
+        {
+          "id": "encroachment",
+          "name": "Footpath & Public Land Encroachment",
+          "name_hi": "अतिक्रमण",
+          "description": "Illegal construction on footpaths, blocked public access, unauthorized markets",
+          "department": "Municipal Estate / Anti-Encroachment Dept",
+          "default_sla_days": 15,
+          "severity_default": "low",
+          "keywords": ["encroachment", "footpath blocked", "illegal stall", "unauthorized", "अतिक्रमण", "कब्जा"]
+        }
+      ]
+    },
+    {
+      "id": "food_consumer",
+      "name": "Food & Consumer Safety",
+      "name_hi": "खाद्य एवं उपभोक्ता सुरक्षा",
+      "categories": [
+        {
+          "id": "food_adulteration",
+          "name": "Food Adulteration & Unhygienic Eateries",
+          "name_hi": "खाद्य मिलावट एवं अस्वच्छ भोजनालय",
+          "description": "Substandard food, food poisoning, unhygienic restaurant kitchens, insect in food",
+          "department": "Food Safety and Standards Authority (State FDA / FSSAI)",
+          "default_sla_days": 3,
+          "severity_default": "critical",
+          "keywords": ["food poisoning", "adulteration", "fssai", "restaurant hygiene", "expired food", "मिलावट", "खाना", "होटल"]
+        },
+        {
+          "id": "consumer_dispute",
+          "name": "E-Commerce, Refunds & Deficient Services",
+          "name_hi": "उपभोक्ता विवाद एवं रिफंड",
+          "description": "Denied refunds, defective products, warranty refusal, unfair trade practices",
+          "department": "National Consumer Helpline / Consumer Commission",
+          "default_sla_days": 15,
+          "severity_default": "medium",
+          "keywords": ["refund", "warranty", "defective", "ecommerce", "shopping fraud", "उपभोक्ता", "रिफंड", "वारंटी"]
+        }
+      ]
+    },
+    {
+      "id": "public_safety",
+      "name": "Public Safety & Hazards",
+      "name_hi": "सार्वजनिक सुरक्षा एवं खतरे",
+      "categories": [
+        {
+          "id": "electrical_hazards",
+          "name": "Exposed Wires & Electrical Hazards",
+          "name_hi": "खुले बिजली के तार एवं खतरे",
+          "description": "Live dangling wires, open transformer boxes, sparking poles",
+          "department": "State Electricity Distribution Company (DISCOM)",
+          "default_sla_days": 1,
+          "severity_default": "critical",
+          "keywords": ["sparking", "open wire", "transformer", "electric shock", "करंट", "खुला तार", "ट्रांसफार्मर"]
+        },
+        {
+          "id": "fire_safety",
+          "name": "Fire Safety Violations",
+          "name_hi": "अग्नि सुरक्षा उल्लंघन",
+          "description": "Blocked emergency exits, lack of fire extinguishers in commercial complexes",
+          "department": "Municipal Fire Department",
+          "default_sla_days": 3,
+          "severity_default": "high",
+          "keywords": ["fire", "emergency exit", "fire extinguisher", "आग", "फायर"]
+        }
+      ]
+    },
+    {
+      "id": "law_cyber",
+      "name": "Law, Order & Cyber Crime",
+      "name_hi": "कानून व्यवस्था एवं साइबर अपराध",
+      "categories": [
+        {
+          "id": "cyber_fraud",
+          "name": "Online Financial Fraud & Cyber Crime",
+          "name_hi": "ऑनलाइन वित्तीय धोखाधड़ी एवं साइबर अपराध",
+          "description": "UPI fraud, phishing, unauthorized transactions, identity theft, OTP fraud",
+          "department": "National Cyber Crime Portal / 1930 Helpline",
+          "default_sla_days": 1,
+          "severity_default": "critical",
+          "keywords": ["upi fraud", "scam", "cyber", "unauthorized debit", "phishing", "धोखाधड़ी", "साइबर", "ओटीपी"]
+        },
+        {
+          "id": "harassment_nuisance",
+          "name": "Public Harassment & Noise Nuisance",
+          "name_hi": "सार्वजनिक उपद्रव एवं उत्पीड़न",
+          "description": "Loudspeakers after hours, stalking, public nuisance",
+          "department": "Local Police Station / 112 Helpline",
+          "default_sla_days": 1,
+          "severity_default": "high",
+          "keywords": ["noise", "harassment", "police", "nuisance", "शोर", "उत्पीड़न", "पुलिस"]
+        }
+      ]
+    },
+    {
+      "id": "corruption_vigilance",
+      "name": "Corruption & Vigilance",
+      "name_hi": "भ्रष्टाचार एवं सतर्कता",
+      "categories": [
+        {
+          "id": "bribe_demand",
+          "name": "Bribe Demand & Extortion by Officials",
+          "name_hi": "रिश्वत की मांग एवं भ्रष्टाचार",
+          "description": "Officials demanding speed money or bribes for government services",
+          "department": "State Anti-Corruption Bureau (ACB) / Lokayukta / CVC",
+          "default_sla_days": 10,
+          "severity_default": "high",
+          "keywords": ["bribe", "corruption", "speed money", "acb", "lokayukta", "रिश्वत", "भ्रष्टाचार", "घूस"]
+        }
+      ]
+    },
+    {
+      "id": "utilities_services",
+      "name": "Utilities & Government Schemes",
+      "name_hi": "उपयोगिताएं एवं सरकारी योजनाएं",
+      "categories": [
+        {
+          "id": "electricity_billing",
+          "name": "Faulty Electricity Meter & Inflated Bills",
+          "name_hi": "गलत बिजली बिल एवं मीटर समस्या",
+          "description": "Faulty meter, erroneous tariff, excessive billing",
+          "department": "DISCOM Billing & Consumer Grievance Forum",
+          "default_sla_days": 7,
+          "severity_default": "medium",
+          "keywords": ["electricity bill", "meter fast", "discom", "power bill", "मीटर", "बिजली बिल"]
+        },
+        {
+          "id": "pension_schemes",
+          "name": "Delayed Pension & Welfare Schemes",
+          "name_hi": "पेंशन एवं कल्याणकारी योजनाएं",
+          "description": "Delayed old age pension, scholarship non-disbursement, scheme benefits",
+          "department": "CPGRAMS / Social Justice & Empowerment Dept",
+          "default_sla_days": 15,
+          "severity_default": "medium",
+          "keywords": ["pension", "scholarship", "scheme", "dbt", "पेंशन", "छात्रवृत्ति", "योजना"]
+        }
+      ]
+    }
+  ]
+}

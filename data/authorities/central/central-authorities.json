@@ -1,0 +1,68 @@
+{
+  "authorities": [
+    {
+      "authority_id": "AUTH-CENTRAL-CPGRAMS-001",
+      "department": "Department of Administrative Reforms and Public Grievances (DARPG)",
+      "jurisdiction": "Central / National",
+      "designation": "Central Nodal Grievance Officer",
+      "office_name": "CPGRAMS Portal, Sardar Patel Bhawan, New Delhi",
+      "email": "cpgrams-darpg@nic.in",
+      "phone": "+91-11-23741000",
+      "portal_url": "https://pgportal.gov.in",
+      "submission_method": "PORTAL",
+      "source_url": "https://pgportal.gov.in/Home/NodalPgOfficersState",
+      "source_type": "official",
+      "verification_status": "VERIFIED",
+      "valid_from": "2024-01-01",
+      "parent_authority_id": null
+    },
+    {
+      "authority_id": "AUTH-CENTRAL-CYBER-001",
+      "department": "Indian Cyber Crime Coordination Centre (I4C), MHA",
+      "jurisdiction": "Central / National",
+      "designation": "National Cyber Crime Reporting Coordinator",
+      "office_name": "National Cyber Crime Reporting Portal, New Delhi",
+      "email": "cybercrime-mha@gov.in",
+      "phone": "1930",
+      "portal_url": "https://cybercrime.gov.in",
+      "submission_method": "API",
+      "source_url": "https://cybercrime.gov.in",
+      "source_type": "official",
+      "verification_status": "VERIFIED",
+      "valid_from": "2024-01-01",
+      "parent_authority_id": null
+    },
+    {
+      "authority_id": "AUTH-CENTRAL-NCH-001",
+      "department": "Department of Consumer Affairs",
+      "jurisdiction": "Central / National",
+      "designation": "Director of Consumer Affairs",
+      "office_name": "National Consumer Helpline, Krishi Bhawan, New Delhi",
+      "email": "consumerhelpline-ca@nic.in",
+      "phone": "1915",
+      "portal_url": "https://consumerhelpline.gov.in",
+      "submission_method": "PORTAL",
+      "source_url": "https://consumerhelpline.gov.in",
+      "source_type": "official",
+      "verification_status": "VERIFIED",
+      "valid_from": "2024-01-01",
+      "parent_authority_id": null
+    },
+    {
+      "authority_id": "AUTH-CENTRAL-FSSAI-001",
+      "department": "Food Safety and Standards Authority of India",
+      "jurisdiction": "Central / National",
+      "designation": "Central Food Safety Officer",
+      "office_name": "FDA Bhawan, Kotla Road, New Delhi",
+      "email": "compliance@fssai.gov.in",
+      "phone": "1800112100",
+      "portal_url": "https://foscos.fssai.gov.in",
+      "submission_method": "PORTAL",
+      "source_url": "https://fssai.gov.in",
+      "source_type": "official",
+      "verification_status": "VERIFIED",
+      "valid_from": "2024-01-01",
+      "parent_authority_id": null
+    }
+  ]
+}

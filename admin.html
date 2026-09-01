@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NyayaSetu - Admin Dashboard</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="brand">
+      Nyaya<span>Setu</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#" class="nav-link active" data-target="dashboardView">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+        Dashboard
+      </a>
+      <a href="#" class="nav-link" data-target="trackerDataView">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+        Grievances (Tracker)
+      </a>
+      <a href="#" class="nav-link" data-target="routesDataView">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+        Routes Directory
+      </a>
+      <a href="#" class="nav-link" data-target="problemsDataView">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        Problems Base
+      </a>
+      <a href="#" class="nav-link" data-target="questionsDataView">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        Wizard Questions
+      </a>
+      <a href="#" class="nav-link" data-target="importExportView">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+        Import & Export
+      </a>
+      <a href="#" class="nav-link" data-target="submissionsDataView">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        User Submissions
+      </a>
+    </nav>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    
+    <!-- Dashboard View -->
+    <section id="dashboardView" class="view-section active">
+      <div class="header-top" style="margin-bottom: 2rem;">
+        <h1 class="page-title">Overview</h1>
+        <button class="btn btn-primary" onclick="loadDashboard()">Refresh Data</button>
+      </div>
+
+      <div class="stats-grid" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+          <div class="stat-title">Total Tracked</div>
+          <div class="stat-value" id="stat-total-tracker">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Total Routes</div>
+          <div class="stat-value" id="stat-total-routes">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Total Problems</div>
+          <div class="stat-value" id="stat-total-problems">-</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-title">Total Questions</div>
+          <div class="stat-value" id="stat-total-questions">-</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="data-panel">
+          <div class="panel-header"><h3>Tracker Status</h3></div>
+          <div class="chart-container">
+            <canvas id="statusChart"></canvas>
+          </div>
+        </div>
+        <div class="data-panel">
+          <div class="panel-header"><h3>Problems by Category</h3></div>
+          <div class="chart-container">
+            <canvas id="problemsChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tracker Data View -->
+    <section id="trackerDataView" class="view-section">
+      <div class="header-top" style="margin-bottom: 2rem;">
+        <h1 class="page-title">Grievances Tracker Data</h1>
+        <button class="btn btn-primary" onclick="loadTrackerData()">Reload</button>
+      </div>
+      <div class="data-panel">
+        <div class="table-responsive">
+          <table id="trackerTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Routes Data View -->
+    <section id="routesDataView" class="view-section">
+      <div class="header-top" style="margin-bottom: 2rem;">
+        <h1 class="page-title">Routes Directory Data</h1>
+        <button class="btn btn-primary" onclick="loadRoutesData()">Reload</button>
+      </div>
+      <div class="data-panel">
+        <div class="table-responsive">
+          <table id="routesTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Authority</th>
+                <th>Department</th>
+                <th>Portal URL</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problems Data View -->
+    <section id="problemsDataView" class="view-section">
+      <div class="header-top" style="margin-bottom: 2rem;">
+        <h1 class="page-title">Problems Base Data</h1>
+        <button class="btn btn-primary" onclick="loadProblemsData()">Reload</button>
+      </div>
+      <div class="data-panel">
+        <div class="table-responsive">
+          <table id="problemsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Linked Route</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Questions Data View -->
+    <section id="questionsDataView" class="view-section">
+      <div class="header-top" style="margin-bottom: 2rem;">
+        <h1 class="page-title">Wizard Questions Data</h1>
+        <button class="btn btn-primary" onclick="loadQuestionsData()">Reload</button>
+      </div>
+      <div class="data-panel">
+        <div class="table-responsive">
+          <table id="questionsTable">
+            <thead>
+              <tr>
+                <th>Route ID</th>
+                <th>Order</th>
+                <th>Prompt</th>
+                <th>Key</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- User Submissions Data View -->
+    <section id="submissionsDataView" class="view-section">
+      <div class="header-top" style="margin-bottom: 2rem;">
+        <h1 class="page-title">User Submissions & Data</h1>
+        <button class="btn btn-primary" onclick="loadSubmissionsData()">Reload</button>
+      </div>
+      <div class="data-panel">
+        <div class="table-responsive">
+          <table id="submissionsTable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Form Type</th>
+                <th>Message</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Import / Export View -->
+    <section id="importExportView" class="view-section">
+      <div class="header-top" style="margin-bottom: 2rem;">
+        <h1 class="page-title">Data Import & Export</h1>
+      </div>
+      <div class="charts-grid">
+        <div class="data-panel">
+          <div class="panel-header"><h3>Export Database</h3></div>
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.9rem;">
+            Download a full backup of all routes, problems, questions, and tracker items in JSON format.
+          </p>
+          <button class="btn btn-primary" onclick="exportData()">Export JSON Backup</button>
+        </div>
+        <div class="data-panel">
+          <div class="panel-header"><h3>Import Database</h3></div>
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.9rem;">
+            Upload a JSON backup file to overwrite the current database.
+          </p>
+          <div class="form-group">
+            <input type="file" id="importFile" class="form-control" accept=".json">
+          </div>
+          <button class="btn btn-primary" onclick="importData()">Import JSON</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Edit Tracker Modal -->
+  <div class="modal-overlay" id="trackerModal">
+    <div class="modal-content">
+      <div class="panel-header">
+        <h3>Edit Tracker Status</h3>
+        <button class="btn btn-icon" onclick="closeModal('trackerModal')">✕</button>
+      </div>
+      <form id="trackerForm" onsubmit="saveTracker(event)">
+        <input type="hidden" id="edit-tracker-id">
+        <div class="form-group">
+          <label>Status</label>
+          <select id="edit-tracker-status" class="form-control">
+            <option value="drafted">Drafted</option>
+            <option value="pending">Pending</option>
+            <option value="resolved">Resolved</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea id="edit-tracker-notes" class="form-control" rows="3"></textarea>
+        </div>
+        <div style="text-align: right; margin-top: 1.5rem;">
+          <button type="button" class="btn" onclick="closeModal('trackerModal')" style="color:var(--text-primary); background:transparent; border:1px solid #CCC; margin-right:10px;">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <rect width="128" height="128" rx="28" fill="#052c24"/>
+  <!-- Pillar & Arch -->
+  <path d="M 32 88 L 96 88 M 38 88 L 38 48 M 90 88 L 90 48 M 64 88 L 64 36 M 28 48 Q 64 20 100 48" fill="none" stroke="#8BC34A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Scales of Justice Beam & Pan -->
+  <line x1="38" y1="52" x2="90" y2="52" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+  <path d="M 38 52 L 28 68 L 48 68 Z M 90 52 L 80 68 L 100 68 Z" fill="#8BC34A" stroke="#FFFFFF" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Center Star/Dot -->
+  <circle cx="64" cy="52" r="5" fill="#8BC34A"/>
+</svg>
