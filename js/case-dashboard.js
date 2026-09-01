@@ -4,29 +4,37 @@
   var root = document.getElementById("nyaya-tracker-mount");
   if (!root || !window.NyayaAPI) return;
 
-  var currentCase = null;
-
   function renderDashboardUI() {
     root.innerHTML = `
-      <div class="nyaya-app-card nyaya-dashboard-card">
-        <div class="nyaya-header-badge">
-          <span class="nyaya-pill nyaya-pill-track">📡 लाइव केस ट्रैकर (Live Case Dashboard)</span>
-          <span class="nyaya-pill nyaya-pill-sla">Auto SLA Monitoring</span>
+      <div class="nyaya-portal-container">
+        <!-- Section Header Matching Webflow Style -->
+        <div class="nyaya-section-header">
+          <div class="pill-button">[ Live Case Tracker ]</div>
+          <h2 class="section-heading is-about">Track Grievance Status & SLA Milestones</h2>
+          <p class="about-text">Monitor real-time progress, assigned government nodal officers, resolution deadlines, and automatic hierarchical escalations.</p>
         </div>
 
-        <h2>अपनी शिकायत की स्थिति ट्रैक करें — Track Grievance Status</h2>
-        <p class="nyaya-lead-text">अपनी केस ट्रैकिंग संख्या (उदा. <strong>NS-2026-000184</strong>) दर्ज करें और वास्तविक समय की प्रगति, समय-सीमा तथा अधिकारी संपर्क देखें।</p>
+        <!-- Main Card -->
+        <div class="nyaya-card nyaya-tracker-card">
+          <!-- Search Row -->
+          <div class="nyaya-search-bar-wrap">
+            <div class="nyaya-search-input-field">
+              <span class="nyaya-search-icon">🔍</span>
+              <input type="text" id="dashboard-search-input" class="nyaya-input" value="NS-2026-000184" placeholder="Enter Case Tracking Number (NS-YYYY-XXXXXX)...">
+            </div>
+            <button type="button" id="btn-dashboard-search" class="button is-primary nyaya-track-search-btn">
+              <div class="button-text-effect">
+                <div class="button-text is-primary-button">Track Status</div>
+                <div class="button-text is-primary-button">Track Status</div>
+              </div>
+            </button>
+          </div>
 
-        <!-- Search Bar -->
-        <div class="nyaya-track-search-row">
-          <input type="text" id="dashboard-search-input" class="nyaya-input" value="NS-2026-000184" placeholder="केस ट्रैकिंग संख्या दर्ज करें (NS-YYYY-XXXXXX)...">
-          <button type="button" id="btn-dashboard-search" class="nyaya-btn nyaya-btn-primary">ट्रैक करें (Track)</button>
+          <div id="dashboard-status" class="nyaya-status-message nyaya-hidden"></div>
+
+          <!-- Case Detail Container -->
+          <div id="dashboard-case-container"></div>
         </div>
-
-        <div id="dashboard-status" class="nyaya-status nyaya-hidden"></div>
-
-        <!-- Case Detail Container -->
-        <div id="dashboard-case-container" class="nyaya-hidden"></div>
       </div>
     `;
 
@@ -43,22 +51,20 @@
     var statusEl = document.getElementById("dashboard-status");
     var container = document.getElementById("dashboard-case-container");
 
-    statusEl.textContent = "डेटा लोड हो रहा है...";
-    statusEl.className = "nyaya-status is-active";
+    statusEl.textContent = "Retrieving case dossier from registry...";
+    statusEl.className = "nyaya-status-message is-active";
     statusEl.classList.remove("nyaya-hidden");
 
     try {
       var caseData = await window.NyayaAPI.getCase(caseId);
       var timelineEvents = await window.NyayaAPI.getCaseTimeline(caseId);
-      currentCase = caseData;
 
       statusEl.classList.add("nyaya-hidden");
       renderCaseDetail(caseData, timelineEvents);
       container.classList.remove("nyaya-hidden");
     } catch (err) {
-      statusEl.textContent = "केस नहीं मिला या त्रुटि: " + err.message;
-      statusEl.className = "nyaya-status is-error";
-      container.classList.add("nyaya-hidden");
+      statusEl.textContent = "Notice: " + err.message;
+      statusEl.className = "nyaya-status-message is-error";
     }
   }
 
@@ -68,123 +74,124 @@
     var loc = caseData.location || {};
 
     var statusColor = "orange";
-    var statusLabel = caseData.status;
+    var statusLabel = caseData.status || "IN_PROGRESS";
     if (caseData.status === "RESOLVED" || caseData.status === "CLOSED") {
       statusColor = "green";
-      statusLabel = "समाधान पूर्ण (Resolved)";
+      statusLabel = "RESOLVED";
     } else if (caseData.status === "SUBMITTED" || caseData.status === "IN_PROGRESS") {
       statusColor = "blue";
-      statusLabel = "प्रगति पर (In Progress)";
+      statusLabel = "UNDER RESOLUTION";
     }
 
     var breachBadge = caseData.sla_breached
-      ? `<span class="nyaya-sla-breach-badge">⚠️ SLA सीमा समाप्त — उच्चाधिकारी को अग्रेषित (Escalated Level ${caseData.escalation_level})</span>`
-      : `<span class="nyaya-sla-ok-badge">⏱️ SLA समय-सीमा के भीतर (On Schedule)</span>`;
+      ? `<span class="nyaya-sla-pill is-breached">⚠️ SLA Extended — Escalated to Level ${caseData.escalation_level || 2}</span>`
+      : `<span class="nyaya-sla-pill is-on-track">⏱️ Active SLA Window: On Schedule</span>`;
 
     // Render Timeline Events
-    var eventsHtml = events.map(function (ev, index) {
-      var dt = new Date(ev.created_at).toLocaleString("hi-IN", { dateStyle: "medium", timeStyle: "short" });
-      var actorBadge = ev.actor_type ? `<span class="nyaya-actor-tag">${ev.actor_type}</span>` : "";
+    var eventsHtml = (events || []).map(function (ev) {
+      var dt = new Date(ev.created_at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
+      var actorBadge = ev.actor_type ? `<span class="nyaya-actor-chip">${ev.actor_type}</span>` : "";
       return `
-        <div class="nyaya-timeline-node">
-          <div class="nyaya-timeline-dot is-active"></div>
-          <div class="nyaya-timeline-content">
-            <div class="nyaya-timeline-title">
-              <strong>${escapeHtml(ev.event_type)}</strong>
+        <div class="nyaya-timeline-item">
+          <div class="nyaya-timeline-node-marker is-active"></div>
+          <div class="nyaya-timeline-card">
+            <div class="nyaya-timeline-top">
+              <strong class="nyaya-timeline-event-name">${escapeHtml(ev.event_type.replace(/_/g, " "))}</strong>
               ${actorBadge}
-              <small class="nyaya-timeline-time">${dt}</small>
+              <span class="nyaya-timeline-date">${dt}</span>
             </div>
-            <p class="nyaya-timeline-desc">${formatEventData(ev.event_data)}</p>
+            <p class="nyaya-timeline-details">${formatEventData(ev.event_data)}</p>
           </div>
         </div>
       `;
     }).join("");
 
     container.innerHTML = `
-      <div class="nyaya-case-card">
-        <!-- Top Meta Row -->
-        <div class="nyaya-case-meta-row">
-          <div>
-            <h3 class="nyaya-case-title">केस संख्या: ${caseData.case_id}</h3>
-            <p class="nyaya-case-sub">विभाग: <strong>${escapeHtml(caseData.department || "Municipal Administration")}</strong></p>
+      <div class="nyaya-dossier-view">
+        <!-- Top Status Meta Bar -->
+        <div class="nyaya-dossier-top-bar">
+          <div class="nyaya-case-meta">
+            <span class="nyaya-tag-label">CASE REFERENCE</span>
+            <h3 class="nyaya-dossier-case-id">${caseData.case_id}</h3>
+            <p class="nyaya-dossier-dept">Assigned Body: <strong>${escapeHtml(caseData.department || "Nagpur Municipal Corporation")}</strong></p>
           </div>
-          <div class="nyaya-case-badges">
-            <span class="nyaya-status-pill nyaya-status-${statusColor}">${statusLabel}</span>
+          <div class="nyaya-dossier-badges">
+            <span class="nyaya-status-badge status-${statusColor}">${statusLabel}</span>
             ${breachBadge}
           </div>
         </div>
 
-        <!-- Facts Summary Grid -->
-        <div class="nyaya-dash-facts">
-          <div class="nyaya-dash-fact">
-            <small>स्थान (Location)</small>
-            <p><strong>${escapeHtml(loc.ward || "Nagpur")}, ${escapeHtml(loc.district || "Nagpur")}</strong></p>
+        <!-- Metrics Matrix -->
+        <div class="nyaya-dossier-matrix">
+          <div class="nyaya-matrix-item">
+            <span class="nyaya-matrix-label">Jurisdiction & Ward</span>
+            <p class="nyaya-matrix-value">${escapeHtml(loc.ward || "Ward 12")}, ${escapeHtml(loc.district || "Nagpur")}</p>
           </div>
-          <div class="nyaya-dash-fact">
-            <small>श्रेणी (Category)</small>
-            <p><strong>${escapeHtml(norm.category || "Roads & Infrastructure")}</strong></p>
+          <div class="nyaya-matrix-item">
+            <span class="nyaya-matrix-label">Grievance Category</span>
+            <p class="nyaya-matrix-value">${escapeHtml(norm.category || "Public Infrastructure & Roads")}</p>
           </div>
-          <div class="nyaya-dash-fact">
-            <small>पोर्टल संदर्भ ID (Portal Ref)</small>
-            <p><strong>${escapeHtml(caseData.reference_id || "NMC-2026-99120")}</strong></p>
+          <div class="nyaya-matrix-item">
+            <span class="nyaya-matrix-label">Official Portal Ref ID</span>
+            <p class="nyaya-matrix-value">${escapeHtml(caseData.reference_id || "NMC-2026-99120")}</p>
           </div>
-          <div class="nyaya-dash-fact">
-            <small>दाखिल दिनांक (Filing Date)</small>
-            <p><strong>${new Date(caseData.created_at).toLocaleDateString("hi-IN")}</strong></p>
+          <div class="nyaya-matrix-item">
+            <span class="nyaya-matrix-label">Filing Timestamp</span>
+            <p class="nyaya-matrix-value">${new Date(caseData.created_at).toLocaleDateString("en-IN", { month: "short", day: "numeric", year: "numeric" })}</p>
           </div>
         </div>
 
-        <!-- Visual Case Event Timeline -->
-        <div class="nyaya-timeline-wrap">
-          <h4 class="nyaya-timeline-header">📅 केस प्रगति समय-सारिणी (Live Progress Timeline)</h4>
-          <div class="nyaya-timeline">
+        <!-- Timeline -->
+        <div class="nyaya-stepper-section">
+          <h4 class="nyaya-stepper-title">📅 Official Event & Resolution Timeline</h4>
+          <div class="nyaya-stepper-timeline">
             ${eventsHtml}
           </div>
         </div>
 
-        <!-- Next Action & Escalation Box -->
-        <div class="nyaya-next-action-card">
-          <div class="nyaya-kicker">[ अगला कदम एवं एस्केलेशन (Next Action) ]</div>
-          <p>यदि 48 घंटे के भीतर समाधान नहीं होता है, तो सिस्टम स्वचालित रूप से संभागीय आयुक्त (Divisional Commissioner) को एस्केलेट कर देगा।</p>
-          <div class="nyaya-action-buttons">
-            <button type="button" id="btn-manual-escalate" class="nyaya-btn nyaya-btn-warning">
-              🚨 तुरंत एस्केलेट करें (Request Higher Escalation)
+        <!-- Next Action & Hierarchical Escalation Card -->
+        <div class="nyaya-escalation-card">
+          <div class="pill-button">[ Citizen Escalation Safeguard ]</div>
+          <p class="nyaya-escalation-desc">If the grievance remains unaddressed past the 48-hour SLA deadline, NyayaSetu automatically triggers Level 2 escalation to the Zonal Assistant Municipal Commissioner.</p>
+          <div class="nyaya-escalation-actions">
+            <button type="button" id="btn-manual-escalate" class="button is-secondary nyaya-btn-escalate">
+              🚨 Request Supervisory Escalation
             </button>
-            <button type="button" id="btn-copy-dossier" class="nyaya-btn nyaya-btn-outline">
-              📋 शिकायत पत्र कॉपी करें (Copy Draft)
+            <button type="button" id="btn-copy-dossier" class="button is-secondary nyaya-btn-copy">
+              📋 Copy Complaint Dossier
             </button>
           </div>
         </div>
       </div>
     `;
 
-    // Wire Escalation button
+    // Escalation trigger
     var btnEscalate = document.getElementById("btn-manual-escalate");
     if (btnEscalate) {
       btnEscalate.onclick = async function () {
-        var reason = prompt("एस्केलेशन का कारण दर्ज करें (उदा. फील्ड इंजीनियर द्वारा देरी):", "समाधान में विलंब एवं सार्वजनिक असुविधा");
+        var reason = prompt("Enter escalation reason (e.g., SLA deadline breach or urgent public hazard):", "SLA delay and continued public inconvenience");
         if (!reason) return;
         btnEscalate.disabled = true;
-        btnEscalate.textContent = "एस्केलेट किया जा रहा है...";
+        btnEscalate.textContent = "Escalating...";
         try {
           var res = await window.NyayaAPI.escalateCase(caseData.case_id, reason);
-          alert("✓ केस सफलतापूर्वक स्तर " + res.level + " (" + res.new_authority + ") पर एस्केलेट कर दिया गया है!");
+          alert("✓ Case escalated to Level " + (res.level || 2) + " (" + (res.new_authority || "Supervisory Authority") + ") successfully.");
           loadCaseData(caseData.case_id);
         } catch (e) {
-          alert("एस्केलेशन त्रुटि: " + e.message);
+          alert("Notice: " + e.message);
           btnEscalate.disabled = false;
-          btnEscalate.textContent = "🚨 तुरंत एस्केलेट करें";
+          btnEscalate.textContent = "🚨 Request Supervisory Escalation";
         }
       };
     }
 
-    // Wire Copy Dossier button
+    // Copy Draft trigger
     var btnCopy = document.getElementById("btn-copy-dossier");
     if (btnCopy) {
       btnCopy.onclick = function () {
-        var text = caseData.complaint_text || caseData.complaint_text_en || "Case Details: " + caseData.case_id;
+        var text = caseData.complaint_text || "Case Dossier: " + caseData.case_id;
         navigator.clipboard.writeText(text).then(function () {
-          alert("✓ शिकायत का औपचारिक ड्राफ्ट क्लिपबोर्ड पर कॉपी हो गया है!");
+          alert("✓ Formal complaint text copied to clipboard.");
         });
       };
     }
@@ -196,10 +203,11 @@
     var parts = [];
     for (var k in data) {
       if (data.hasOwnProperty(k)) {
-        parts.push("<strong>" + escapeHtml(k) + ":</strong> " + escapeHtml(String(data[k])));
+        var cleanKey = k.replace(/_/g, " ").replace(/\b\w/g, function (l) { return l.toUpperCase(); });
+        parts.push("<strong>" + escapeHtml(cleanKey) + ":</strong> " + escapeHtml(String(data[k])));
       }
     }
-    return parts.join(" | ");
+    return parts.join(" &nbsp;•&nbsp; ");
   }
 
   function escapeHtml(value) {

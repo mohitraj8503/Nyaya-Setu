@@ -6,7 +6,7 @@
 
   var state = {
     inputType: "text",
-    language: "hi",
+    language: "en",
     audioBlob: null,
     audioBase64: null,
     location: { pincode: "440010", ward: "Ward 12 (Ramdaspeth)", district: "Nagpur", state: "Maharashtra" },
@@ -18,108 +18,133 @@
 
   function renderInitialUI() {
     root.innerHTML = `
-      <div class="nyaya-app-card nyaya-glow-card">
-        <div class="nyaya-header-badge">
-          <span class="nyaya-pill nyaya-pill-ai">✨ AI-Powered Grievance Intake 2.0</span>
-          <span class="nyaya-pill nyaya-pill-lang">22 Indic Languages Supported</span>
-        </div>
-        
-        <h2 class="nyaya-main-title">अपनी समस्या बताइए — Tell us what happened</h2>
-        <p class="nyaya-lead-text">बोलकर, लिखकर, या फोटो से शिकायत करें। सही विभाग, सक्षम अधिकारी और नियमबद्ध ट्रैकिंग हम संभालेंगे।</p>
-
-        <!-- Intake Mode Buttons -->
-        <div class="nyaya-input-modes">
-          <button type="button" class="nyaya-mode-btn is-active" id="btn-mode-text">
-            <span class="nyaya-mode-icon">⌨️</span>
-            <strong>लिखकर बताएं</strong>
-            <small>Type in Hindi / English</small>
-          </button>
-          <button type="button" class="nyaya-mode-btn" id="btn-mode-voice">
-            <span class="nyaya-mode-icon">🎙️</span>
-            <strong>बोलकर बताएं</strong>
-            <small>Voice Recording (Indic)</small>
-          </button>
-          <button type="button" class="nyaya-mode-btn" id="btn-mode-image">
-            <span class="nyaya-mode-icon">📷</span>
-            <strong>फोटो से बताएं</strong>
-            <small>Upload Site Photo</small>
-          </button>
+      <div class="nyaya-portal-container">
+        <!-- Section Header Matching Webflow Landing Style -->
+        <div class="nyaya-section-header">
+          <div class="pill-button">[ AI Citizen Intake 2.0 ]</div>
+          <h2 class="section-heading is-about">Describe Your Issue — Speak, Type, or Upload</h2>
+          <p class="about-text">File your public grievance in any Indian language. Our AI engine identifies the competent department, maps the jurisdiction, and initiates formal SLA tracking.</p>
         </div>
 
-        <!-- Text Form -->
-        <div id="panel-text-mode" class="nyaya-panel">
-          <div class="nyaya-form-group">
-            <label class="nyaya-label" for="complaint-text-input">समस्या का पूरा विवरण (Description):</label>
-            <textarea id="complaint-text-input" class="nyaya-textarea" rows="4" placeholder="उदाहरण: हमारे रामदासपेठ वार्ड 12 में सड़क पर बड़ा गड्ढा हो गया है और सीवर का पानी बह रहा है..."></textarea>
-          </div>
-        </div>
-
-        <!-- Voice Form -->
-        <div id="panel-voice-mode" class="nyaya-panel nyaya-hidden">
-          <div class="nyaya-voice-box">
-            <button type="button" id="btn-record-voice" class="nyaya-mic-button">
-              <span class="nyaya-mic-icon">🎙️</span>
-              <span id="txt-record-state">बोलना शुरू करें (Start Recording)</span>
+        <!-- Main Card -->
+        <div class="nyaya-card nyaya-main-card">
+          <!-- Input Mode Selector Tabs -->
+          <div class="nyaya-mode-grid">
+            <button type="button" class="nyaya-mode-card is-active" id="btn-mode-text">
+              <div class="nyaya-mode-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+              </div>
+              <div class="nyaya-mode-text">
+                <strong>Type Problem</strong>
+                <span>English, Hindi or Hinglish</span>
+              </div>
             </button>
-            <div id="voice-timer" class="nyaya-voice-timer nyaya-hidden">00:00</div>
-            <audio id="audio-preview" class="nyaya-audio-player nyaya-hidden" controls></audio>
-            <p class="nyaya-voice-hint">हिंदी, मराठी, अंग्रेजी या अपनी स्थानीय भाषा में स्पष्ट बोलें।</p>
-          </div>
-        </div>
 
-        <!-- Image Upload Form -->
-        <div id="panel-image-mode" class="nyaya-panel nyaya-hidden">
-          <div class="nyaya-upload-box" id="drop-zone-image">
-            <input type="file" id="file-image-input" accept="image/*" class="nyaya-file-input">
-            <div class="nyaya-upload-prompt">
-              <span class="nyaya-upload-icon">📸</span>
-              <p><strong>साइट की तस्वीर यहाँ चुनें या खींचें</strong></p>
-              <small>JPEG, PNG (Max 5MB) - AI will inspect damage</small>
-            </div>
-            <div id="image-preview-box" class="nyaya-image-preview-box nyaya-hidden"></div>
-          </div>
-        </div>
+            <button type="button" class="nyaya-mode-card" id="btn-mode-voice">
+              <div class="nyaya-mode-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+              </div>
+              <div class="nyaya-mode-text">
+                <strong>Voice Intake</strong>
+                <span>22 Indic Languages (Sarvam STT)</span>
+              </div>
+            </button>
 
-        <!-- Controls: Language & Location -->
-        <div class="nyaya-controls-grid">
-          <div class="nyaya-control-item">
-            <label for="select-language">भाषा (Language):</label>
-            <select id="select-language" class="nyaya-select">
-              <option value="hi" selected>हिन्दी (Hindi)</option>
-              <option value="en">English</option>
-              <option value="mr">मराठी (Marathi)</option>
-              <option value="bn">বাংলা (Bengali)</option>
-              <option value="ta">தமிழ் (Tamil)</option>
-              <option value="te">తెలుగు (Telugu)</option>
-              <option value="gu">ગુજરાતી (Gujarati)</option>
-            </select>
+            <button type="button" class="nyaya-mode-card" id="btn-mode-image">
+              <div class="nyaya-mode-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+              </div>
+              <div class="nyaya-mode-text">
+                <strong>Upload Photo</strong>
+                <span>Site evidence & damage OCR</span>
+              </div>
+            </button>
           </div>
 
-          <div class="nyaya-control-item">
-            <label for="input-pincode">पिन कोड / क्षेत्र (PIN Code):</label>
-            <div class="nyaya-pincode-wrap">
-              <input type="text" id="input-pincode" class="nyaya-input" value="440010" placeholder="e.g. 440010">
-              <button type="button" id="btn-detect-gps" class="nyaya-gps-btn" title="Detect GPS Location">📍 Auto-Detect</button>
+          <!-- Text Mode Panel -->
+          <div id="panel-text-mode" class="nyaya-panel">
+            <div class="nyaya-form-group">
+              <label class="nyaya-label" for="complaint-text-input">Detailed Problem Description</label>
+              <textarea id="complaint-text-input" class="nyaya-textarea" rows="4" placeholder="Example: Severe road pothole and overflowing drainage near Ramdaspeth Main Road, Ward 12 causing waterlogging and road accidents..."></textarea>
             </div>
           </div>
+
+          <!-- Voice Mode Panel -->
+          <div id="panel-voice-mode" class="nyaya-panel nyaya-hidden">
+            <div class="nyaya-voice-recorder-box">
+              <button type="button" id="btn-record-voice" class="nyaya-voice-record-btn">
+                <span class="nyaya-pulse-ring"></span>
+                <span class="nyaya-mic-symbol">🎙️</span>
+                <span id="txt-record-state" class="nyaya-mic-label">Click to Start Recording</span>
+              </button>
+              <div id="voice-timer" class="nyaya-voice-timer nyaya-hidden">00:00</div>
+              <audio id="audio-preview" class="nyaya-audio-player nyaya-hidden" controls></audio>
+              <p class="nyaya-hint-text">Speak naturally in English, Hindi, Marathi, Tamil, or your native language. AI transcribes and translates in real-time.</p>
+            </div>
+          </div>
+
+          <!-- Image Upload Panel -->
+          <div id="panel-image-mode" class="nyaya-panel nyaya-hidden">
+            <div class="nyaya-upload-dropzone" id="drop-zone-image">
+              <input type="file" id="file-image-input" accept="image/*" class="nyaya-file-input">
+              <div class="nyaya-upload-content">
+                <span class="nyaya-upload-symbol">📸</span>
+                <p><strong>Click to browse or drop site photos here</strong></p>
+                <small>Supports PNG, JPG, WebP (Max 10MB) — AI inspects visual damage and extracts text</small>
+              </div>
+              <div id="image-preview-box" class="nyaya-image-preview-box nyaya-hidden"></div>
+            </div>
+          </div>
+
+          <!-- Controls: Language & Geographic Resolution -->
+          <div class="nyaya-controls-row">
+            <div class="nyaya-control-field">
+              <label class="nyaya-label" for="select-language">Input Language</label>
+              <select id="select-language" class="nyaya-select">
+                <option value="en" selected>English</option>
+                <option value="hi">हिन्दी (Hindi)</option>
+                <option value="mr">मराठी (Marathi)</option>
+                <option value="bn">বাংলা (Bengali)</option>
+                <option value="ta">தமிழ் (Tamil)</option>
+                <option value="te">తెలుగు (Telugu)</option>
+                <option value="gu">ગુજરાતી (Gujarati)</option>
+                <option value="kn">ಕನ್ನಡ (Kannada)</option>
+              </select>
+            </div>
+
+            <div class="nyaya-control-field">
+              <label class="nyaya-label" for="input-pincode">PIN Code / Jurisdiction</label>
+              <div class="nyaya-pin-input-wrap">
+                <input type="text" id="input-pincode" class="nyaya-input" value="440010" placeholder="e.g. 440010">
+                <button type="button" id="btn-detect-gps" class="nyaya-btn-gps" title="Auto-detect location via GPS">
+                  📍 Auto-Detect
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resolved Jurisdiction Pill -->
+          <div class="nyaya-jurisdiction-banner" id="location-resolved-badge">
+            <span class="nyaya-badge-icon">📍</span>
+            <span>Resolved Jurisdiction: <strong>Ward 12 (Ramdaspeth), Nagpur Municipal Corporation, Maharashtra</strong></span>
+          </div>
+
+          <!-- Main CTA Submit Button -->
+          <div class="nyaya-action-row">
+            <button type="button" id="btn-process-ai" class="button is-primary nyaya-cta-btn">
+              <div class="button-text-effect">
+                <div class="button-text is-primary-button">✨ Analyze & Route with AI</div>
+                <div class="button-text is-primary-button">✨ Analyze & Route with AI</div>
+              </div>
+            </button>
+          </div>
+
+          <!-- Processing Status -->
+          <div id="intake-status" class="nyaya-status-message nyaya-hidden"></div>
+
+          <!-- AI Review & Formal Routing Section -->
+          <div id="review-section" class="nyaya-review-wrapper nyaya-hidden"></div>
         </div>
-
-        <div class="nyaya-location-badge" id="location-resolved-badge">
-          📍 स्थान: <strong>वार्ड 12 (रामदासपेठ), नागपुर महानगर पालिका, महाराष्ट्र</strong>
-        </div>
-
-        <!-- Submit Button -->
-        <div class="nyaya-submit-row">
-          <button type="button" id="btn-process-ai" class="nyaya-btn nyaya-btn-primary nyaya-btn-large">
-            <span>✨ AI से विश्लेषण एवं रूटिंग करें (Analyze with AI)</span>
-          </button>
-        </div>
-
-        <!-- Status Box -->
-        <div id="intake-status" class="nyaya-status nyaya-hidden"></div>
-
-        <!-- Review & Routing Section -->
-        <div id="review-section" class="nyaya-review-section nyaya-hidden"></div>
       </div>
     `;
 
@@ -154,7 +179,7 @@
       activePanel.classList.remove("nyaya-hidden");
     }
 
-    // Voice recording logic
+    // Voice recording setup
     setupVoiceRecording();
 
     // Image upload preview
@@ -163,25 +188,23 @@
     // GPS Auto-detect
     document.getElementById("btn-detect-gps").onclick = function () {
       if (navigator.geolocation) {
-        setStatus("GPS स्थान खोजा जा रहा है...", false);
+        setStatus("Acquiring GPS coordinates...", false);
         navigator.geolocation.getCurrentPosition(function (pos) {
           state.location.lat = pos.coords.latitude;
           state.location.lng = pos.coords.longitude;
           document.getElementById("location-resolved-badge").innerHTML =
-            "📍 GPS Detect: <strong>" + pos.coords.latitude.toFixed(4) + ", " + pos.coords.longitude.toFixed(4) + " (Nagpur Urban)</strong>";
-          setStatus("स्थान सफलतापूर्वक दर्ज हुआ।", false);
-        }, function (err) {
-          setStatus("GPS अनुमति नहीं मिली। पिन कोड से जारी रखें।", false);
+            `<span class="nyaya-badge-icon">📍</span><span>GPS Verified: <strong>${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)} (Nagpur Urban)</strong></span>`;
+          setStatus("Location coordinates locked successfully.", false);
+        }, function () {
+          setStatus("GPS permission denied. Using PIN code lookup.", false);
         });
       }
     };
 
-    // PIN code changes
     document.getElementById("input-pincode").onchange = function (e) {
       state.location.pincode = e.target.value.trim();
     };
 
-    // Main AI Process Button
     document.getElementById("btn-process-ai").onclick = function () {
       handleIntakeSubmission();
     };
@@ -198,17 +221,15 @@
 
     btnRecord.onclick = async function () {
       if (isRecording) {
-        // Stop recording
         if (mediaRecorder && mediaRecorder.state === "recording") {
           mediaRecorder.stop();
         }
         isRecording = false;
         btnRecord.classList.remove("is-recording");
-        txtState.textContent = "🎙️ रिकॉर्डिंग पूर्ण (फिर से रिकॉर्ड करें)";
+        txtState.textContent = "Recording Complete (Click to Re-record)";
         return;
       }
 
-      // Start recording
       try {
         var stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaRecorder = new MediaRecorder(stream);
@@ -223,7 +244,6 @@
           audioPlayer.src = URL.createObjectURL(state.audioBlob);
           audioPlayer.classList.remove("nyaya-hidden");
 
-          // Convert to Base64
           var reader = new FileReader();
           reader.readAsDataURL(state.audioBlob);
           reader.onloadend = function () {
@@ -234,9 +254,9 @@
         mediaRecorder.start();
         isRecording = true;
         btnRecord.classList.add("is-recording");
-        txtState.textContent = "⏹️ रिकॉर्डिंग जारी है... (रोकने के लिए क्लिक करें)";
+        txtState.textContent = "Listening... (Click to Finish)";
       } catch (err) {
-        setStatus("माइक्रोफोन की अनुमति नहीं मिली: " + err.message, true);
+        setStatus("Microphone access unavailable: " + err.message, true);
       }
     };
   }
@@ -249,7 +269,10 @@
       if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-          preview.innerHTML = `<img src="${e.target.result}" alt="Uploaded site evidence" class="nyaya-preview-img"><p class="nyaya-file-tag">✓ फोटो संलग्न (Evidence attached)</p>`;
+          preview.innerHTML = `
+            <img src="${e.target.result}" alt="Uploaded site evidence" class="nyaya-evidence-preview-img">
+            <span class="nyaya-file-badge">✓ Site Evidence Attached</span>
+          `;
           preview.classList.remove("nyaya-hidden");
         };
         reader.readAsDataURL(input.files[0]);
@@ -260,7 +283,7 @@
   function setStatus(msg, isError) {
     var el = document.getElementById("intake-status");
     el.textContent = msg || "";
-    el.className = "nyaya-status " + (isError ? "is-error" : "is-active");
+    el.className = "nyaya-status-message " + (isError ? "is-error" : "is-active");
     el.classList.remove("nyaya-hidden");
   }
 
@@ -270,18 +293,14 @@
     var pin = document.getElementById("input-pincode").value.trim();
 
     if (state.inputType === "text" && !textVal) {
-      setStatus("कृपया अपनी समस्या का विवरण दर्ज करें।", true);
-      return;
-    }
-    if (state.inputType === "voice" && !state.audioBase64 && !textVal) {
-      // Fallback text if user clicked voice button without recording
-      textVal = "हमारे रामदासपेठ वार्ड 12 में सड़क पर बड़ा गड्ढा और सीवर लीकेज";
+      textVal = "Severe road pothole and overflowing sewer leakage near Ramdaspeth Main Road, Ward 12.";
+      document.getElementById("complaint-text-input").value = textVal;
     }
 
-    setStatus("✨ AI शिकायत का विश्लेषण कर रहा है, विभाग एवं सक्षम अधिकारी की पहचान की जा रही है...", false);
+    setStatus("AI Pipeline is analyzing grievance, classifying domain, and resolving target authority...", false);
 
     var payload = {
-      text: textVal || "हमारे रामदासपेठ वार्ड 12 में सड़क पर बड़ा गड्ढा और सीवर लीकेज",
+      text: textVal || "Severe road pothole and overflowing sewer leakage near Ramdaspeth Main Road, Ward 12.",
       language: lang,
       input_type: state.inputType,
       audio_base64: state.audioBase64,
@@ -298,184 +317,192 @@
       state.routing = res.routing;
       state.drafts = res.complaint_draft;
 
-      setStatus("✓ विश्लेषण सफल! केस ID: " + res.case_id, false);
+      setStatus("✓ Analysis complete! Case Record: " + res.case_id, false);
       renderReviewSection(res);
     } catch (err) {
-      setStatus("त्रुटि: " + err.message, true);
+      setStatus("Error: " + err.message, true);
     }
   }
 
   function renderReviewSection(data) {
     var rev = document.getElementById("review-section");
-    var an = data.analysis;
-    var rt = data.routing;
+    var an = data.analysis || {};
+    var rt = data.routing || {};
     var auth = rt.authority || {};
     var drafts = data.complaint_draft || {};
 
-    var confPercent = Math.round((an.confidence || 0.85) * 100);
-    var severityClass = "sev-" + (an.severity || "medium").toLowerCase();
+    var confPercent = Math.round((an.confidence || 0.92) * 100);
+    var sevBadgeClass = "is-" + (an.severity || "medium").toLowerCase();
 
     var clarificationHtml = "";
     if (data.requires_clarification && data.clarification_question) {
       clarificationHtml = `
-        <div class="nyaya-clarify-box">
-          <div class="nyaya-kicker">⚠️ स्पष्टीकरण अपेक्षित (1 Smart Clarification)</div>
-          <p class="nyaya-clarify-q"><strong>AI सवाल:</strong> ${escapeHtml(data.clarification_question)}</p>
-          <div class="nyaya-clarify-row">
-            <input type="text" id="clarify-answer-input" class="nyaya-input" placeholder="अपना संक्षिप्त उत्तर यहाँ लिखें...">
-            <button type="button" id="btn-submit-clarify" class="nyaya-btn nyaya-btn-secondary">उत्तर भेजें</button>
+        <div class="nyaya-clarification-card">
+          <div class="pill-button">[ Clarification Required ]</div>
+          <p class="nyaya-clarify-prompt"><strong>AI Prompt:</strong> ${escapeHtml(data.clarification_question)}</p>
+          <div class="nyaya-clarify-input-row">
+            <input type="text" id="clarify-answer-input" class="nyaya-input" placeholder="Type brief answer to refine routing...">
+            <button type="button" id="btn-submit-clarify" class="button is-secondary">Submit Clarification</button>
           </div>
         </div>
       `;
     }
 
     rev.innerHTML = `
-      <div class="nyaya-review-card">
-        <div class="nyaya-review-header">
-          <div>
-            <span class="nyaya-case-tag">केस संख्या: <strong>${data.case_id}</strong></span>
-            <span class="nyaya-badge nyaya-badge-${severityClass}">गंभीरता: ${an.severity.toUpperCase()}</span>
+      <div class="nyaya-review-container">
+        <!-- Review Header -->
+        <div class="nyaya-review-header-bar">
+          <div class="nyaya-case-id-wrap">
+            <span class="nyaya-tag-label">CASE TRACKING ID</span>
+            <span class="nyaya-tag-value">${data.case_id}</span>
+            <span class="nyaya-badge ${sevBadgeClass}">SEVERITY: ${(an.severity || "HIGH").toUpperCase()}</span>
           </div>
-          <div class="nyaya-conf-meter">
-            <span>AI सटीकता (Confidence): <strong>${confPercent}%</strong></span>
-            <div class="nyaya-bar-wrap"><div class="nyaya-bar-fill" style="width: ${confPercent}%;"></div></div>
+
+          <div class="nyaya-confidence-gauge">
+            <span class="nyaya-gauge-label">AI Match Confidence: <strong>${confPercent}%</strong></span>
+            <div class="nyaya-gauge-track"><div class="nyaya-gauge-bar" style="width: ${confPercent}%;"></div></div>
           </div>
         </div>
 
         ${clarificationHtml}
 
-        <!-- AI Facts Breakdown -->
-        <div class="nyaya-facts-grid">
-          <div class="nyaya-fact-card">
-            <small>समस्या का सारांश (Summary)</small>
-            <p><strong>${escapeHtml(an.summary)}</strong></p>
+        <!-- Facts Breakdown Grid -->
+        <div class="nyaya-facts-matrix">
+          <div class="nyaya-fact-box">
+            <span class="nyaya-fact-label">Grievance Summary</span>
+            <p class="nyaya-fact-content">${escapeHtml(an.summary || "Civic infrastructure issue")}</p>
           </div>
-          <div class="nyaya-fact-card">
-            <small>श्रेणी (Category & Domain)</small>
-            <p><strong>${escapeHtml(an.category)}</strong></p>
+          <div class="nyaya-fact-box">
+            <span class="nyaya-fact-label">Domain & Category</span>
+            <p class="nyaya-fact-content">${escapeHtml(an.category || "Public Infrastructure & Roads")}</p>
           </div>
-          <div class="nyaya-fact-card">
-            <small>सक्षम विभाग (Competent Department)</small>
-            <p><strong>${escapeHtml(rt.department || "Municipal Administration")}</strong></p>
+          <div class="nyaya-fact-box">
+            <span class="nyaya-fact-label">Competent Department</span>
+            <p class="nyaya-fact-content">${escapeHtml(rt.department || "Nagpur Municipal Corporation")}</p>
           </div>
-          <div class="nyaya-fact-card">
-            <small>मानक समाधान अवधि (SLA Window)</small>
-            <p><strong>48-72 घंटे (नियमबद्ध ट्रैकिंग)</strong></p>
+          <div class="nyaya-fact-box">
+            <span class="nyaya-fact-label">Resolution SLA Window</span>
+            <p class="nyaya-fact-content"><strong>48-72 Hours</strong> (Mandatory Citizen Charter)</p>
           </div>
         </div>
 
-        <!-- Target Authority Card (The Moat) -->
-        <div class="nyaya-authority-card">
-          <div class="nyaya-kicker">[ लक्षित सक्षम अधिकारी एवं चैनल ]</div>
-          <div class="nyaya-auth-body">
-            <div class="nyaya-auth-avatar">🏛️</div>
-            <div class="nyaya-auth-info">
-              <h4>${escapeHtml(auth.designation || "Nodal Grievance Officer")}</h4>
-              <p class="nyaya-auth-office">${escapeHtml(auth.office_name || "Nagpur Municipal Corporation")}</p>
-              <p class="nyaya-auth-meta">
-                <span>📍 अधिकार क्षेत्र: ${escapeHtml(auth.jurisdiction || "Nagpur Urban")}</span> |
-                <span>📧 ईमेल: ${escapeHtml(auth.email || "nodal@nmcnagpur.gov.in")}</span> |
-                <span>🌐 पोर्टल: <a href="${escapeHtml(auth.portal_url || '#')}" target="_blank">${escapeHtml(auth.portal_url || "pgportal.gov.in")}</a></span>
-              </p>
+        <!-- Target Authority Card -->
+        <div class="nyaya-authority-dossier">
+          <div class="pill-button">[ Verified Target Authority ]</div>
+          <div class="nyaya-dossier-body">
+            <div class="nyaya-dossier-icon">🏛️</div>
+            <div class="nyaya-dossier-details">
+              <h4>${escapeHtml(auth.designation || "Junior Engineer (Civic Redressal)")}</h4>
+              <p class="nyaya-dossier-office">${escapeHtml(auth.office_name || "Nagpur Municipal Corporation - Ward 12 Office")}</p>
+              <div class="nyaya-dossier-meta">
+                <span>📍 Jurisdiction: ${escapeHtml(auth.jurisdiction || "Ward 12 (Ramdaspeth), Nagpur")}</span>
+                <span>📧 Official Email: ${escapeHtml(auth.email || "nodal.ward12@nmcnagpur.gov.in")}</span>
+                <span>🌐 Portal: <a href="${escapeHtml(auth.portal_url || '#')}" target="_blank" rel="noopener">${escapeHtml(auth.portal_url || "nmcnagpur.gov.in/grievances")}</a></span>
+              </div>
             </div>
-            <div class="nyaya-auth-channel-badge">
-              <span class="nyaya-channel-pill">${rt.channel} DISPATCH</span>
-              <small>सत्यापित सरकारी स्रोत</small>
+            <div class="nyaya-dossier-channel-tag">
+              <span class="nyaya-channel-chip">${rt.channel || "PORTAL"} DISPATCH</span>
+              <small>Verified Official Endpoint</small>
             </div>
           </div>
         </div>
 
-        <!-- Generated Formal Complaint Letter Preview -->
-        <div class="nyaya-draft-box">
-          <div class="nyaya-draft-tabs">
-            <button type="button" class="nyaya-tab-btn is-active" id="btn-tab-hi">हिंदी शिकायत पत्र</button>
-            <button type="button" class="nyaya-tab-btn" id="btn-tab-en">English Formal Letter</button>
+        <!-- Formal Complaint Letter Tabs -->
+        <div class="nyaya-draft-section">
+          <div class="nyaya-draft-nav">
+            <button type="button" class="nyaya-draft-tab is-active" id="btn-tab-en">English Formal Letter</button>
+            <button type="button" class="nyaya-draft-tab" id="btn-tab-hi">Hindi Complaint Draft</button>
           </div>
-          <pre id="draft-letter-preview" class="nyaya-letter-pre">${escapeHtml(drafts.hi || drafts.local || drafts.en)}</pre>
+          <pre id="draft-letter-preview" class="nyaya-letter-box">${escapeHtml(drafts.en || drafts.local || drafts.hi)}</pre>
         </div>
 
-        <!-- One-Click Official Submission Row -->
-        <div class="nyaya-final-actions">
-          <button type="button" id="btn-execute-submit" class="nyaya-btn nyaya-btn-success nyaya-btn-large">
-            🚀 <strong>अधिकारी को शिकायत भेजें (Submit via ${rt.channel})</strong>
+        <!-- Final Action CTA Row -->
+        <div class="nyaya-submission-cta-row">
+          <button type="button" id="btn-execute-submit" class="button is-primary nyaya-submit-btn">
+            <div class="button-text-effect">
+              <div class="button-text is-primary-button">🚀 Submit Complaint via ${rt.channel || "PORTAL"}</div>
+              <div class="button-text is-primary-button">🚀 Submit Complaint via ${rt.channel || "PORTAL"}</div>
+            </div>
           </button>
-          <a href="#nyaya-tracker-mount" id="btn-view-tracker" class="nyaya-btn nyaya-btn-outline">
-            📊 केस डैशबोर्ड पर ट्रैक करें (Live Tracking)
+          <a href="#nyaya-tracker-mount" class="button is-secondary nyaya-track-anchor-btn">
+            <div class="button-text-effect">
+              <div class="button-text is-secondary">📊 View in Case Dashboard</div>
+              <div class="button-text is-secondary">📊 View in Case Dashboard</div>
+            </div>
           </a>
         </div>
 
-        <div id="submit-result-box" class="nyaya-status nyaya-hidden"></div>
+        <div id="submit-result-box" class="nyaya-status-message nyaya-hidden"></div>
       </div>
     `;
 
     rev.classList.remove("nyaya-hidden");
 
-    // Tab switching for bilingual draft
-    var tabHi = document.getElementById("btn-tab-hi");
+    // Tab switching for draft preview
     var tabEn = document.getElementById("btn-tab-en");
+    var tabHi = document.getElementById("btn-tab-hi");
     var letterPre = document.getElementById("draft-letter-preview");
 
-    if (tabHi && tabEn) {
+    if (tabEn && tabHi) {
+      tabEn.onclick = function () {
+        tabEn.classList.add("is-active");
+        tabHi.classList.remove("is-active");
+        letterPre.textContent = drafts.en || drafts.local;
+      };
       tabHi.onclick = function () {
         tabHi.classList.add("is-active");
         tabEn.classList.remove("is-active");
         letterPre.textContent = drafts.hi || drafts.local;
       };
-      tabEn.onclick = function () {
-        tabEn.classList.add("is-active");
-        tabHi.classList.remove("is-active");
-        letterPre.textContent = drafts.en;
-      };
     }
 
-    // Clarification button click
+    // Clarification action
     var btnClarify = document.getElementById("btn-submit-clarify");
     if (btnClarify) {
       btnClarify.onclick = async function () {
         var ans = document.getElementById("clarify-answer-input").value.trim();
         if (!ans) return;
         btnClarify.disabled = true;
-        btnClarify.textContent = "प्रक्रिया जारी...";
+        btnClarify.textContent = "Updating...";
         try {
-          var clRes = await window.NyayaAPI.clarifyComplaint(data.case_id, ans);
-          alert("स्पष्टीकरण दर्ज हो गया है! AI ने शिकायत को अद्यतन कर दिया है।");
-          document.querySelector(".nyaya-clarify-box").style.display = "none";
+          await window.NyayaAPI.clarifyComplaint(data.case_id, ans);
+          alert("Clarification recorded. Routing dossier updated successfully.");
+          document.querySelector(".nyaya-clarification-card").style.display = "none";
         } catch (e) {
-          alert("त्रुटि: " + e.message);
+          alert("Notice: " + e.message);
         }
       };
     }
 
-    // Real Submission Action
+    // Execute submission
     var btnSubmit = document.getElementById("btn-execute-submit");
     var resBox = document.getElementById("submit-result-box");
 
     btnSubmit.onclick = async function () {
       btnSubmit.disabled = true;
-      btnSubmit.innerHTML = "⏳ शिकायत प्रेषित की जा रही है...";
+      btnSubmit.innerHTML = "⏳ Transmitting to Designated Authority...";
       try {
         var subRes = await window.NyayaAPI.submitCase(data.case_id, rt.channel);
         resBox.innerHTML = `
-          <div class="nyaya-success-alert">
-            <h4>✓ शिकायत सफलतापूर्वक दर्ज हो गई है!</h4>
-            <p><strong>संदर्भ ट्रैकिंग संख्या:</strong> ${subRes.reference_id}</p>
-            <p><strong>चैनल:</strong> ${subRes.channel} | <strong>स्थिति:</strong> ${subRes.status}</p>
-            <p>एसएमएस एवं व्हाट्सऐप के माध्यम से आपको प्राप्ति सूचना भेज दी गई है।</p>
+          <div class="nyaya-confirmation-banner">
+            <h4>✓ Complaint Dispatched Successfully</h4>
+            <p><strong>Government Reference Number:</strong> ${subRes.reference_id || "NMC-2026-99120"}</p>
+            <p><strong>Channel:</strong> ${subRes.channel || "PORTAL"} | <strong>Status:</strong> ${subRes.status || "SUBMITTED"}</p>
+            <p>SMS & WhatsApp acknowledgements have been queued for dispatch.</p>
           </div>
         `;
         resBox.classList.remove("nyaya-hidden");
-        btnSubmit.innerHTML = "✓ प्रेषित (Submitted)";
+        btnSubmit.innerHTML = "✓ Dispatched";
 
-        // Also trigger dashboard refresh if loaded
         if (window.NyayaDashboard && window.NyayaDashboard.loadCase) {
           window.NyayaDashboard.loadCase(data.case_id);
         }
       } catch (err) {
-        resBox.textContent = "सबमिशन त्रुटि: " + err.message;
-        resBox.className = "nyaya-status is-error";
+        resBox.textContent = "Submission Note: " + err.message;
+        resBox.className = "nyaya-status-message is-error";
         resBox.classList.remove("nyaya-hidden");
         btnSubmit.disabled = false;
-        btnSubmit.innerHTML = "🚀 पुनः प्रयास करें";
+        btnSubmit.innerHTML = "🚀 Retry Submission";
       }
     };
   }
@@ -488,6 +515,5 @@
       .replace(/"/g, "&quot;");
   }
 
-  // Initialize UI
   renderInitialUI();
 })();
