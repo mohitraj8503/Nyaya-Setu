@@ -1051,6 +1051,34 @@
   background: #f0fdf4 !important;
 }
 
+/* Footer Official Portal Link Badges */
+.footer-social-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.nyaya-portal-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--nyaya-radius-pill);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.nyaya-portal-link:hover {
+  background: var(--nyaya-primary);
+  border-color: var(--nyaya-primary);
+  transform: translateY(-1px);
+}
+
 /* Utilities */
 .nyaya-hidden {
   display: none !important;
