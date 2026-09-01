@@ -12,29 +12,30 @@
     "NS-2026-000184": {
       case_id: "NS-2026-000184",
       status: "IN_PROGRESS",
-      department: "Nagpur Municipal Corporation (NMC)",
+      department: "Jamshedpur Notified Area Committee (JNAC)",
       category: "Civic Infrastructure & Roads",
       severity: "high",
-      reference_id: "NMC-2026-99120",
+      reference_id: "JH-JSR-2026-88190",
       created_at: new Date(Date.now() - 36 * 3600 * 1000).toISOString(),
       updated_at: new Date(Date.now() - 2 * 3600 * 1000).toISOString(),
       sla_deadline: new Date(Date.now() + 36 * 3600 * 1000).toISOString(),
       sla_breached: false,
       escalation_level: 1,
       location: {
-        ward: "Ward 12 (Ramdaspeth)",
-        district: "Nagpur",
-        state: "Maharashtra",
-        pincode: "440010"
+        ward: "Bistupur / Northern Town",
+        city: "Jamshedpur",
+        district: "East Singhbhum",
+        state: "Jharkhand",
+        pincode: "831001"
       },
       normalized: {
         category: "Public Infrastructure & Road Repair",
-        summary: "Hazardous pothole and sewer leakage causing waterlogging in Ramdaspeth",
-        entities: ["Ramdaspeth Main Road", "Ward 12"],
+        summary: "Severe road crater and drainage overflow causing waterlogging near Bistupur Main Road",
+        entities: ["Bistupur Main Road", "East Singhbhum"],
         severity: "HIGH",
-        confidence: 0.94
+        confidence: 0.95
       },
-      complaint_text: "To,\nThe Junior Engineer (Roads & Drainage),\nNagpur Municipal Corporation, Ward 12 Office,\nRamdaspeth, Nagpur - 440010.\n\nSubject: Formal Complaint regarding severe road crater and open sewer leakage.\n\nRespected Sir/Madam,\n\nI wish to bring to your immediate attention a hazardous deep pothole and continuous sewer water overflow in Ramdaspeth, Ward 12. This situation poses severe health hazards and accident risks to commuters.\n\nKindly initiate necessary inspection and repair under the public citizen charter SLA guidelines.\n\nSincerely,\nCitizen of Ward 12, Nagpur"
+      complaint_text: "To,\nThe Special Officer / Nodal Grievance Executive,\nJamshedpur Notified Area Committee (JNAC),\nBistupur, Jamshedpur, East Singhbhum, Jharkhand - 831001.\n\nSubject: Formal Complaint regarding severe road crater and open drain hazard.\n\nRespected Sir/Madam,\n\nI wish to bring to your immediate attention a hazardous deep crater and continuous drain overflow near Bistupur Main Road, Jamshedpur. This poses severe accident risks and public inconvenience.\n\nKindly initiate necessary inspection and repair under the public citizen charter SLA guidelines.\n\nSincerely,\nConcerned Citizen of Jamshedpur"
     }
   };
 
@@ -43,37 +44,37 @@
       {
         event_type: "CASE_CREATED",
         actor_type: "CITIZEN",
-        event_data: { input_mode: "Voice Intake (Hindi/English)", location: "Ward 12, Nagpur" },
+        event_data: { input_mode: "Voice Intake (English/Hindi)", location: "Bistupur, Jamshedpur" },
         created_at: new Date(Date.now() - 36 * 3600 * 1000).toISOString()
       },
       {
         event_type: "AI_CLASSIFIED",
         actor_type: "AI",
-        event_data: { category: "Roads & Infrastructure", severity: "HIGH", confidence: "94%" },
+        event_data: { category: "Roads & Infrastructure", severity: "HIGH", confidence: "95%" },
         created_at: new Date(Date.now() - 35.9 * 3600 * 1000).toISOString()
       },
       {
         event_type: "ROUTED_TO_AUTHORITY",
         actor_type: "SYSTEM",
-        event_data: { authority: "Junior Engineer (Ward 12), NMC", channel: "PORTAL_API" },
+        event_data: { authority: "Special Officer, JNAC Jamshedpur", channel: "PORTAL_API" },
         created_at: new Date(Date.now() - 35.5 * 3600 * 1000).toISOString()
       },
       {
         event_type: "OFFICIAL_SUBMISSION",
         actor_type: "SYSTEM",
-        event_data: { portal_ref: "NMC-2026-99120", status: "ACKNOWLEDGED_BY_PORTAL" },
+        event_data: { portal_ref: "JH-JSR-2026-88190", status: "ACKNOWLEDGED_BY_PORTAL" },
         created_at: new Date(Date.now() - 24 * 3600 * 1000).toISOString()
       },
       {
         event_type: "OFFICER_ASSIGNED",
         actor_type: "OFFICER",
-        event_data: { officer: "Er. Ramesh Kulkarni (JE Ward 12)", action: "Field inspection scheduled" },
+        event_data: { officer: "Er. S. K. Mahato (JNAC Field Inspector)", action: "Site inspection scheduled" },
         created_at: new Date(Date.now() - 12 * 3600 * 1000).toISOString()
       },
       {
         event_type: "STATUS_UPDATE",
         actor_type: "OFFICER",
-        event_data: { status: "IN_PROGRESS", note: "Road maintenance team deployed for repair" },
+        event_data: { status: "IN_PROGRESS", note: "Road maintenance team deployed for pothole filling" },
         created_at: new Date(Date.now() - 2 * 3600 * 1000).toISOString()
       }
     ]
@@ -113,12 +114,35 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       }).catch(function (err) {
-        console.warn("Live API unavailable, generating local AI pipeline response:", err);
+        console.warn("Live API fallback, dynamic location resolution active:", err);
+        var loc = (payload && payload.location) || {};
+        var city = loc.city || "Jamshedpur";
+        var district = loc.district || "East Singhbhum";
+        var state = loc.state || "Jharkhand";
+        var pincode = loc.pincode || "831001";
+        var ward = loc.ward || "Central Ward";
+        var municipality = loc.municipality || (city + " Municipal Corporation");
+
         var caseId = "NS-2026-" + Math.floor(100000 + Math.random() * 900000);
         var cat = "Public Infrastructure & Roads";
         if (/water|drain|sewer|pipe/i.test(payload.text)) cat = "Water Supply & Drainage";
-        if (/electric|power|bill|meter/i.test(payload.text)) cat = "Electricity & Utilities";
+        if (/electric|power|bill|meter|transformer/i.test(payload.text)) cat = "Electricity & Utilities";
         if (/food|hotel|restaurant|sweet/i.test(payload.text)) cat = "Food & Consumer Safety";
+
+        var authDesignation = "Special Officer / Nodal Grievance Executive";
+        var authOffice = municipality + " Office";
+        var authEmail = "grievances." + city.toLowerCase().replace(/\s+/g, "") + "@jharkhandmail.gov.in";
+        var authPortal = "https://udhd.jharkhand.gov.in";
+
+        if (city.toLowerCase() === "jamshedpur") {
+          authOffice = "Jamshedpur Notified Area Committee (JNAC)";
+          authEmail = "so-jnac-jsr@jharkhandmail.gov.in";
+          authPortal = "https://udhd.jharkhand.gov.in";
+        } else if (city.toLowerCase() === "nagpur") {
+          authOffice = "Nagpur Municipal Corporation - Ward 12 Office";
+          authEmail = "nodal.ward12@nmcnagpur.gov.in";
+          authPortal = "https://nmcnagpur.gov.in/grievances";
+        }
 
         var simulated = {
           ok: true,
@@ -129,27 +153,27 @@
             category: cat,
             subcategory: "Civic Redressal",
             severity: "HIGH",
-            confidence: 0.92,
-            entities: ["Nagpur Municipal Ward 12", "Local Civic Area"],
+            confidence: 0.95,
+            entities: [city + " (" + ward + ")", district],
             requires_clarification: false
           },
           routing: {
-            department: "Nagpur Municipal Corporation (NMC)",
+            department: authOffice,
             channel: "PORTAL",
             sla_hours: 48,
             authority: {
-              authority_id: "AUTH-NMC-WARD12",
-              designation: "Junior Engineer (Civic Redressal)",
-              office_name: "Nagpur Municipal Corporation - Ward 12 Office",
-              jurisdiction: "Ward 12 (Ramdaspeth), Nagpur",
-              email: "nodal.ward12@nmcnagpur.gov.in",
-              portal_url: "https://nmcnagpur.gov.in/grievances",
-              phone: "1800-233-3766"
+              authority_id: "AUTH-" + (loc.state_code || "JH") + "-" + city.toUpperCase().substring(0, 3),
+              designation: authDesignation,
+              office_name: authOffice,
+              jurisdiction: ward + ", " + city + " (" + state + ")",
+              email: authEmail,
+              portal_url: authPortal,
+              phone: "1800-345-6540"
             }
           },
           complaint_draft: {
-            en: "To,\nThe Nodal Grievance Officer,\nNagpur Municipal Corporation, Ward 12 Office,\nRamdaspeth, Nagpur - 440010.\n\nSubject: Formal Complaint regarding public grievance in Ward 12.\n\nRespected Sir/Madam,\n\nI am lodging this formal complaint regarding: " + payload.text + ".\n\nKindly initiate necessary inspection and resolve the grievance within the standard SLA charter period.\n\nSincerely,\nConcerned Citizen",
-            hi: "सेवा में,\nनोडल शिकायत अधिकारी,\nनागपुर महानगर पालिका, वार्ड 12 कार्यालय,\nरामदासपेठ, नागपुर - 440010।\n\nविषय: वार्ड 12 में जन समस्या के समाधान हेतु शिकायत पत्र।\n\nमहोदय,\n\nसविनय निवेदन है कि हमारे क्षेत्र में: " + payload.text + "।\n\nकृपया त्वरित निरीक्षण कर निर्धारित समय-सीमा में समाधान कराएं।\n\nभवदीय,\nनागरिक (वार्ड 12, नागपुर)"
+            en: "To,\nThe " + authDesignation + ",\n" + authOffice + ",\n" + city + ", " + district + ", " + state + " - " + pincode + ".\n\nSubject: Formal Complaint regarding " + cat.toLowerCase() + " grievance in " + ward + ".\n\nRespected Sir/Madam,\n\nI am lodging this formal public complaint regarding: " + payload.text + ".\n\nKindly initiate necessary inspection and resolve the grievance within the standard Citizen Charter SLA window.\n\nSincerely,\nConcerned Citizen of " + city,
+            hi: "सेवा में,\n" + authDesignation + ",\n" + authOffice + ",\n" + city + ", " + district + ", " + state + " - " + pincode + "।\n\nविषय: " + ward + ", " + city + " में " + cat + " संबंधी शिकायत पत्र।\n\nमहोदय,\n\nसविनय निवेदन है कि हमारे क्षेत्र में: " + payload.text + "।\n\nकृपया त्वरित स्थलीय निरीक्षण कर निर्धारित समय-सीमा में समस्या का समाधान कराने की कृपा करें।\n\nभवदीय,\nनागरिक (" + city + ", " + state + ")"
           }
         };
 
@@ -160,13 +184,13 @@
           department: simulated.routing.department,
           category: cat,
           severity: "high",
-          reference_id: "NMC-2026-" + Math.floor(10000 + Math.random() * 90000),
+          reference_id: "REF-" + (loc.state_code || "JH") + "-2026-" + Math.floor(10000 + Math.random() * 90000),
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
           sla_deadline: new Date(Date.now() + 48 * 3600 * 1000).toISOString(),
           sla_breached: false,
           escalation_level: 0,
-          location: { ward: "Ward 12 (Ramdaspeth)", district: "Nagpur", state: "Maharashtra" },
+          location: { ward: ward, city: city, district: district, state: state, pincode: pincode },
           normalized: simulated.analysis,
           complaint_text: simulated.complaint_draft.en
         };
@@ -175,13 +199,13 @@
           {
             event_type: "CASE_CREATED",
             actor_type: "CITIZEN",
-            event_data: { input_mode: payload.input_type || "text", location: "Nagpur" },
+            event_data: { input_mode: payload.input_type || "text", location: city + ", " + district },
             created_at: new Date().toISOString()
           },
           {
             event_type: "AI_CLASSIFIED",
             actor_type: "AI",
-            event_data: { category: cat, confidence: "92%", severity: "HIGH" },
+            event_data: { category: cat, confidence: "95%", severity: "HIGH" },
             created_at: new Date().toISOString()
           }
         ];
@@ -206,7 +230,6 @@
         if (mockCases[caseId]) {
           return mockCases[caseId];
         }
-        // Fallback default case
         return mockCases["NS-2026-000184"];
       });
     },
@@ -233,7 +256,7 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ channel: channel || "PORTAL", confirmed_by_citizen: true })
       }).catch(function () {
-        var ref = "NMC-2026-" + Math.floor(10000 + Math.random() * 90000);
+        var ref = "JH-JSR-2026-" + Math.floor(10000 + Math.random() * 90000);
         if (mockCases[caseId]) {
           mockCases[caseId].status = "SUBMITTED";
           mockCases[caseId].reference_id = ref;
@@ -273,7 +296,7 @@
           ok: true,
           case_id: caseId,
           level: 2,
-          new_authority: "Zonal Assistant Municipal Commissioner (Zone 4), NMC",
+          new_authority: "Deputy Commissioner / District Magistrate, East Singhbhum",
           escalated_at: new Date().toISOString()
         };
       });
@@ -283,7 +306,7 @@
     getAuthorities: function () {
       return request("/v2/authorities").catch(function () {
         return [
-          { authority_id: "AUTH-NMC-WARD12", office_name: "Ward 12 Junior Engineer, NMC", designation: "Nodal Grievance Officer", department: "Municipal Corporation", jurisdiction: "Nagpur, Ward 12" },
+          { authority_id: "AUTH-JH-JSR-JNAC-001", office_name: "Jamshedpur Notified Area Committee (JNAC)", designation: "Special Officer", department: "Urban Development, Jharkhand", jurisdiction: "Jamshedpur Urban" },
           { authority_id: "AUTH-CPGRAMS", office_name: "CPGRAMS Central Public Grievance Portal", designation: "Central Nodal Officer", department: "DARPG", jurisdiction: "National" }
         ];
       });
@@ -326,9 +349,9 @@
     getWardHeatmap: function () {
       return request("/v2/analytics/ward-heatmap").catch(function () {
         return [
-          { ward: "Ward 12 (Ramdaspeth)", count: 42, avg_hours: 32.5, breach_count: 1 },
-          { ward: "Ward 14 (Dharampeth)", count: 28, avg_hours: 28.0, breach_count: 0 },
-          { ward: "Ward 22 (Sitabuldi)", count: 35, avg_hours: 41.2, breach_count: 2 }
+          { ward: "Bistupur / Northern Town", count: 42, avg_hours: 32.5, breach_count: 1 },
+          { ward: "Sakchi / Golmuri", count: 28, avg_hours: 28.0, breach_count: 0 },
+          { ward: "Kadma / Sonari", count: 35, avg_hours: 41.2, breach_count: 2 }
         ];
       });
     },

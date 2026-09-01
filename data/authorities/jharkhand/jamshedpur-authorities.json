@@ -1,0 +1,108 @@
+[
+  {
+    "authority_id": "AUTH-JH-JSR-JNAC-001",
+    "name": "Jamshedpur Notified Area Committee",
+    "designation": "Special Officer / Municipal Executive",
+    "office_name": "Jamshedpur Notified Area Committee (JNAC) Head Office",
+    "department": "Urban Development & Housing Department, Govt. of Jharkhand",
+    "state_code": "JH",
+    "district": "East Singhbhum",
+    "jurisdiction": "Jamshedpur Urban (Bistupur, Sakchi, Kadma, Sonari, Baridih)",
+    "email": "so-jnac-jsr@jharkhandmail.gov.in",
+    "phone": "0657-2431444",
+    "portal_url": "https://udhd.jharkhand.gov.in",
+    "submission_method": "PORTAL",
+    "verification_status": "VERIFIED",
+    "supported_categories": [
+      "Public Infrastructure & Roads",
+      "Water Supply & Drainage",
+      "Sanitation & Solid Waste Management",
+      "Street Lighting & Civic Amenities",
+      "Building Permissions & Encroachments"
+    ]
+  },
+  {
+    "authority_id": "AUTH-JH-JSR-JUSCO-002",
+    "name": "Tata Steel UISL (JUSCO) Citizen Services",
+    "designation": "Nodal Grievance Redressal Officer",
+    "office_name": "Tata Steel UISL Central Customer Care Center",
+    "department": "Tata Steel Utilities and Infrastructure Services Limited",
+    "state_code": "JH",
+    "district": "East Singhbhum",
+    "jurisdiction": "Tata Lease Area (Jamshedpur Command Area)",
+    "email": "customercare@tatasteeluisl.com",
+    "phone": "0657-6646000",
+    "portal_url": "https://www.tatasteeluisl.com",
+    "submission_method": "PORTAL",
+    "verification_status": "VERIFIED",
+    "supported_categories": [
+      "Water Supply & Drainage",
+      "Electricity & Power Distribution",
+      "Town Maintenance & Road Repair",
+      "Public Health & Vector Control"
+    ]
+  },
+  {
+    "authority_id": "AUTH-JH-JSR-DC-003",
+    "name": "District Collector & District Magistrate",
+    "designation": "Deputy Commissioner, East Singhbhum",
+    "office_name": "Collectorate Office, Jamshedpur",
+    "department": "Department of Personnel & Administrative Reforms, Jharkhand",
+    "state_code": "JH",
+    "district": "East Singhbhum",
+    "jurisdiction": "Entire East Singhbhum District",
+    "email": "dc-esing@nic.in",
+    "phone": "0657-2431002",
+    "portal_url": "https://jamshedpur.nic.in",
+    "submission_method": "PORTAL",
+    "verification_status": "VERIFIED",
+    "supported_categories": [
+      "Revenue & Land Records",
+      "Law & Order",
+      "Public Distribution System (Ration)",
+      "Disaster Management & Grievance Appeals"
+    ]
+  },
+  {
+    "authority_id": "AUTH-JH-JBVNL-004",
+    "name": "Jharkhand Bijli Vitran Nigam Limited",
+    "designation": "Assistant Electrical Engineer (Jamshedpur Supply Division)",
+    "office_name": "JBVNL Electric Supply Circle, Jamshedpur",
+    "department": "Energy Department, Government of Jharkhand",
+    "state_code": "JH",
+    "district": "East Singhbhum",
+    "jurisdiction": "Mango, Karandih, Jugsalai, Parsudih, Jamshedpur Rural",
+    "email": "gmescjamshedpur@gmail.com",
+    "phone": "1912",
+    "portal_url": "https://jbvnl.co.in",
+    "submission_method": "PORTAL",
+    "verification_status": "VERIFIED",
+    "supported_categories": [
+      "Electricity & Utility Issues",
+      "Transformer Breakdown",
+      "Faulty Meter & Billing Disputes",
+      "New Power Connections"
+    ]
+  },
+  {
+    "authority_id": "AUTH-JH-CM-JANSAMVAD-005",
+    "name": "Jharkhand CM Jan Samvad Kendra",
+    "designation": "Chief Minister Public Grievance Officer",
+    "office_name": "CM Secretariat Grievance Redressal Cell, Project Building, Ranchi",
+    "department": "Cabinet Secretariat & Vigilance Department, Jharkhand",
+    "state_code": "JH",
+    "district": "All Districts",
+    "jurisdiction": "State of Jharkhand (All 24 Districts)",
+    "email": "jansamvad-cm@jharkhand.gov.in",
+    "phone": "181",
+    "portal_url": "https://cmjansamvad.jharkhand.gov.in",
+    "submission_method": "PORTAL",
+    "verification_status": "VERIFIED",
+    "supported_categories": [
+      "Inter-Departmental Escalations",
+      "Government Scheme Entitlements",
+      "Supervisory Appeals",
+      "Administrative Delay Breaches"
+    ]
+  }
+]

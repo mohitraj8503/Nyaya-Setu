@@ -1,9 +1,54 @@
 {
   "pincodes": {
+    "831001": {
+      "state": "Jharkhand",
+      "state_code": "JH",
+      "district": "East Singhbhum",
+      "city": "Jamshedpur",
+      "municipality": "Jamshedpur Notified Area Committee (JNAC)",
+      "ward": "Bistupur / Northern Town",
+      "zone": "Zone 1 (Jamshedpur Urban)",
+      "lat": 22.8006,
+      "lng": 86.1871
+    },
+    "831002": {
+      "state": "Jharkhand",
+      "state_code": "JH",
+      "district": "East Singhbhum",
+      "city": "Jamshedpur",
+      "municipality": "Jamshedpur Notified Area Committee (JNAC)",
+      "ward": "Sakchi / Golmuri",
+      "zone": "Zone 2 (Jamshedpur Central)",
+      "lat": 22.8046,
+      "lng": 86.2029
+    },
+    "831005": {
+      "state": "Jharkhand",
+      "state_code": "JH",
+      "district": "East Singhbhum",
+      "city": "Jamshedpur",
+      "municipality": "Mango Municipal Corporation",
+      "ward": "Mango Ward 4",
+      "zone": "Mango Zone",
+      "lat": 22.8234,
+      "lng": 86.2081
+    },
+    "834001": {
+      "state": "Jharkhand",
+      "state_code": "JH",
+      "district": "Ranchi",
+      "city": "Ranchi",
+      "municipality": "Ranchi Municipal Corporation (RMC)",
+      "ward": "Main Road / Doranda",
+      "zone": "Central Zone",
+      "lat": 23.3441,
+      "lng": 85.3096
+    },
     "440010": {
       "state": "Maharashtra",
       "state_code": "MH",
       "district": "Nagpur",
+      "city": "Nagpur",
       "municipality": "Nagpur Municipal Corporation",
       "ward": "Ward 12 (Ramdaspeth)",
       "zone": "Dharampeth Zone 2",
@@ -14,6 +59,7 @@
       "state": "Maharashtra",
       "state_code": "MH",
       "district": "Nagpur",
+      "city": "Nagpur",
       "municipality": "Nagpur Municipal Corporation",
       "ward": "Ward 10 (Civil Lines)",
       "zone": "Dharampeth Zone 2",
@@ -24,6 +70,7 @@
       "state": "Delhi",
       "state_code": "DL",
       "district": "New Delhi",
+      "city": "New Delhi",
       "municipality": "New Delhi Municipal Council",
       "ward": "Connaught Place",
       "zone": "Central",
@@ -34,6 +81,7 @@
       "state": "Maharashtra",
       "state_code": "MH",
       "district": "Mumbai",
+      "city": "Mumbai",
       "municipality": "Brihanmumbai Municipal Corporation",
       "ward": "A Ward (Fort / Colaba)",
       "zone": "South Mumbai",
@@ -44,14 +92,76 @@
       "state": "Karnataka",
       "state_code": "KA",
       "district": "Bengaluru Urban",
+      "city": "Bengaluru",
       "municipality": "Bruhat Bengaluru Mahanagara Palike",
       "ward": "Ward 111 (Shantala Nagar)",
       "zone": "East",
       "lat": 12.9716,
       "lng": 77.5946
+    },
+    "500001": {
+      "state": "Telangana",
+      "state_code": "TS",
+      "district": "Hyderabad",
+      "city": "Hyderabad",
+      "municipality": "Greater Hyderabad Municipal Corporation",
+      "ward": "Abids / Koti",
+      "zone": "Charminar Zone",
+      "lat": 17.3850,
+      "lng": 78.4867
+    },
+    "600001": {
+      "state": "Tamil Nadu",
+      "state_code": "TN",
+      "district": "Chennai",
+      "city": "Chennai",
+      "municipality": "Greater Chennai Corporation",
+      "ward": "Ward 54 (George Town)",
+      "zone": "Royapuram Zone 5",
+      "lat": 13.0827,
+      "lng": 80.2707
+    },
+    "700001": {
+      "state": "West Bengal",
+      "state_code": "WB",
+      "district": "Kolkata",
+      "city": "Kolkata",
+      "municipality": "Kolkata Municipal Corporation",
+      "ward": "BBD Bagh / Ward 45",
+      "zone": "Borough V",
+      "lat": 22.5726,
+      "lng": 88.3639
+    },
+    "800001": {
+      "state": "Bihar",
+      "state_code": "BR",
+      "district": "Patna",
+      "city": "Patna",
+      "municipality": "Patna Municipal Corporation",
+      "ward": "Kankarbagh / Ward 22",
+      "zone": "New Capital Circle",
+      "lat": 25.5941,
+      "lng": 85.1376
+    },
+    "226001": {
+      "state": "Uttar Pradesh",
+      "state_code": "UP",
+      "district": "Lucknow",
+      "city": "Lucknow",
+      "municipality": "Lucknow Municipal Corporation",
+      "ward": "Hazratganj / Ward 14",
+      "zone": "Zone 1",
+      "lat": 26.8467,
+      "lng": 80.9462
     }
   },
   "states": [
+    {
+      "code": "JH",
+      "name": "Jharkhand",
+      "capital": "Ranchi",
+      "pgr_portal": "https://cmjansamvad.jharkhand.gov.in"
+    },
     {
       "code": "MH",
       "name": "Maharashtra",
@@ -69,6 +179,24 @@
       "name": "Karnataka",
       "capital": "Bengaluru",
       "pgr_portal": "https://ipgrs.karnataka.gov.in"
+    },
+    {
+      "code": "BR",
+      "name": "Bihar",
+      "capital": "Patna",
+      "pgr_portal": "https://lokshikayat.bihar.gov.in"
+    },
+    {
+      "code": "UP",
+      "name": "Uttar Pradesh",
+      "capital": "Lucknow",
+      "pgr_portal": "https://jansunwai.up.nic.in"
+    },
+    {
+      "code": "WB",
+      "name": "West Bengal",
+      "capital": "Kolkata",
+      "pgr_portal": "https://wb.gov.in/grievances"
     }
   ]
 }
