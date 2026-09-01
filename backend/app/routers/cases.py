@@ -78,3 +78,49 @@ def escalate_case(
         
     result = escalation_service.escalate_case(db=db, case=case, reason=reason)
     return result
+
+@router.post("/{case_id}/feedback")
+def submit_feedback(
+    case_id: str,
+    rating: int = Query(..., ge=1, le=5),
+    comments: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    case = case_service.get_case_by_case_id(db, case_id)
+    if not case:
+        case = case_service.get_case_by_id(db, case_id)
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+        
+    case_service.add_timeline_event(
+        db=db,
+        case=case,
+        event_type="CITIZEN_FEEDBACK_RECORDED",
+        actor_type="CITIZEN",
+        event_data={"rating": rating, "comments": comments or "Citizen resolution rating submitted"}
+    )
+    return {"status": "SUCCESS", "case_id": case.case_id, "rating": rating, "message": "Feedback recorded successfully"}
+
+@router.post("/{case_id}/reopen")
+def reopen_case(
+    case_id: str,
+    reason: str = Query(..., min_length=3),
+    db: Session = Depends(get_db)
+):
+    case = case_service.get_case_by_case_id(db, case_id)
+    if not case:
+        case = case_service.get_case_by_id(db, case_id)
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+        
+    case.status = "REOPENED"
+    case_service.add_timeline_event(
+        db=db,
+        case=case,
+        event_type="GRIEVANCE_REOPENED",
+        actor_type="CITIZEN",
+        event_data={"reason": reason, "reopened_by": "Citizen via Web Portal"}
+    )
+    db.commit()
+    db.refresh(case)
+    return {"status": "SUCCESS", "case_id": case.case_id, "current_status": case.status, "message": "Grievance reopened for re-inspection"}

@@ -1359,6 +1359,54 @@
   background: #f2f2f7 !important;
 }
 
+.apple-rating-wrap {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #ffffff;
+  border: 1px solid #e5e5ea;
+  border-radius: 980px;
+  padding: 4px 12px;
+}
+
+.apple-rating-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #86868b;
+  margin-right: 4px;
+}
+
+.apple-star-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #ff9500;
+  cursor: pointer;
+  padding: 0 2px;
+  transition: transform 0.15s ease;
+}
+
+.apple-star-btn:hover {
+  transform: scale(1.25);
+}
+
+.apple-btn-danger {
+  background: #ffffff !important;
+  color: #d70015 !important;
+  border: 1px solid #ffd6d6 !important;
+  padding: 10px 18px !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  border-radius: 980px !important;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.apple-btn-danger:hover {
+  background: #fff2f2 !important;
+  border-color: #d70015 !important;
+}
+
 /* ==========================================================================
    Real Clean Footer Design System (Emerald Gradient Theme)
    ========================================================================== */

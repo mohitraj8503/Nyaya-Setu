@@ -302,6 +302,40 @@
       });
     },
 
+    // DIGIT-PGR / eGov Complaint System APIs
+    submitFeedback: function (caseId, rating, comments) {
+      return request("/v2/cases/" + encodeURIComponent(caseId) + "/feedback?rating=" + encodeURIComponent(rating) + (comments ? "&comments=" + encodeURIComponent(comments) : ""), {
+        method: "POST"
+      }).catch(function () {
+        if (mockCases[caseId]) {
+          mockTimelines[caseId].push({
+            event_type: "CITIZEN_FEEDBACK_RECORDED",
+            actor_type: "CITIZEN",
+            event_data: { rating: rating, comments: comments || "Citizen rating recorded" },
+            created_at: new Date().toISOString()
+          });
+        }
+        return { ok: true, case_id: caseId, rating: rating, message: "Feedback recorded" };
+      });
+    },
+
+    reopenCase: function (caseId, reason) {
+      return request("/v2/cases/" + encodeURIComponent(caseId) + "/reopen?reason=" + encodeURIComponent(reason), {
+        method: "POST"
+      }).catch(function () {
+        if (mockCases[caseId]) {
+          mockCases[caseId].status = "REOPENED";
+          mockTimelines[caseId].push({
+            event_type: "GRIEVANCE_REOPENED",
+            actor_type: "CITIZEN",
+            event_data: { reason: reason, reopened_by: "Citizen via Web Portal" },
+            created_at: new Date().toISOString()
+          });
+        }
+        return { ok: true, case_id: caseId, current_status: "REOPENED", message: "Grievance reopened for inspection" };
+      });
+    },
+
     // === v2 Authority Directory ===
     getAuthorities: function () {
       return request("/v2/authorities").catch(function () {

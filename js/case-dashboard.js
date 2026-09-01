@@ -223,23 +223,73 @@
           </div>
         </div>
 
-        <!-- Apple Action Footer -->
+        <!-- Apple Action Footer (with eGov CCRS / DIGIT-PGR Capabilities) -->
         <div class="apple-actions-footer">
           <div class="apple-actions-note">
-            <strong>Citizen Escalation Guarantee</strong>
-            <p>If not resolved within the SLA window, this case escalates to the District Magistrate.</p>
+            <strong>${isResolved ? 'Citizen Resolution Verification (DIGIT-PGR)' : 'Citizen Escalation Guarantee'}</strong>
+            <p>${isResolved ? 'If the ground resolution is incomplete, you have the statutory right to re-open this ticket.' : 'If not resolved within the 48h SLA window, this case escalates to the District Magistrate.'}</p>
           </div>
           <div class="apple-actions-btns">
-            <button type="button" id="btn-manual-escalate" class="apple-btn-primary">
-              Escalate Case
-            </button>
-            <button type="button" id="btn-copy-dossier" class="apple-btn-secondary">
-              Copy Dossier
-            </button>
+            ${isResolved ? `
+              <div class="apple-rating-wrap">
+                <span class="apple-rating-label">Rate Resolution:</span>
+                <button type="button" class="apple-star-btn" data-star="1">★</button>
+                <button type="button" class="apple-star-btn" data-star="2">★</button>
+                <button type="button" class="apple-star-btn" data-star="3">★</button>
+                <button type="button" class="apple-star-btn" data-star="4">★</button>
+                <button type="button" class="apple-star-btn" data-star="5">★</button>
+              </div>
+              <button type="button" id="btn-reopen-case" class="apple-btn-danger">
+                Re-open Grievance
+              </button>
+            ` : `
+              <button type="button" id="btn-manual-escalate" class="apple-btn-primary">
+                Escalate Case
+              </button>
+              <button type="button" id="btn-copy-dossier" class="apple-btn-secondary">
+                Copy Dossier
+              </button>
+            `}
           </div>
         </div>
       </div>
     `;
+
+    // Star rating handler
+    var starBtns = container.querySelectorAll(".apple-star-btn");
+    starBtns.forEach(function (btn) {
+      btn.onclick = async function () {
+        var star = parseInt(btn.getAttribute("data-star"), 10);
+        btn.disabled = true;
+        try {
+          await window.NyayaAPI.submitFeedback(caseData.case_id, star, "Citizen rating submitted: " + star + " stars");
+          alert("✓ Thank you! Citizen satisfaction rating of " + star + "/5 stars recorded.");
+          loadCaseData(caseData.case_id);
+        } catch (e) {
+          alert("Notice: " + e.message);
+        }
+      };
+    });
+
+    // Reopen grievance handler
+    var btnReopen = document.getElementById("btn-reopen-case");
+    if (btnReopen) {
+      btnReopen.onclick = async function () {
+        var reason = prompt("Enter reason for re-opening this grievance (e.g., issue persists on ground, poor repair quality):", "Work incomplete at site upon inspection");
+        if (!reason) return;
+        btnReopen.disabled = true;
+        btnReopen.textContent = "Re-opening...";
+        try {
+          await window.NyayaAPI.reopenCase(caseData.case_id, reason);
+          alert("✓ Grievance re-opened and re-assigned to GRO for fresh inspection.");
+          loadCaseData(caseData.case_id);
+        } catch (e) {
+          alert("Notice: " + e.message);
+          btnReopen.disabled = false;
+          btnReopen.textContent = "Re-open Grievance";
+        }
+      };
+    }
 
     // Copy Ref
     var btnCopyRef = document.getElementById("btn-copy-ref");
