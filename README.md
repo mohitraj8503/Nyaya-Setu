@@ -24,7 +24,7 @@
 
 <br/>
 
-[🌟 Live Web App](https://mohitraj8503.github.io/Nyaya-Setu/) • [📊 Shark Tank Pitch](#-1-the-shark-tank-pitch--market-opportunity) • [⚡ 5 Superpowers](#-2-the-5-superpowers-of-nyayasetu) • [🏗️ Architecture](#-3-cutting-edge-technical-architecture) • [🔌 API Specs](#-4-complete-api-engine-specification) • [🚀 60s Quickstart](#-6-quickstart--installation-in-60-seconds)
+[🌟 Live Web App](https://mohitraj8503.github.io/Nyaya-Setu/) • [📊 Executive Summary](#-1-executive-summary--market-opportunity) • [⚡ 5 Superpowers](#-2-the-5-superpowers-of-nyayasetu) • [🏗️ Architecture](#-3-cutting-edge-technical-architecture) • [🔌 API Specs](#-4-complete-api-engine-specification) • [🚀 60s Quickstart](#-6-quickstart--installation-in-60-seconds)
 
 ---
 
@@ -33,7 +33,7 @@
 <br/>
 
 > [!IMPORTANT]
-> **The Shark Tank One-Liner**:
+> **Executive Overview & Core Mission**:
 > **72% of Indian citizens abandon filing civic complaints** due to language barriers, confusing government jurisdictions, and bureaucratic silence. **NyayaSetu turns a raw vernacular voice note in 22 Indian languages into an airtight legal dossier, maps the exact municipal ward via GPS/PIN database, dispatches it to the verified nodal officer, and enforces a strict 48-hour statutory countdown with automated supervisory escalation.**
 
 <br/>
@@ -42,7 +42,7 @@
 
 ## 📑 Interactive Table of Contents
 
-- [🎯 1. The Shark Tank Pitch & Market Opportunity](#-1-the-shark-tank-pitch--market-opportunity)
+- [🎯 1. Executive Summary & Market Opportunity](#-1-executive-summary--market-opportunity)
   - [The Massive Indian Civic Friction](#the-massive-indian-civic-friction)
   - [The $0 to $1 Breakthrough](#the-0-to-1-breakthrough)
   - [Traditional Portals vs. NyayaSetu 2.0](#traditional-portals-vs-nyayasetu-20)
@@ -64,7 +64,7 @@
 
 ---
 
-## 🎯 1. The Shark Tank Pitch & Market Opportunity
+## 🎯 1. Executive Summary & Market Opportunity
 
 ```
 ┌───────────────────────────────────────────────────────────────────────────────────────────────────┐
