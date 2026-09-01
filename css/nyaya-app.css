@@ -1051,32 +1051,103 @@
   background: #f0fdf4 !important;
 }
 
-/* Footer Official Portal Link Badges */
-.footer-social-wrap {
+/* ==========================================================================
+   Real Clean Footer Design System
+   ========================================================================== */
+.nyaya-footer-root {
+  background: #0f172a;
+  color: #94a3b8;
+  padding: 36px 0 28px;
+  font-family: inherit;
+  border-top: 1px solid #1e293b;
+}
+
+.nyaya-footer-content {
+  width: 100%;
+}
+
+.nyaya-footer-brand-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.nyaya-footer-logo {
+  height: 38px;
+  width: auto;
+  filter: brightness(0) invert(1);
+}
+
+.nyaya-footer-portals {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
 }
 
-.nyaya-portal-link {
+.nyaya-footer-portal-btn {
   display: inline-flex;
   align-items: center;
-  padding: 6px 14px;
+  padding: 7px 18px;
   font-size: 13px;
   font-weight: 700;
+  letter-spacing: 0.02em;
   color: #ffffff !important;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: #1e293b;
+  border: 1px solid #334155;
   border-radius: var(--nyaya-radius-pill);
   text-decoration: none;
   transition: all 0.2s ease;
 }
 
-.nyaya-portal-link:hover {
+.nyaya-footer-portal-btn:hover {
   background: var(--nyaya-primary);
   border-color: var(--nyaya-primary);
-  transform: translateY(-1px);
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(47, 133, 90, 0.3);
+}
+
+.nyaya-footer-divider {
+  height: 1px;
+  background: #1e293b;
+  margin: 16px 0 20px;
+  width: 100%;
+}
+
+.nyaya-footer-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 14px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.nyaya-footer-copy {
+  color: #cbd5e1;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.nyaya-footer-disclaimer {
+  color: #64748b;
+  max-width: 680px;
+  text-align: right;
+}
+
+@media (max-width: 800px) {
+  .nyaya-footer-meta-row {
+    flex-direction: column;
+    text-align: left;
+  }
+  .nyaya-footer-disclaimer {
+    text-align: left;
+  }
 }
 
 /* Utilities */
