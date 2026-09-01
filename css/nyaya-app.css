@@ -32,10 +32,14 @@
 
 .nyaya-app-shell {
   width: 100%;
-  padding: 20px 0 60px;
+  padding: 48px 0 80px;
+  background: linear-gradient(180deg, #e9f5ed 0%, #f4faf6 280px, #ffffff 100%);
+  position: relative;
+  border-top: 2px solid #cfe8d6;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: var(--nyaya-charcoal);
   box-sizing: border-box;
+  box-shadow: inset 0 20px 40px -20px rgba(18, 52, 33, 0.08);
 }
 
 .nyaya-portal-container {
@@ -48,48 +52,50 @@
 /* Section Header */
 .nyaya-section-header {
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .nyaya-section-header .pill-button {
   display: inline-block;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--nyaya-primary);
-  background: var(--nyaya-surface);
-  border: 1px solid #d7eadc;
+  color: #1e6b43;
+  background: #d8f0df;
+  border: 1px solid #bce2c7;
   border-radius: var(--nyaya-radius-pill);
-  padding: 5px 16px;
+  padding: 6px 18px;
   margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(30, 107, 67, 0.08);
 }
 
 .nyaya-section-header .section-heading {
-  margin: 0 0 8px;
-  font-size: 30px;
-  font-weight: 700;
+  margin: 0 0 10px;
+  font-size: 32px;
+  font-weight: 800;
   line-height: 1.25;
-  color: var(--nyaya-charcoal);
+  color: #0d2319;
+  letter-spacing: -0.01em;
 }
 
 .nyaya-section-header .about-text {
   font-size: 15px;
-  color: var(--nyaya-text-muted);
+  color: #334155;
   line-height: 1.6;
   margin: 0;
-  max-width: 1000px;
+  max-width: 920px;
 }
 
 /* Main Full-Width Card */
 .nyaya-card {
   width: 100%;
   box-sizing: border-box;
-  background: var(--nyaya-surface);
-  border: 1px solid #e2efe6;
-  border-radius: var(--nyaya-radius-card);
-  box-shadow: var(--nyaya-shadow-card);
-  padding: 32px 36px;
+  background: #ffffff;
+  border: 1px solid #d3e7d8;
+  border-radius: 22px;
+  box-shadow: 0 20px 50px -12px rgba(18, 52, 33, 0.09), 0 0 0 1px rgba(47, 133, 90, 0.05);
+  padding: 34px 38px;
   position: relative;
   transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
@@ -97,7 +103,9 @@
 @media (max-width: 768px) {
   .nyaya-card {
     padding: 20px 18px;
+    border-radius: 16px;
   }
+}
 }
 
 .nyaya-card:hover {
