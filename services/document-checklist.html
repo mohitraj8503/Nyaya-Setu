@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document Checklist & Form Generator - Nyaya-Setu</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 28px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+    h2 {
+      margin-top: 0;
+      color: #0f172a;
+    }
+    .selector-box {
+      margin-bottom: 22px;
+    }
+    select, input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    .progress-wrapper {
+      background: #f1f5f9;
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 22px;
+    }
+    .progress-bar {
+      width: 100%;
+      background: #e2e8f0;
+      height: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-fill {
+      width: 0%;
+      height: 100%;
+      background: #10b981;
+      transition: width 0.3s;
+    }
+    .card {
+      border: 1px solid #e2e8f0;
+      padding: 18px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    .checklist-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
+    }
+    .checklist-row input {
+      width: auto;
+      margin-top: 4px;
+      transform: scale(1.2);
+    }
+    .guidance-box {
+      font-size: 13px;
+      color: #334155;
+      background: #eff6ff;
+      border-left: 4px solid #2563eb;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 22px;
+    }
+    .btn-print {
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .btn-print:hover {
+      background: #1d4ed8;
+    }
+    @media print {
+      body * { visibility: hidden; }
+      .container, .container * { visibility: visible; }
+      .container { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Citizen Service Document Checklist & Application Form Generator</h2>
+    <p class="no-print">Select a citizen service, verify mandatory documentation, and download or print the readiness sheet.</p>
+
+    <!-- Selector -->
+    <div class="selector-box no-print">
+      <label for="serviceSelect"><strong>Select Citizen Service:</strong></label>
+      <select id="serviceSelect" onchange="renderService()">
+        <option value="aadhaar">Aadhaar Details Update</option>
+        <option value="ration">New Ration Card Application</option>
+        <option value="fir">FIR Incident Draft & Checklist</option>
+        <option value="income">Income Certificate Issuance</option>
+      </select>
+    </div>
+
+    <!-- Progress Indicator -->
+    <div class="progress-wrapper no-print">
+      <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
+        <span id="progressCount">Documents Ready: 0 / 0</span>
+        <span id="progressPercentage">0%</span>
+      </div>
+      <div class="progress-bar">
+        <div id="progressFill" class="progress-fill"></div>
+      </div>
+    </div>
+
+    <!-- Form Section -->
+    <div class="card">
+      <h3 id="sectionFormTitle" style="margin-top:0;">Preliminary Details</h3>
+      <div id="fieldsContainer"></div>
+    </div>
+
+    <!-- Checklist Section -->
+    <div class="card">
+      <h3 style="margin-top:0;">Mandatory Documents Checklist</h3>
+      <div id="checklistContainer"></div>
+    </div>
+
+    <!-- Official Guidance -->
+    <div id="guidanceBox" class="guidance-box"></div>
+
+    <!-- Actions -->
+    <div style="text-align: right;" class="no-print">
+      <button class="btn-print" onclick="window.print()">Download / Print Checklist</button>
+    </div>
+  </div>
+
+  <script>
+    const serviceData = {
+      aadhaar: {
+        title: "Aadhaar Details Update Form",
+        guidance: "A fee of ₹50 is applicable for demographic updates and ₹100 for biometrics at authorized Seva Kendras. Do not enter unmasked identification numbers on unsecured systems.",
+        fields: [
+          { label: "Citizen Full Name", type: "text", placeholder: "Full name as per existing records" },
+          { label: "Update Requirement", type: "select", options: ["Address", "Mobile Number", "Date of Birth", "Biometrics"] },
+          { label: "Identifier Mask / Reference Token", type: "text", placeholder: "e.g. [Aadhaar Redacted] / Ack ID" }
+        ],
+        docs: [
+          { name: "Proof of Identity (POI)", note: "Passport, PAN Card, Voter ID, or Driving License" },
+          { name: "Proof of Address (POA)", note: "Electricity Bill (<3 months), Bank Passbook, or Rent Agreement" },
+          { name: "Proof of Date of Birth (PDB)", note: "Birth Certificate or SSLC Board Marksheet" }
+        ]
+      },
+      ration: {
+        title: "New Ration Card Application Form",
+        guidance: "Ensure no household member is actively listed on any other state ration card registry.",
+        fields: [
+          { label: "Head of Household Name", type: "text", placeholder: "Name of household head" },
+          { label: "Total Household Members", type: "number", placeholder: "e.g. 4" },
+          { label: "Residential Address", type: "text", placeholder: "Full permanent address" }
+        ],
+        docs: [
+          { name: "Family Group Photograph", note: "Passport size photograph featuring all registered members" },
+          { name: "Proof of Residence", note: "LPG consumer booklet, electricity bill, or property tax slip" },
+          { name: "Income / BPL Verification", note: "Official income certificate or local administrative attestation" }
+        ]
+      },
+      fir: {
+        title: "FIR Incident Draft Sheet",
+        guidance: "Territorial jurisdiction applies. In immediate emergencies, a Zero FIR can be lodged at any police post.",
+        fields: [
+          { label: "Complainant Legal Name", type: "text", placeholder: "Full name of applicant/victim" },
+          { label: "Date & Time of Incident", type: "datetime-local", placeholder: "" },
+          { label: "Incident Location / Jurisdiction", type: "text", placeholder: "Nearby landmark or circle" }
+        ],
+        docs: [
+          { name: "Complainant Identity Proof", note: "Government-approved photo credential" },
+          { name: "Supporting Evidence (Optional)", note: "CCTV clips, medical verification reports, or financial transaction proofs" }
+        ]
+      },
+      income: {
+        title: "Income Certificate Application",
+        guidance: "Document verification is processed within 7-14 business days via local Revenue Circle Office.",
+        fields: [
+          { label: "Applicant Name", type: "text", placeholder: "Applicant's name" },
+          { label: "Annual Household Income (INR)", type: "number", placeholder: "e.g. 150000" },
+          { label: "Source of Income", type: "text", placeholder: "e.g. Agriculture, Business, Employment" }
+        ],
+        docs: [
+          { name: "Salary Slip / Form 16", note: "Required for organized sector salaried applicants" },
+          { name: "Self-Declaration Affidavit", note: "Notarized declaration of family income" },
+          { name: "Ration Card / Family Registry", note: "Copy of active ration card or family ID" }
+        ]
+      }
+    };
+
+    function renderService() {
+      const selected = document.getElementById("serviceSelect").value;
+      const data = serviceData[selected];
+
+      document.getElementById("sectionFormTitle").innerText = data.title;
+      document.getElementById("guidanceBox").innerText = data.guidance;
+
+      const fieldsBox = document.getElementById("fieldsContainer");
+      fieldsBox.innerHTML = "";
+      data.fields.forEach(f => {
+        const div = document.createElement("div");
+        div.style.marginBottom = "14px";
+        if (f.type === "select") {
+          div.innerHTML = `<label><strong>${f.label}:</strong></label>
+            <select>${f.options.map(o => `<option value="${o}">${o}</option>`).join("")}</select>`;
+        } else {
+          div.innerHTML = `<label><strong>${f.label}:</strong></label>
+            <input type="${f.type}" placeholder="${f.placeholder || ''}" />`;
+        }
+        fieldsBox.appendChild(div);
+      });
+
+      const checklistBox = document.getElementById("checklistContainer");
+      checklistBox.innerHTML = "";
+      data.docs.forEach(doc => {
+        const row = document.createElement("label");
+        row.className = "checklist-row";
+        row.innerHTML = `
+          <input type="checkbox" onchange="calcProgress()" />
+          <div>
+            <strong>${doc.name}</strong>
+            <div style="font-size: 12px; color: #64748b;">Acceptable: ${doc.note}</div>
+          </div>
+        `;
+        checklistBox.appendChild(row);
+      });
+
+      calcProgress();
+    }
+
+    function calcProgress() {
+      const boxes = document.querySelectorAll("#checklistContainer input[type='checkbox']");
+      const total = boxes.length;
+      let checked = 0;
+      boxes.forEach(b => { if (b.checked) checked++; });
+
+      const pct = total > 0 ? Math.round((checked / total) * 100) : 0;
+      document.getElementById("progressCount").innerText = `Documents Ready: ${checked} / ${total}`;
+      document.getElementById("progressPercentage").innerText = `${pct}%`;
+      document.getElementById("progressFill").style.width = `${pct}%`;
+    }
+
+    window.onload = renderService;
+  </script>
+</body>
+</html>
