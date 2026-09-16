@@ -3,268 +3,506 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document Checklist & Form Generator - Nyaya-Setu</title>
+  <title>Citizen Document Checklist & Form Generator - NyayaSetu</title>
+  <link rel="stylesheet" href="../css/style.css" />
   <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-hover: #1e40af;
+      --accent: #10b981;
+      --bg-slate: #f8fafc;
+      --border-color: #cbd5e1;
+    }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f8fafc;
-      color: #1e293b;
       margin: 0;
-      padding: 20px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-slate);
+      color: #1e293b;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
-    .container {
-      max-width: 860px;
-      margin: 0 auto;
+    header.site-header {
+      background: #0f172a;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header.site-header a {
+      color: #93c5fd;
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 20px;
+    }
+    .main-wrapper {
+      flex: 1;
+      max-width: 900px;
+      margin: 30px auto;
+      width: 90%;
       background: #ffffff;
-      padding: 28px;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
     }
-    h2 {
-      margin-top: 0;
-      color: #0f172a;
+    .badge {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #3730a3;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin-bottom: 8px;
     }
-    .selector-box {
-      margin-bottom: 22px;
+    .form-group {
+      margin-bottom: 16px;
     }
-    select, input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      box-sizing: border-box;
+    .form-group label {
+      display: block;
+      font-weight: 600;
       font-size: 14px;
+      margin-bottom: 6px;
     }
-    .progress-wrapper {
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+    }
+    .progress-box {
       background: #f1f5f9;
-      padding: 14px;
+      padding: 16px;
       border-radius: 8px;
-      margin-bottom: 22px;
+      margin: 20px 0;
     }
-    .progress-bar {
+    .progress-bar-shell {
       width: 100%;
       background: #e2e8f0;
-      height: 10px;
-      border-radius: 5px;
+      height: 12px;
+      border-radius: 6px;
       overflow: hidden;
       margin-top: 8px;
     }
-    .progress-fill {
+    .progress-bar-active {
       width: 0%;
       height: 100%;
-      background: #10b981;
-      transition: width 0.3s;
+      background: var(--accent);
+      transition: width 0.35s ease;
     }
     .card {
       border: 1px solid #e2e8f0;
-      padding: 18px;
+      padding: 20px;
       border-radius: 8px;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
+      background: #ffffff;
     }
     .checklist-row {
       display: flex;
       align-items: flex-start;
       gap: 12px;
-      padding: 10px 0;
+      padding: 12px 0;
       border-bottom: 1px solid #f1f5f9;
       cursor: pointer;
     }
     .checklist-row input {
-      width: auto;
-      margin-top: 4px;
-      transform: scale(1.2);
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--primary);
     }
     .guidance-box {
       font-size: 13px;
-      color: #334155;
       background: #eff6ff;
-      border-left: 4px solid #2563eb;
-      padding: 12px;
+      border-left: 4px solid var(--primary);
+      padding: 14px;
       border-radius: 4px;
-      margin-bottom: 22px;
+      margin-bottom: 24px;
+      line-height: 1.5;
     }
-    .btn-print {
-      background: #2563eb;
-      color: #ffffff;
-      border: none;
-      padding: 12px 24px;
-      font-size: 15px;
+    .btn-row {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 10px 20px;
+      font-size: 14px;
       font-weight: 600;
       border-radius: 6px;
       cursor: pointer;
+      border: none;
     }
-    .btn-print:hover {
-      background: #1d4ed8;
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .btn-outline {
+      background: white;
+      border: 1px solid var(--border-color);
+      color: #334155;
+    }
+    .btn-outline:hover {
+      background: #f8fafc;
+    }
+    footer.site-footer {
+      background: #0f172a;
+      color: #94a3b8;
+      text-align: center;
+      padding: 20px;
+      font-size: 13px;
+      margin-top: auto;
     }
     @media print {
       body * { visibility: hidden; }
-      .container, .container * { visibility: visible; }
-      .container { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; }
-      .no-print { display: none !important; }
+      .main-wrapper, .main-wrapper * { visibility: visible; }
+      .main-wrapper { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none; border: none; padding: 0; }
+      .no-print, header, footer { display: none !important; }
+    }
+    @media (max-width: 600px) {
+      .main-wrapper { width: 95%; padding: 16px; margin: 15px auto; }
+      .btn { width: 100%; }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Citizen Service Document Checklist & Application Form Generator</h2>
-    <p class="no-print">Select a citizen service, verify mandatory documentation, and download or print the readiness sheet.</p>
 
-    <!-- Selector -->
-    <div class="selector-box no-print">
-      <label for="serviceSelect"><strong>Select Citizen Service:</strong></label>
-      <select id="serviceSelect" onchange="renderService()">
-        <option value="aadhaar">Aadhaar Details Update</option>
-        <option value="ration">New Ration Card Application</option>
-        <option value="fir">FIR Incident Draft & Checklist</option>
-        <option value="income">Income Certificate Issuance</option>
-      </select>
+  <!-- Site Navigation Header -->
+  <header class="site-header no-print">
+    <div style="font-size: 18px; font-weight: bold; letter-spacing: 0.5px;">NyayaSetu</div>
+    <nav>
+      <a href="../index.html">← Back to Home</a>
+    </nav>
+  </header>
+
+  <div class="main-wrapper" id="checklistApp">
+    <span class="badge" id="categoryBadge">Citizen Utility</span>
+    <h2 id="serviceHeaderTitle" style="margin-top: 4px;">Citizen Service Document Checklist</h2>
+    <p class="no-print" style="color: #64748b; font-size: 14px;">Select an official citizen service, verify necessary legal documentation, track readiness, and generate your printable application docket.</p>
+
+    <!-- Service Selection -->
+    <div class="card no-print" style="background: #fafafa;">
+      <div class="form-group" style="margin-bottom: 0;">
+        <label for="servicePicker"><strong>Choose Citizen Service (8 Available Services):</strong></label>
+        <select id="servicePicker" onchange="onServiceChange()" aria-label="Choose Citizen Service">
+          <option value="aadhaar">1. Aadhaar Card Details Update</option>
+          <option value="ration">2. New Ration Card Application</option>
+          <option value="fir">3. FIR Incident Draft & Evidence Log</option>
+          <option value="income">4. Income Certificate Issuance</option>
+          <option value="voter">5. Voter ID (Form 6) Registration</option>
+          <option value="passport">6. Fresh Passport Application</option>
+          <option value="birth">7. Birth Certificate Registration</option>
+          <option value="pan">8. PAN Card Correction / Reprint</option>
+        </select>
+      </div>
     </div>
 
     <!-- Progress Indicator -->
-    <div class="progress-wrapper no-print">
+    <div class="progress-box no-print" aria-live="polite">
       <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 14px;">
-        <span id="progressCount">Documents Ready: 0 / 0</span>
-        <span id="progressPercentage">0%</span>
+        <span id="docCountText">Documents Ready: 0 / 0</span>
+        <span id="docPercentText">0%</span>
       </div>
-      <div class="progress-bar">
-        <div id="progressFill" class="progress-fill"></div>
+      <div class="progress-bar-shell">
+        <div id="progressBar" class="progress-bar-active"></div>
       </div>
     </div>
 
-    <!-- Form Section -->
+    <!-- Dynamic Form Inputs -->
     <div class="card">
-      <h3 id="sectionFormTitle" style="margin-top:0;">Preliminary Details</h3>
-      <div id="fieldsContainer"></div>
+      <h3 id="formSectionTitle" style="margin-top: 0; font-size: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">Service Application Details</h3>
+      <div id="dynamicFormContainer"></div>
     </div>
 
-    <!-- Checklist Section -->
+    <!-- Dynamic Checklist -->
     <div class="card">
-      <h3 style="margin-top:0;">Mandatory Documents Checklist</h3>
-      <div id="checklistContainer"></div>
+      <h3 style="margin-top: 0; font-size: 16px; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">Mandatory Document Checklist</h3>
+      <div id="dynamicChecklistContainer"></div>
     </div>
 
-    <!-- Official Guidance -->
-    <div id="guidanceBox" class="guidance-box"></div>
+    <!-- Official Guidance Box -->
+    <div id="guidanceContainer" class="guidance-box"></div>
 
-    <!-- Actions -->
-    <div style="text-align: right;" class="no-print">
-      <button class="btn-print" onclick="window.print()">Download / Print Checklist</button>
+    <!-- Action Buttons -->
+    <div class="btn-row no-print">
+      <button class="btn btn-outline" onclick="copyShareLink()" aria-label="Copy Shareable Link">🔗 Shareable Progress Link</button>
+      <button class="btn btn-primary" onclick="window.print()" aria-label="Download or Print Checklist">🖨️ Download / Print Docket</button>
     </div>
   </div>
 
+  <!-- Site Footer -->
+  <footer class="site-footer no-print">
+    <p>© 2026 NyayaSetu — Empowering Citizens through Legal & Civic Transparency.</p>
+  </footer>
+
   <script>
-    const serviceData = {
+    const serviceDatabase = {
       aadhaar: {
-        title: "Aadhaar Details Update Form",
-        guidance: "A fee of ₹50 is applicable for demographic updates and ₹100 for biometrics at authorized Seva Kendras. Do not enter unmasked identification numbers on unsecured systems.",
+        category: "Identity & Demographics",
+        title: "Aadhaar Card Details Update",
+        guidance: "UIDAI Standard Regulations: Demographic updates incur ₹50; biometric updates incur ₹100. Verification requires original documents at the Seva Kendra. Placeholder data only; never input real citizen ID digits.",
         fields: [
-          { label: "Citizen Full Name", type: "text", placeholder: "Full name as per existing records" },
-          { label: "Update Requirement", type: "select", options: ["Address", "Mobile Number", "Date of Birth", "Biometrics"] },
-          { label: "Identifier Mask / Reference Token", type: "text", placeholder: "e.g. [Aadhaar Redacted] / Ack ID" }
+          { id: "f1", label: "Full Legal Name", type: "text", placeholder: "Name as listed in existing records" },
+          { id: "f2", label: "Update Category", type: "select", options: ["Address Correction", "Mobile/Email Link", "Date of Birth", "Biometric Update"] },
+          { id: "f3", label: "Enrollment Acknowledgement / Masked Ref", type: "text", placeholder: "e.g., [Aadhaar Redacted] / Ack-98127" }
         ],
         docs: [
-          { name: "Proof of Identity (POI)", note: "Passport, PAN Card, Voter ID, or Driving License" },
-          { name: "Proof of Address (POA)", note: "Electricity Bill (<3 months), Bank Passbook, or Rent Agreement" },
-          { name: "Proof of Date of Birth (PDB)", note: "Birth Certificate or SSLC Board Marksheet" }
+          { name: "Proof of Identity (POI)", note: "Passport, PAN Card, Voter ID, Driving License, or Govt Photo Card" },
+          { name: "Proof of Address (POA)", note: "Electricity bill (<3 mos), Registered Rent Agreement, Bank Passbook, Water Bill" },
+          { name: "Proof of Date of Birth (PDB)", note: "Birth Certificate, SSLC Book/Certificate, or Indian Passport" }
         ]
       },
       ration: {
-        title: "New Ration Card Application Form",
-        guidance: "Ensure no household member is actively listed on any other state ration card registry.",
+        category: "Civil Supplies",
+        title: "New Ration Card Application",
+        guidance: "National Food Security Act (NFSA): All adult family members must submit Aadhaar linking. Family head must ensure no duplicate entries exist in other state databases.",
         fields: [
-          { label: "Head of Household Name", type: "text", placeholder: "Name of household head" },
-          { label: "Total Household Members", type: "number", placeholder: "e.g. 4" },
-          { label: "Residential Address", type: "text", placeholder: "Full permanent address" }
+          { id: "f1", label: "Head of Household (Female Head if adult)", type: "text", placeholder: "Full legal name" },
+          { id: "f2", label: "Total Family Members", type: "number", placeholder: "e.g., 4" },
+          { id: "f3", label: "LPG Consumer Connection Number", type: "text", placeholder: "Gas agency connection ID" }
         ],
         docs: [
-          { name: "Family Group Photograph", note: "Passport size photograph featuring all registered members" },
-          { name: "Proof of Residence", note: "LPG consumer booklet, electricity bill, or property tax slip" },
-          { name: "Income / BPL Verification", note: "Official income certificate or local administrative attestation" }
+          { name: "Family Group Photograph", note: "Recent color passport photo showing all family members together" },
+          { name: "Residential Proof of Address", note: "Municipal tax receipt, latest electricity bill, or registered tenancy deed" },
+          { name: "Income / BPL Attestation", note: "Income certificate issued by local Tehsildar or Ward Officer" }
         ]
       },
       fir: {
-        title: "FIR Incident Draft Sheet",
-        guidance: "Territorial jurisdiction applies. In immediate emergencies, a Zero FIR can be lodged at any police post.",
+        category: "Law Enforcement",
+        title: "FIR Incident Draft & Evidence Log",
+        guidance: "Code of Criminal Procedure: You can file a 'Zero FIR' at any police station regardless of jurisdiction if the offense is cognizable. Ensure time and exact location landmarks are documented.",
         fields: [
-          { label: "Complainant Legal Name", type: "text", placeholder: "Full name of applicant/victim" },
-          { label: "Date & Time of Incident", type: "datetime-local", placeholder: "" },
-          { label: "Incident Location / Jurisdiction", type: "text", placeholder: "Nearby landmark or circle" }
+          { id: "f1", label: "Complainant Full Legal Name", type: "text", placeholder: "Full name of applicant" },
+          { id: "f2", label: "Date & Accurate Time of Occurrence", type: "datetime-local", placeholder: "" },
+          { id: "f3", label: "Specific Incident Location & Police Station Circle", type: "text", placeholder: "e.g., Sector 14 market, Near Civil Hospital" },
+          { id: "f4", label: "Brief Chronological Summary of Offense", type: "textarea", placeholder: "State facts chronologically without speculation..." }
         ],
         docs: [
-          { name: "Complainant Identity Proof", note: "Government-approved photo credential" },
-          { name: "Supporting Evidence (Optional)", note: "CCTV clips, medical verification reports, or financial transaction proofs" }
+          { name: "Complainant Identity Proof", note: "Voter ID, Passport, PAN Card, or Driving License" },
+          { name: "Primary Incident Evidence", note: "Photographs, CCTV footage, medical MLC report (if physical harm occurred)" },
+          { name: "Financial / Communication Traces (if cyber/fraud)", note: "Bank statement, transaction UPI ID, SMS/WhatsApp conversation exports" }
         ]
       },
       income: {
-        title: "Income Certificate Application",
-        guidance: "Document verification is processed within 7-14 business days via local Revenue Circle Office.",
+        category: "Revenue & Administration",
+        title: "Income Certificate Issuance",
+        guidance: "State Revenue Circle: Income certificates are typically valid for 1 fiscal year. Verification is confirmed by the Revenue Inspector / Patwari / Village Accountant.",
         fields: [
-          { label: "Applicant Name", type: "text", placeholder: "Applicant's name" },
-          { label: "Annual Household Income (INR)", type: "number", placeholder: "e.g. 150000" },
-          { label: "Source of Income", type: "text", placeholder: "e.g. Agriculture, Business, Employment" }
+          { id: "f1", label: "Applicant Name", type: "text", placeholder: "Full legal name of earner" },
+          { id: "f2", label: "Annual Household Cumulative Income (INR)", type: "number", placeholder: "e.g., 180000" },
+          { id: "f3", label: "Occupation / Source of Livelihood", type: "text", placeholder: "e.g., Agriculture, Small Business, Private Service" }
         ],
         docs: [
-          { name: "Salary Slip / Form 16", note: "Required for organized sector salaried applicants" },
-          { name: "Self-Declaration Affidavit", note: "Notarized declaration of family income" },
-          { name: "Ration Card / Family Registry", note: "Copy of active ration card or family ID" }
+          { name: "Income Proof / Salary Records", note: "Latest 3 months salary slips, Form 16, or ITR acknowledgment" },
+          { name: "Notarized Self-Declaration Affidavit", note: "Court stamp paper stating annual household income" },
+          { name: "Land / Property Records (if agricultural)", note: "Khasra/Khatauni copy or Patwari verification report" }
+        ]
+      },
+      voter: {
+        category: "Election Commission",
+        title: "Voter ID (Form 6) Registration",
+        guidance: "Election Commission of India: Citizen must be 18 years or older on the qualifying date of the electoral roll. Use Form 6 for fresh registration in the constituency.",
+        fields: [
+          { id: "f1", label: "Applicant Full Name", type: "text", placeholder: "First name and Surname" },
+          { id: "f2", label: "Assembly / Parliamentary Constituency", type: "text", placeholder: "e.g., Ward 12, West Constituency" },
+          { id: "f3", label: "Date of Birth", type: "date", placeholder: "" }
+        ],
+        docs: [
+          { name: "Proof of Age / DOB", note: "Birth certificate, 10th marksheet, PAN Card, or Indian Passport" },
+          { name: "Proof of Ordinary Residence", note: "Water/Electricity bill, Bank passbook, or Post Office savings account statement" },
+          { name: "Passport Sized Photograph", note: "Recent passport-style photograph (white background)" }
+        ]
+      },
+      passport: {
+        category: "Consular & Travel",
+        title: "Fresh Passport Application",
+        guidance: "Ministry of External Affairs: Original documents must be physically produced at the Passport Seva Kendra (PSK) appointment. Names across all submitted proofs must match character-by-character.",
+        fields: [
+          { id: "f1", label: "Given Name & Surname", type: "text", placeholder: "As per school certificate" },
+          { id: "f2", label: "Application Type", type: "select", options: ["Normal (30-45 Days)", "Tatkaal (3-7 Days)"] },
+          { id: "f3", label: "Educational Qualification", type: "select", options: ["Graduate & Above (Non-ECR)", "10th Standard & Above (Non-ECR)", "Below 10th Standard (ECR)"] }
+        ],
+        docs: [
+          { name: "Proof of Date of Birth", note: "Birth Certificate from municipal corporation or school leaving certificate" },
+          { name: "Proof of Present Address", note: "Aadhaar Card, Water/Electricity bill, or Scheduled Bank passbook" },
+          { name: "Non-ECR Eligible Document", note: "Matriculation (10th) passing certificate or Higher Education Degree" }
+        ]
+      },
+      birth: {
+        category: "Civil Registration",
+        title: "Birth Certificate Registration",
+        guidance: "Registration of Births and Deaths Act: Births must be registered within 21 days with the local registrar (hospital/panchayat/municipal corporation) to avoid late fee penalties.",
+        fields: [
+          { id: "f1", label: "Child Name (if assigned)", type: "text", placeholder: "Leave blank if naming later" },
+          { id: "f2", label: "Date & Exact Time of Birth", type: "datetime-local", placeholder: "" },
+          { id: "f3", label: "Place of Birth", type: "select", options: ["Hospital / Nursing Home", "Residential / Home"] }
+        ],
+        docs: [
+          { name: "Institutional Birth Discharge Summary", note: "Official discharge slip and hospital birth slip Form 1" },
+          { name: "Identity Proof of Parents", note: "Aadhaar, Passport, or Voter cards of both mother and father" },
+          { name: "Marriage Certificate of Parents", note: "Registered marriage certificate or joint self-declaration" }
+        ]
+      },
+      pan: {
+        category: "Direct Taxes",
+        title: "PAN Card Correction / Reprint (Form 49A)",
+        guidance: "Income Tax Department: Use this service for updating legal spelling of name, parentage, date of birth, or requesting a physical reprint of a damaged PAN card.",
+        fields: [
+          { id: "f1", label: "Existing 10-Digit PAN Number", type: "text", placeholder: "e.g., ABCDE1234F" },
+          { id: "f2", label: "Specific Correction Required", type: "select", options: ["Name Correction", "DOB Correction", "Father's Name Update", "Reprint Only (No Changes)"] },
+          { id: "f3", label: "Applicant Contact Number & Email", type: "text", placeholder: "Active contact details for e-PAN delivery" }
+        ],
+        docs: [
+          { name: "Proof of Existing PAN", note: "Copy of physical PAN Card, e-PAN letter, or ITD verification slip" },
+          { name: "Proof of Identity & Corrected Data", note: "Gazette notification (if name change) or official Passport/Aadhaar" },
+          { name: "Proof of Date of Birth", note: "Matriculation certificate, municipal birth certificate, or Passport" }
         ]
       }
     };
 
-    function renderService() {
-      const selected = document.getElementById("serviceSelect").value;
-      const data = serviceData[selected];
-
-      document.getElementById("sectionFormTitle").innerText = data.title;
-      document.getElementById("guidanceBox").innerText = data.guidance;
-
-      const fieldsBox = document.getElementById("fieldsContainer");
-      fieldsBox.innerHTML = "";
-      data.fields.forEach(f => {
-        const div = document.createElement("div");
-        div.style.marginBottom = "14px";
-        if (f.type === "select") {
-          div.innerHTML = `<label><strong>${f.label}:</strong></label>
-            <select>${f.options.map(o => `<option value="${o}">${o}</option>`).join("")}</select>`;
-        } else {
-          div.innerHTML = `<label><strong>${f.label}:</strong></label>
-            <input type="${f.type}" placeholder="${f.placeholder || ''}" />`;
-        }
-        fieldsBox.appendChild(div);
-      });
-
-      const checklistBox = document.getElementById("checklistContainer");
-      checklistBox.innerHTML = "";
-      data.docs.forEach(doc => {
-        const row = document.createElement("label");
-        row.className = "checklist-row";
-        row.innerHTML = `
-          <input type="checkbox" onchange="calcProgress()" />
-          <div>
-            <strong>${doc.name}</strong>
-            <div style="font-size: 12px; color: #64748b;">Acceptable: ${doc.note}</div>
-          </div>
-        `;
-        checklistBox.appendChild(row);
-      });
-
-      calcProgress();
+    function getStorageKey(serviceKey) {
+      return `nyayasetu_checklist_${serviceKey}`;
     }
 
-    function calcProgress() {
-      const boxes = document.querySelectorAll("#checklistContainer input[type='checkbox']");
+    function onServiceChange() {
+      const serviceKey = document.getElementById("servicePicker").value;
+      renderService(serviceKey);
+      updateURL(serviceKey);
+    }
+
+    function renderService(serviceKey) {
+      const data = serviceDatabase[serviceKey];
+      if (!data) {
+        document.getElementById("dynamicChecklistContainer").innerHTML = "<p style='color:red;'>Selected service is currently unavailable. Please pick a valid service from the list.</p>";
+        return;
+      }
+
+      document.getElementById("categoryBadge").innerText = data.category;
+      document.getElementById("serviceHeaderTitle").innerText = data.title;
+      document.getElementById("guidanceContainer").innerText = data.guidance;
+
+      // Render Dynamic Inputs
+      const formBox = document.getElementById("dynamicFormContainer");
+      formBox.innerHTML = "";
+      data.fields.forEach(f => {
+        const wrap = document.createElement("div");
+        wrap.className = "form-group";
+        if (f.type === "select") {
+          wrap.innerHTML = `
+            <label for="${f.id}"><strong>${f.label}:</strong></label>
+            <select id="${f.id}" aria-label="${f.label}">
+              ${f.options.map(opt => `<option value="${opt}">${opt}</option>`).join("")}
+            </select>
+          `;
+        } else if (f.type === "textarea") {
+          wrap.innerHTML = `
+            <label for="${f.id}"><strong>${f.label}:</strong></label>
+            <textarea id="${f.id}" rows="3" placeholder="${f.placeholder || ''}" aria-label="${f.label}"></textarea>
+          `;
+        } else {
+          wrap.innerHTML = `
+            <label for="${f.id}"><strong>${f.label}:</strong></label>
+            <input type="${f.type}" id="${f.id}" placeholder="${f.placeholder || ''}" aria-label="${f.label}" />
+          `;
+        }
+        formBox.appendChild(wrap);
+      });
+
+      // Load Saved Checklist States from localStorage
+      const savedStates = JSON.parse(localStorage.getItem(getStorageKey(serviceKey)) || "{}");
+
+      // Render Checklists
+      const checkContainer = document.getElementById("dynamicChecklistContainer");
+      checkContainer.innerHTML = "";
+      data.docs.forEach((doc, idx) => {
+        const isChecked = !!savedStates[idx];
+        const row = document.createElement("label");
+        row.className = "checklist-row";
+        row.setAttribute("tabindex", "0");
+        row.innerHTML = `
+          <input type="checkbox" id="check_${idx}" ${isChecked ? "checked" : ""} onchange="handleToggle('${serviceKey}', ${idx})" aria-label="${doc.name}" />
+          <div>
+            <strong style="font-size: 14px;">${doc.name}</strong>
+            <div style="font-size: 12px; color: #64748b; margin-top: 3px;">Acceptable Documents: ${doc.note}</div>
+          </div>
+        `;
+        checkContainer.appendChild(row);
+      });
+
+      refreshProgress();
+    }
+
+    function handleToggle(serviceKey, docIndex) {
+      const saved = JSON.parse(localStorage.getItem(getStorageKey(serviceKey)) || "{}");
+      const checkbox = document.getElementById(`check_${docIndex}`);
+      if (checkbox.checked) {
+        saved[docIndex] = true;
+      } else {
+        delete saved[docIndex];
+      }
+      localStorage.setItem(getStorageKey(serviceKey), JSON.stringify(saved));
+      refreshProgress();
+      updateURL(serviceKey);
+    }
+
+    function refreshProgress() {
+      const boxes = document.querySelectorAll("#dynamicChecklistContainer input[type='checkbox']");
       const total = boxes.length;
       let checked = 0;
       boxes.forEach(b => { if (b.checked) checked++; });
 
       const pct = total > 0 ? Math.round((checked / total) * 100) : 0;
-      document.getElementById("progressCount").innerText = `Documents Ready: ${checked} / ${total}`;
-      document.getElementById("progressPercentage").innerText = `${pct}%`;
-      document.getElementById("progressFill").style.width = `${pct}%`;
+      document.getElementById("docCountText").innerText = `Documents Ready: ${checked} / ${total}`;
+      document.getElementById("docPercentText").innerText = `${pct}%`;
+      document.getElementById("progressBar").style.width = `${pct}%`;
     }
 
-    window.onload = renderService;
+    function updateURL(serviceKey) {
+      const saved = JSON.parse(localStorage.getItem(getStorageKey(serviceKey)) || "{}");
+      const checkedIndices = Object.keys(saved).join(",");
+      const newUrl = `${window.location.pathname}?service=${serviceKey}&checked=${checkedIndices}`;
+      window.history.replaceState(null, "", newUrl);
+    }
+
+    function copyShareLink() {
+      const url = window.location.href;
+      navigator.clipboard.writeText(url).then(() => {
+        alert("Progress URL copied to clipboard! You can share this link to reload the current state.");
+      });
+    }
+
+    function init() {
+      const params = new URLSearchParams(window.location.search);
+      const serviceParam = params.get("service") || "aadhaar";
+      const checkedParam = params.get("checked");
+
+      const picker = document.getElementById("servicePicker");
+      if (serviceDatabase[serviceParam]) {
+        picker.value = serviceParam;
+      }
+
+      if (checkedParam) {
+        const saved = {};
+        checkedParam.split(",").forEach(idx => { if (idx !== "") saved[idx] = true; });
+        localStorage.setItem(getStorageKey(picker.value), JSON.stringify(saved));
+      }
+
+      renderService(picker.value);
+    }
+
+    window.onload = init;
   </script>
 </body>
 </html>
