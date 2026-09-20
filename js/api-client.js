@@ -4,7 +4,7 @@
   // Auto-detect API base URL
   var isLocal = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
   var API_BASE = isLocal
-    ? (window.location.port === "8000" ? "/api" : "http://localhost:8000/api")
+    ? (window.location.port === "8000" ? "/api" : "http://localhost:5000/api")
     : "/api";
 
   // Sample Case Database for instant offline / preview rendering
@@ -431,3 +431,5 @@
     }
   };
 })(window);
+
+

@@ -2,6 +2,7 @@
   "use strict";
 
   var root = document.getElementById("nyaya-wizard");
+
   if (!root || !window.NyayaAPI) {
     return;
   }
@@ -11,7 +12,7 @@
     selectedProblem: null,
     route: null,
     answers: {},
-    step: "search",
+    step: "search"
   };
 
   root.innerHTML =
@@ -36,7 +37,8 @@
 
   function setStatus(message, isError) {
     statusEl.textContent = message || "";
-    statusEl.className = "nyaya-status" + (isError ? " is-error" : "");
+    statusEl.className =
+      "nyaya-status" + (isError ? " is-error" : "");
   }
 
   function show(el) {
@@ -52,12 +54,14 @@
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   function renderProblems(problems) {
     if (!problems.length) {
-      listEl.innerHTML = '<p class="nyaya-empty">No matching categories. Try a broader keyword.</p>';
+      listEl.innerHTML =
+        '<p class="nyaya-empty">No matching categories. Try a broader keyword.</p>';
       return;
     }
 
@@ -84,24 +88,45 @@
 
   function loadProblems(query) {
     setStatus("Loading guidance categories...");
+
     hide(questionEl);
     hide(resultEl);
     show(listEl);
 
     window.NyayaAPI.getProblems(query)
       .then(function (payload) {
-        state.problems = payload.data || [];
-        setStatus(state.problems.length + " categor" + (state.problems.length === 1 ? "y" : "ies") + " found.");
+        state.problems =
+          payload && Array.isArray(payload.data)
+            ? payload.data
+            : [];
+
+        setStatus(
+          state.problems.length +
+            " categor" +
+            (state.problems.length === 1 ? "y" : "ies") +
+            " found."
+        );
+
         renderProblems(state.problems);
       })
-      .catch(function () {
-        setStatus("Cannot reach the NyayaSetu server. Start it with npm start in /server (port 5000).", true);
+      .catch(function (error) {
+        console.error("Problem loading failed:", error);
+
+        setStatus(
+          "Cannot reach the NyayaSetu server. Start it with npm start in /server (port 5000).",
+          true
+        );
+
         listEl.innerHTML = "";
       });
   }
 
   function renderQuestions() {
-    var questions = (state.route && state.route.questions) || [];
+    var questions =
+      (state.route && Array.isArray(state.route.questions)
+        ? state.route.questions
+        : []);
+
     var html =
       '<div class="nyaya-route-meta">' +
       "<h3>" +
@@ -112,6 +137,11 @@
       "</strong></p>" +
       "</div>";
 
+    if (!questions.length) {
+      html +=
+        '<p class="nyaya-empty">No additional questions are required for this route.</p>';
+    }
+
     questions.forEach(function (question, index) {
       html +=
         '<fieldset class="nyaya-fieldset">' +
@@ -120,8 +150,20 @@
         ". " +
         escapeHtml(question.prompt) +
         "</legend>";
-      question.options.forEach(function (option) {
-        var optionId = question.id + "-" + option.value;
+
+      var options = Array.isArray(question.options)
+        ? question.options
+        : [];
+
+      options.forEach(function (option, optionIndex) {
+        var optionId =
+          question.id +
+          "-" +
+          optionIndex +
+          "-" +
+          String(option.value || "")
+            .replace(/[^a-zA-Z0-9_-]/g, "");
+
         html +=
           '<label class="nyaya-option" for="' +
           escapeHtml(optionId) +
@@ -136,6 +178,7 @@
           escapeHtml(option.label) +
           "</label>";
       });
+
       html += "</fieldset>";
     });
 
@@ -146,34 +189,64 @@
       "</div>";
 
     questionEl.innerHTML = html;
+
     hide(listEl);
     show(questionEl);
 
-    document.getElementById("nyaya-back-to-list").addEventListener("click", function () {
-      hide(questionEl);
-      hide(resultEl);
-      show(listEl);
-    });
+    document
+      .getElementById("nyaya-back-to-list")
+      .addEventListener("click", function () {
+        hide(questionEl);
+        hide(resultEl);
+        show(listEl);
 
-    document.getElementById("nyaya-show-route").addEventListener("click", collectAnswersAndShowRoute);
+        setStatus(
+          state.problems.length +
+            " categor" +
+            (state.problems.length === 1 ? "y" : "ies") +
+            " found."
+        );
+      });
+
+    document
+      .getElementById("nyaya-show-route")
+      .addEventListener(
+        "click",
+        collectAnswersAndShowRoute
+      );
   }
 
   function collectAnswersAndShowRoute() {
-    var questions = (state.route && state.route.questions) || [];
+    var questions =
+      (state.route && Array.isArray(state.route.questions)
+        ? state.route.questions
+        : []);
+
     state.answers = {};
+
     var missing = false;
 
     questions.forEach(function (question) {
-      var selected = questionEl.querySelector('input[name="' + question.questionKey + '"]:checked');
+      var selected = questionEl.querySelector(
+        'input[name="' +
+          question.questionKey +
+          '"]:checked'
+      );
+
       if (!selected) {
         missing = true;
         return;
       }
-      state.answers[question.questionKey] = selected.value;
+
+      state.answers[question.questionKey] =
+        selected.value;
     });
 
     if (missing) {
-      setStatus("Please answer every guided question.", true);
+      setStatus(
+        "Please answer every guided question.",
+        true
+      );
       return;
     }
 
@@ -181,17 +254,60 @@
   }
 
   function renderResult() {
-    var route = state.route;
-    var checklist = (route.checklist || [])
-      .map(function (item) {
-        return "<li>" + escapeHtml(item) + "</li>";
-      })
-      .join("");
-    var steps = (route.steps || [])
-      .map(function (item, index) {
-        return "<li><strong>Step " + (index + 1) + ".</strong> " + escapeHtml(item) + "</li>";
-      })
-      .join("");
+    var route = state.route || {};
+
+    var checklist = Array.isArray(route.checklist)
+      ? route.checklist
+          .map(function (item) {
+            return "<li>" + escapeHtml(item) + "</li>";
+          })
+          .join("")
+      : "";
+
+    var steps = Array.isArray(route.steps)
+      ? route.steps
+          .map(function (item, index) {
+            return (
+              "<li><strong>Step " +
+              (index + 1) +
+              ".</strong> " +
+              escapeHtml(item) +
+              "</li>"
+            );
+          })
+          .join("")
+      : "";
+
+    var portalBlock = "";
+
+    if (route.portalUrl) {
+      portalBlock =
+        "<p>Portal: <a href=\"" +
+        escapeHtml(route.portalUrl) +
+        '" target="_blank" rel="noopener noreferrer">' +
+        escapeHtml(
+          route.portalName || route.portalUrl
+        ) +
+        "</a></p>";
+    }
+
+    var helplineBlock = route.helpline
+      ? "<p>Helpline: " +
+        escapeHtml(route.helpline) +
+        "</p>"
+      : "";
+
+    var checklistBlock = checklist
+      ? "<h4>Documents to keep ready</h4><ul>" +
+        checklist +
+        "</ul>"
+      : "";
+
+    var stepsBlock = steps
+      ? "<h4>Action plan</h4><ol>" +
+        steps +
+        "</ol>"
+      : "";
 
     resultEl.innerHTML =
       '<div class="nyaya-result">' +
@@ -202,70 +318,97 @@
       "</strong><br>" +
       escapeHtml(route.department) +
       "</p>" +
-      "<p>Portal: <a href=\"" +
-      escapeHtml(route.portalUrl) +
-      '" target="_blank" rel="noopener noreferrer">' +
-      escapeHtml(route.portalName) +
-      "</a></p>" +
-      "<p>Helpline: " +
-      escapeHtml(route.helpline) +
-      "</p>" +
-      "<h4>Documents to keep ready</h4><ul>" +
-      checklist +
-      "</ul>" +
-      "<h4>Action plan</h4><ol>" +
-      steps +
-      "</ol>" +
+      portalBlock +
+      helplineBlock +
+      checklistBlock +
+      stepsBlock +
       '<div class="nyaya-actions">' +
       '<a class="nyaya-btn" href="#nyaya-draft">Prepare complaint draft</a>' +
-      '<a class="nyaya-btn is-ghost" href="pricing.html">Save in tracker</a>' +
-      "</div></div>";
+      '<a class="nyaya-btn is-ghost" href="#nyaya-tracker">Save in tracker</a>' +
+      "</div>" +
+      "</div>";
 
+    hide(questionEl);
     show(resultEl);
-    setStatus("Route mapped. Generate a draft below, then file it yourself on the official portal.");
+
+    setStatus(
+      "Route mapped. Generate a draft below, then file it yourself on the official portal."
+    );
 
     window.dispatchEvent(
       new CustomEvent("nyaya:route-selected", {
         detail: {
           problem: state.selectedProblem,
           route: state.route,
-          answers: state.answers,
-        },
+          answers: state.answers
+        }
       })
     );
   }
 
   listEl.addEventListener("click", function (event) {
     var button = event.target.closest("[data-id]");
+
     if (!button) {
       return;
     }
 
     var problem = state.problems.find(function (item) {
-      return item.id === button.getAttribute("data-id");
+      return (
+        item.id === button.getAttribute("data-id")
+      );
     });
+
     if (!problem) {
       return;
     }
 
     state.selectedProblem = problem;
+    state.route = null;
+    state.answers = {};
+
     setStatus("Loading route logic...");
+
     window.NyayaAPI.getRoute(problem.routeId)
       .then(function (payload) {
+        if (!payload || !payload.data) {
+          throw new Error("Route data is missing.");
+        }
+
         state.route = payload.data;
-        setStatus("Answer a few questions so the action plan matches your situation.");
+
+        setStatus(
+          "Answer a few questions so the action plan matches your situation."
+        );
+
         renderQuestions();
       })
-      .catch(function () {
-        setStatus("Could not load route logic for this category.", true);
+      .catch(function (error) {
+        console.error("Route loading failed:", error);
+
+        setStatus(
+          "Could not load route logic for this category.",
+          true
+        );
       });
   });
 
-  document.getElementById("nyaya-search-form").addEventListener("submit", function (event) {
-    event.preventDefault();
-    loadProblems(document.getElementById("nyaya-search-input").value);
-  });
+  document
+    .getElementById("nyaya-search-form")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
 
-  var params = new URLSearchParams(window.location.search);
+      var query = document
+        .getElementById("nyaya-search-input")
+        .value
+        .trim();
+
+      loadProblems(query);
+    });
+
+  var params = new URLSearchParams(
+    window.location.search
+  );
+
   loadProblems(params.get("q") || "");
 })();
