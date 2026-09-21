@@ -1,4 +1,5 @@
 const express = require("express");
+
 const { getDb } = require("../db/setup");
 const { sendStatusChangeEmail } = require("../services/notifier");
 
@@ -47,13 +48,22 @@ function mapRoute(row, questions) {
 }
 
 function interpolate(template, values) {
-  return String(template || "").replace(/\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g, (_match, key) => {
-    const value = values[key];
-    if (value === undefined || value === null || String(value).trim() === "") {
-      return "[to be filled]";
+  return String(template || "").replace(
+    /\{\{\s*([a-zA-Z0-9_]+)\s*\}\}/g,
+    (_match, key) => {
+      const value = values[key];
+
+      if (
+        value === undefined ||
+        value === null ||
+        String(value).trim() === ""
+      ) {
+        return "[to be filled]";
+      }
+
+      return String(value).trim();
     }
-    return String(value).trim();
-  });
+  );
 }
 
 function sanitizeText(value) {
@@ -80,9 +90,11 @@ function sanitizePayload(value) {
 
   if (value && typeof value === "object") {
     const sanitized = {};
+
     for (const [key, item] of Object.entries(value)) {
       sanitized[key] = sanitizePayload(item);
     }
+
     return sanitized;
   }
 
@@ -95,42 +107,96 @@ function sanitizePayload(value) {
 
 function generateTrackingCode() {
   const now = new Date();
+
   const dateStamp = [
     now.getFullYear(),
     String(now.getMonth() + 1).padStart(2, "0"),
     String(now.getDate()).padStart(2, "0"),
   ].join("");
-  const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase();
+
+  const randomPart = Math.random()
+    .toString(36)
+    .slice(2, 7)
+    .toUpperCase();
+
   return `NS-${dateStamp}-${randomPart}`;
 }
 
 function normalizeStatus(status) {
-  const value = sanitizeText(status || "drafted").trim().toLowerCase();
-  if (["drafted", "new", "created"].includes(value)) return "drafted";
-  if (["in-progress", "in_progress", "in progress", "submitted", "filed"].includes(value)) return "in-progress";
-  if (["follow-up", "followup", "follow_up", "follow up"].includes(value)) return "follow-up";
-  if (["resolved", "closed", "completed"].includes(value)) return "resolved";
+  const value = sanitizeText(
+    status || "drafted"
+  )
+    .trim()
+    .toLowerCase();
+
+  if (["drafted", "new", "created"].includes(value)) {
+    return "drafted";
+  }
+
+  if (
+    [
+      "in-progress",
+      "in_progress",
+      "in progress",
+      "submitted",
+      "filed",
+    ].includes(value)
+  ) {
+    return "in-progress";
+  }
+
+  if (
+    [
+      "follow-up",
+      "followup",
+      "follow_up",
+      "follow up",
+    ].includes(value)
+  ) {
+    return "follow-up";
+  }
+
+  if (
+    ["resolved", "closed", "completed"].includes(value)
+  ) {
+    return "resolved";
+  }
+
   return value || "drafted";
 }
 
 function getStatusTimeline(item) {
   const status = normalizeStatus(item.status);
-  const createdAt = item.createdAt || item.created_at || new Date().toISOString();
-  const filingDate = item.filingDate || item.filing_date || "";
+
+  const createdAt =
+    item.createdAt ||
+    item.created_at ||
+    new Date().toISOString();
+
+  const filingDate =
+    item.filingDate ||
+    item.filing_date ||
+    "";
 
   const timeline = [
     {
       label: "Draft created",
       date: createdAt,
-      description: "Citizen saved the issue and prepared the next action.",
+      description:
+        "Citizen saved the issue and prepared the next action.",
     },
   ];
 
-  if (status === "in-progress" || status === "follow-up" || status === "resolved") {
+  if (
+    status === "in-progress" ||
+    status === "follow-up" ||
+    status === "resolved"
+  ) {
     timeline.push({
       label: "Filed / submitted",
       date: filingDate || createdAt,
-      description: "Complaint or grievance has been filed on the official portal.",
+      description:
+        "Complaint or grievance has been filed on the official portal.",
     });
   }
 
@@ -138,7 +204,8 @@ function getStatusTimeline(item) {
     timeline.push({
       label: "Follow-up needed",
       date: filingDate || createdAt,
-      description: "Citizen should check acknowledgement, submit missing documents, or request escalation.",
+      description:
+        "Citizen should check acknowledgement, submit missing documents, or request escalation.",
     });
   }
 
@@ -146,7 +213,8 @@ function getStatusTimeline(item) {
     timeline.push({
       label: "Resolution / closure",
       date: filingDate || createdAt,
-      description: "The complaint has reached a resolved or closed stage.",
+      description:
+        "The complaint has reached a resolved or closed stage.",
     });
   }
 
@@ -155,25 +223,54 @@ function getStatusTimeline(item) {
 
 function getNextAction(status, notes) {
   const normalizedStatus = normalizeStatus(status);
-  const trimmedNotes = sanitizeText(notes || "").trim();
+
+  const trimmedNotes = sanitizeText(
+    notes || ""
+  ).trim();
 
   const actions = {
-    drafted: "Gather the exact reference ID, portal URL, and required documents before filing.",
-    "in-progress": "Check the official portal for acknowledgement and confirm all required documents were uploaded.",
-    "follow-up": trimmedNotes || "Follow up with the concerned office within 7 days and keep a copy of the submission receipt.",
-    resolved: "Save the final acknowledgement and note the resolution outcome for future reference.",
+    drafted:
+      "Gather the exact reference ID, portal URL, and required documents before filing.",
+
+    "in-progress":
+      "Check the official portal for acknowledgement and confirm all required documents were uploaded.",
+
+    "follow-up":
+      trimmedNotes ||
+      "Follow up with the concerned office within 7 days and keep a copy of the submission receipt.",
+
+    resolved:
+      "Save the final acknowledgement and note the resolution outcome for future reference.",
   };
 
-  return actions[normalizedStatus] || "Review the status and continue with the next official follow-up step.";
+  return (
+    actions[normalizedStatus] ||
+    "Review the status and continue with the next official follow-up step."
+  );
 }
+
+/* -------------------------------------------------------------------------- */
+/* PROBLEMS                                                                    */
+/* -------------------------------------------------------------------------- */
 
 router.get("/problems", (req, res) => {
   const db = getDb();
-  const query = String(req.query.q || req.query.query || req.query.search || "").trim();
-  const category = String(req.query.category || "").trim();
+
+  const query = String(
+    req.query.q ||
+      req.query.query ||
+      req.query.search ||
+      ""
+  ).trim();
+
+  const category = String(
+    req.query.category || ""
+  ).trim();
 
   const likeQuery = query ? `%${query}%` : "%";
-  const categoryLike = category ? `%${category}%` : "%";
+  const categoryLike = category
+    ? `%${category}%`
+    : "%";
 
   const sql = `
     SELECT * FROM problems
@@ -193,24 +290,43 @@ router.get("/problems", (req, res) => {
     likeQuery,
   });
 
-  res.json({ ok: true, count: rows.length, data: rows.map(mapProblem) });
+  res.json({
+    ok: true,
+    count: rows.length,
+    data: rows.map(mapProblem),
+  });
 });
+
+/* -------------------------------------------------------------------------- */
+/* ROUTES                                                                      */
+/* -------------------------------------------------------------------------- */
 
 router.get("/routes/:id", (req, res) => {
   const db = getDb();
-  const route = db.prepare("SELECT * FROM routes WHERE id = ?").get(req.params.id);
+
+  const route = db
+    .prepare("SELECT * FROM routes WHERE id = ?")
+    .get(req.params.id);
 
   if (!route) {
-    res.status(404).json({ ok: false, error: "Route not found" });
+    res.status(404).json({
+      ok: false,
+      error: "Route not found",
+    });
+
     return;
   }
 
   const questions = db
-    .prepare("SELECT * FROM questions WHERE route_id = ? ORDER BY sort_order ASC")
+    .prepare(
+      "SELECT * FROM questions WHERE route_id = ? ORDER BY sort_order ASC"
+    )
     .all(req.params.id);
 
   const relatedProblems = db
-    .prepare("SELECT * FROM problems WHERE route_id = ?")
+    .prepare(
+      "SELECT * FROM problems WHERE route_id = ?"
+    )
     .all(req.params.id)
     .map(mapProblem);
 
@@ -223,23 +339,53 @@ router.get("/routes/:id", (req, res) => {
   });
 });
 
+/* -------------------------------------------------------------------------- */
+/* DRAFTS                                                                      */
+/* -------------------------------------------------------------------------- */
+
 const generateDraft = (req, res) => {
   const body = sanitizePayload(req.body || {});
-  const answers = body.answers && typeof body.answers === "object" ? body.answers : body;
-  const routeId = sanitizeText(body.routeId || answers.routeId);
+
+  const answers =
+    body.answers &&
+    typeof body.answers === "object"
+      ? body.answers
+      : body;
+
+  const routeId = sanitizeText(
+    body.routeId || answers.routeId
+  );
+
   const db = getDb();
 
   let template =
-    "Subject: Citizen grievance — {{issueType}}\n\nTo,\nThe Concerned Authority\n\nRespected Sir/Madam,\n\nI am {{complainantName}} of {{location}}.\n\nIssue: {{issueType}}\nDetails: {{description}}\n\nRelief sought: {{reliefSought}}\n\nI will file this myself on the official government portal. NyayaSetu does not submit complaints on my behalf.\n\nThank you.\n{{complainantName}}";
+    "Subject: Citizen grievance — {{issueType}}\n\n" +
+    "To,\n" +
+    "The Concerned Authority\n\n" +
+    "Respected Sir/Madam,\n\n" +
+    "I am {{complainantName}} of {{location}}.\n\n" +
+    "Issue: {{issueType}}\n" +
+    "Details: {{description}}\n\n" +
+    "Relief sought: {{reliefSought}}\n\n" +
+    "I will file this myself on the official government portal. " +
+    "NyayaSetu does not submit complaints on my behalf.\n\n" +
+    "Thank you.\n" +
+    "{{complainantName}}";
 
   if (routeId) {
-    const route = db.prepare("SELECT draft_template FROM routes WHERE id = ?").get(routeId);
+    const route = db
+      .prepare(
+        "SELECT draft_template FROM routes WHERE id = ?"
+      )
+      .get(routeId);
+
     if (route && route.draft_template) {
       template = route.draft_template;
     }
   }
 
   const draft = interpolate(template, answers);
+
   res.json({
     ok: true,
     data: {
@@ -250,36 +396,78 @@ const generateDraft = (req, res) => {
   });
 };
 
-router.post("/drafts/generate", generateDraft);
+router.post(
+  "/drafts/generate",
+  generateDraft
+);
+
 router.post("/drafts", generateDraft);
+
+/* -------------------------------------------------------------------------- */
+/* TRACKER                                                                     */
+/* -------------------------------------------------------------------------- */
 
 router.get("/tracker", (req, res) => {
   const db = getDb();
-  const rawPage = Number(req.query.page || 1);
-  const rawLimit = Number(req.query.limit || 10);
 
-  const page = Number.isFinite(rawPage) && rawPage > 0 ? rawPage : 1;
-  const limit = Number.isFinite(rawLimit) && rawLimit > 0 ? rawLimit : 10;
+  const rawPage = Number(
+    req.query.page || 1
+  );
+
+  const rawLimit = Number(
+    req.query.limit || 10
+  );
+
+  const page =
+    Number.isFinite(rawPage) && rawPage > 0
+      ? rawPage
+      : 1;
+
+  const limit =
+    Number.isFinite(rawLimit) && rawLimit > 0
+      ? rawLimit
+      : 10;
+
   const offset = (page - 1) * limit;
 
-  const totalCount = db.prepare("SELECT COUNT(*) AS count FROM tracker_items").get().count;
+  const totalCount = db
+    .prepare(
+      "SELECT COUNT(*) AS count FROM tracker_items"
+    )
+    .get().count;
+
   const rows = db
     .prepare(
       `
-      SELECT id, title, category, reference_id AS referenceId, tracking_code AS trackingCode,
-             filing_date AS filingDate, status, notes, portal_url AS portalUrl, email,
-             created_at AS createdAt
+      SELECT
+        id,
+        title,
+        category,
+        reference_id AS referenceId,
+        tracking_code AS trackingCode,
+        filing_date AS filingDate,
+        status,
+        notes,
+        portal_url AS portalUrl,
+        email,
+        created_at AS createdAt
       FROM tracker_items
       ORDER BY datetime(created_at) DESC
       LIMIT @limit OFFSET @offset
-    `
+      `
     )
-    .all({ limit, offset });
+    .all({
+      limit,
+      offset,
+    });
 
   const enrichedRows = rows.map((item) => ({
     ...item,
     timeline: getStatusTimeline(item),
-    nextAction: getNextAction(item.status, item.notes),
+    nextAction: getNextAction(
+      item.status,
+      item.notes
+    ),
   }));
 
   res.json({
@@ -287,28 +475,45 @@ router.get("/tracker", (req, res) => {
     count: totalCount,
     page,
     limit,
-    totalPages: Math.max(1, Math.ceil(totalCount / limit)),
-    hasNextPage: page * limit < totalCount,
+    totalPages: Math.max(
+      1,
+      Math.ceil(totalCount / limit)
+    ),
+    hasNextPage:
+      page * limit < totalCount,
     data: enrichedRows,
   });
 });
 
 router.get("/tracker/:id", (req, res) => {
   const db = getDb();
+
   const item = db
     .prepare(
       `
-      SELECT id, title, category, reference_id AS referenceId, tracking_code AS trackingCode,
-             filing_date AS filingDate, status, notes, portal_url AS portalUrl,
-             created_at AS createdAt
+      SELECT
+        id,
+        title,
+        category,
+        reference_id AS referenceId,
+        tracking_code AS trackingCode,
+        filing_date AS filingDate,
+        status,
+        notes,
+        portal_url AS portalUrl,
+        created_at AS createdAt
       FROM tracker_items
       WHERE id = ?
-    `
+      `
     )
     .get(req.params.id);
 
   if (!item) {
-    res.status(404).json({ ok: false, error: "Tracker item not found" });
+    res.status(404).json({
+      ok: false,
+      error: "Tracker item not found",
+    });
+
     return;
   }
 
@@ -317,52 +522,128 @@ router.get("/tracker/:id", (req, res) => {
     data: {
       ...item,
       timeline: getStatusTimeline(item),
-      nextAction: getNextAction(item.status, item.notes),
+      nextAction: getNextAction(
+        item.status,
+        item.notes
+      ),
     },
   });
 });
 
 router.post("/tracker", (req, res) => {
   const body = sanitizePayload(req.body || {});
-  const title = sanitizeText(body.title || "").trim();
+
+  const title = sanitizeText(
+    body.title || ""
+  ).trim();
 
   if (!title) {
-    res.status(400).json({ ok: false, error: "title is required" });
+    res.status(400).json({
+      ok: false,
+      error: "title is required",
+    });
+
     return;
   }
 
   const db = getDb();
-  const trackingCode = sanitizeText(body.trackingCode || body.tracking_code || "").trim() || generateTrackingCode();
-  const status = normalizeStatus(body.status || "drafted");
+
+  const trackingCode =
+    sanitizeText(
+      body.trackingCode ||
+        body.tracking_code ||
+        ""
+    ).trim() ||
+    generateTrackingCode();
+
+  const status = normalizeStatus(
+    body.status || "drafted"
+  );
 
   const result = db
     .prepare(
       `
-      INSERT INTO tracker_items (title, category, reference_id, tracking_code, filing_date, status, notes, portal_url, email)
-      VALUES (@title, @category, @reference_id, @tracking_code, @filing_date, @status, @notes, @portal_url, @email)
-    `
+      INSERT INTO tracker_items
+        (
+          title,
+          category,
+          reference_id,
+          tracking_code,
+          filing_date,
+          status,
+          notes,
+          portal_url,
+          email
+        )
+      VALUES
+        (
+          @title,
+          @category,
+          @reference_id,
+          @tracking_code,
+          @filing_date,
+          @status,
+          @notes,
+          @portal_url,
+          @email
+        )
+      `
     )
     .run({
       title,
-      category: sanitizeText(body.category || "").trim(),
-      reference_id: sanitizeText(body.referenceId || body.reference_id || "").trim(),
+      category: sanitizeText(
+        body.category || ""
+      ).trim(),
+
+      reference_id: sanitizeText(
+        body.referenceId ||
+          body.reference_id ||
+          ""
+      ).trim(),
+
       tracking_code: trackingCode,
-      filing_date: sanitizeText(body.filingDate || body.filing_date || "").trim(),
+
+      filing_date: sanitizeText(
+        body.filingDate ||
+          body.filing_date ||
+          ""
+      ).trim(),
+
       status,
-      notes: sanitizeText(body.notes || "").trim(),
-      portal_url: sanitizeText(body.portalUrl || body.portal_url || "").trim(),
-      email: sanitizeText(body.email || "").trim(),
+
+      notes: sanitizeText(
+        body.notes || ""
+      ).trim(),
+
+      portal_url: sanitizeText(
+        body.portalUrl ||
+          body.portal_url ||
+          ""
+      ).trim(),
+
+      email: sanitizeText(
+        body.email || ""
+      ).trim(),
     });
 
   const item = db
     .prepare(
       `
-      SELECT id, title, category, reference_id AS referenceId, tracking_code AS trackingCode,
-             filing_date AS filingDate, status, notes, portal_url AS portalUrl, email,
-             created_at AS createdAt
+      SELECT
+        id,
+        title,
+        category,
+        reference_id AS referenceId,
+        tracking_code AS trackingCode,
+        filing_date AS filingDate,
+        status,
+        notes,
+        portal_url AS portalUrl,
+        email,
+        created_at AS createdAt
       FROM tracker_items
       WHERE id = ?
-    `
+      `
     )
     .get(result.lastInsertRowid);
 
@@ -371,175 +652,418 @@ router.post("/tracker", (req, res) => {
     data: {
       ...item,
       timeline: getStatusTimeline(item),
-      nextAction: getNextAction(item.status, item.notes),
+      nextAction: getNextAction(
+        item.status,
+        item.notes
+      ),
     },
   });
 });
 
 router.put("/tracker/:id", (req, res) => {
   const db = getDb();
+
   const currentItem = db
-    .prepare("SELECT * FROM tracker_items WHERE id = ?")
+    .prepare(
+      "SELECT * FROM tracker_items WHERE id = ?"
+    )
     .get(req.params.id);
 
   if (!currentItem) {
-    res.status(404).json({ ok: false, error: "Tracker item not found" });
+    res.status(404).json({
+      ok: false,
+      error: "Tracker item not found",
+    });
+
     return;
   }
 
   const body = sanitizePayload(req.body || {});
-  const oldStatus = currentItem.status || "drafted";
-  const newStatus = normalizeStatus(body.status || oldStatus);
+
+  const oldStatus =
+    currentItem.status || "drafted";
 
   if (!body.status) {
-    res.status(400).json({ ok: false, error: "status is required" });
+    res.status(400).json({
+      ok: false,
+      error: "status is required",
+    });
+
     return;
   }
+
+  const newStatus = normalizeStatus(
+    body.status
+  );
 
   db.prepare(
     `
     UPDATE tracker_items
-    SET status = @status,
-        notes = @notes,
-        email = @email
+    SET
+      status = @status,
+      notes = @notes,
+      email = @email
     WHERE id = @id
     `
   ).run({
     status: newStatus,
-    notes: sanitizeText(body.notes !== undefined ? body.notes : currentItem.notes || "").trim(),
-    email: sanitizeText(body.email !== undefined ? body.email : currentItem.email || "").trim(),
+
+    notes: sanitizeText(
+      body.notes !== undefined
+        ? body.notes
+        : currentItem.notes || ""
+    ).trim(),
+
+    email: sanitizeText(
+      body.email !== undefined
+        ? body.email
+        : currentItem.email || ""
+    ).trim(),
+
     id: req.params.id,
   });
 
   const updatedItem = db
     .prepare(
       `
-      SELECT id, title, category, reference_id AS referenceId, tracking_code AS trackingCode,
-             filing_date AS filingDate, status, notes, portal_url AS portalUrl,
-             email, created_at AS createdAt
+      SELECT
+        id,
+        title,
+        category,
+        reference_id AS referenceId,
+        tracking_code AS trackingCode,
+        filing_date AS filingDate,
+        status,
+        notes,
+        portal_url AS portalUrl,
+        email,
+        created_at AS createdAt
       FROM tracker_items
       WHERE id = ?
-    `
+      `
     )
     .get(req.params.id);
 
-  const emailToSend = sanitizeText(updatedItem.email || "").trim();
+  const emailToSend = sanitizeText(
+    updatedItem.email || ""
+  ).trim();
+
   if (emailToSend) {
-    sendStatusChangeEmail(emailToSend, updatedItem, oldStatus, newStatus);
+    sendStatusChangeEmail(
+      emailToSend,
+      updatedItem,
+      oldStatus,
+      newStatus
+    );
   }
 
   res.json({
     ok: true,
     data: {
       ...updatedItem,
-      timeline: getStatusTimeline(updatedItem),
-      nextAction: getNextAction(updatedItem.status, updatedItem.notes),
+      timeline: getStatusTimeline(
+        updatedItem
+      ),
+      nextAction: getNextAction(
+        updatedItem.status,
+        updatedItem.notes
+      ),
     },
   });
 });
 
 router.delete("/tracker/:id", (req, res) => {
   const db = getDb();
-  const item = db.prepare("SELECT id FROM tracker_items WHERE id = ?").get(req.params.id);
+
+  const item = db
+    .prepare(
+      "SELECT id FROM tracker_items WHERE id = ?"
+    )
+    .get(req.params.id);
 
   if (!item) {
-    res.status(404).json({ ok: false, error: "Tracker item not found" });
+    res.status(404).json({
+      ok: false,
+      error: "Tracker item not found",
+    });
+
     return;
   }
 
-  db.prepare("DELETE FROM tracker_items WHERE id = ?").run(req.params.id);
+  db.prepare(
+    "DELETE FROM tracker_items WHERE id = ?"
+  ).run(req.params.id);
 
-  res.json({ ok: true, deletedId: Number(req.params.id) });
+  res.json({
+    ok: true,
+    deletedId: Number(req.params.id),
+  });
 });
 
-// ─────────────────────────────────────────────────────────────────────────────
-// CONTACT & NEWSLETTER ENDPOINTS (From Keshav / Admin Dashboard Integration)
-// ─────────────────────────────────────────────────────────────────────────────
+/* -------------------------------------------------------------------------- */
+/* CONTACT                                                                     */
+/* -------------------------------------------------------------------------- */
 
 router.post("/contact", (req, res) => {
   const body = sanitizePayload(req.body || {});
-  const name = sanitizeText(body.name || "").trim();
-  const email = sanitizeText(body.email || "").trim().toLowerCase();
-  const message = sanitizeText(body.message || "").trim();
+
+  const name = sanitizeText(
+    body.name || ""
+  ).trim();
+
+  const email = sanitizeText(
+    body.email || ""
+  )
+    .trim()
+    .toLowerCase();
+
+  const message = sanitizeText(
+    body.message || ""
+  ).trim();
 
   if (!name || !email || !message) {
-    return res.status(400).json({ ok: false, error: "name, email, and message are required" });
+    return res.status(400).json({
+      ok: false,
+      error:
+        "name, email, and message are required",
+    });
   }
 
   const db = getDb();
+
   const result = db
     .prepare(
-      `INSERT INTO contacts (name, email, field, message, agreed_terms, ip_address)
-       VALUES (@name, @email, @field, @message, @agreed_terms, @ip_address)`
+      `
+      INSERT INTO contacts
+        (
+          name,
+          email,
+          field,
+          message,
+          agreed_terms,
+          ip_address
+        )
+      VALUES
+        (
+          @name,
+          @email,
+          @field,
+          @message,
+          @agreed_terms,
+          @ip_address
+        )
+      `
     )
     .run({
       name,
       email,
-      field: sanitizeText(body.field || "General Guidance Inquiry").trim(),
+
+      field: sanitizeText(
+        body.field ||
+          "General Guidance Inquiry"
+      ).trim(),
+
       message,
-      agreed_terms: body.agreedTerms !== false ? 1 : 0,
+
+      agreed_terms:
+        body.agreedTerms !== false ? 1 : 0,
+
       ip_address: req.ip || "",
     });
 
-  const contact = db.prepare("SELECT * FROM contacts WHERE id = ?").get(result.lastInsertRowid);
-  res.status(201).json({ ok: true, data: contact });
+  const contact = db
+    .prepare(
+      "SELECT * FROM contacts WHERE id = ?"
+    )
+    .get(result.lastInsertRowid);
+
+  res.status(201).json({
+    ok: true,
+    data: contact,
+  });
 });
 
 router.get("/contact", (_req, res) => {
   const db = getDb();
-  const rows = db.prepare("SELECT * FROM contacts ORDER BY datetime(created_at) DESC").all();
-  res.json({ ok: true, count: rows.length, data: rows });
+
+  const rows = db
+    .prepare(
+      "SELECT * FROM contacts ORDER BY datetime(created_at) DESC"
+    )
+    .all();
+
+  res.json({
+    ok: true,
+    count: rows.length,
+    data: rows,
+  });
 });
+
+/* -------------------------------------------------------------------------- */
+/* NEWSLETTER                                                                  */
+/* -------------------------------------------------------------------------- */
 
 router.post("/newsletter", (req, res) => {
   const body = sanitizePayload(req.body || {});
-  const email = sanitizeText(body.email || "").trim().toLowerCase();
 
-  if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
-    return res.status(400).json({ ok: false, error: "A valid email address is required" });
+  const email = sanitizeText(
+    body.email || ""
+  )
+    .trim()
+    .toLowerCase();
+
+  if (
+    !email ||
+    !/^\S+@\S+\.\S+$/.test(email)
+  ) {
+    return res.status(400).json({
+      ok: false,
+      error:
+        "A valid email address is required",
+    });
   }
 
   const db = getDb();
-  const existing = db.prepare("SELECT * FROM newsletters WHERE email = ?").get(email);
+
+  const existing = db
+    .prepare(
+      "SELECT * FROM newsletters WHERE email = ?"
+    )
+    .get(email);
+
   if (existing) {
-    db.prepare("UPDATE newsletters SET active = 1 WHERE email = ?").run(email);
-    const updated = db.prepare("SELECT * FROM newsletters WHERE email = ?").get(email);
-    return res.json({ ok: true, resubscribed: true, data: updated });
+    db.prepare(
+      "UPDATE newsletters SET active = 1 WHERE email = ?"
+    ).run(email);
+
+    const updated = db
+      .prepare(
+        "SELECT * FROM newsletters WHERE email = ?"
+      )
+      .get(email);
+
+    return res.json({
+      ok: true,
+      resubscribed: true,
+      data: updated,
+    });
   }
 
   const result = db
-    .prepare("INSERT INTO newsletters (email, source_page) VALUES (@email, @source_page)")
+    .prepare(
+      `
+      INSERT INTO newsletters
+        (email, source_page)
+      VALUES
+        (@email, @source_page)
+      `
+    )
     .run({
       email,
-      source_page: sanitizeText(body.sourcePage || body.source_page || "Home").trim(),
+
+      source_page: sanitizeText(
+        body.sourcePage ||
+          body.source_page ||
+          "Home"
+      ).trim(),
     });
 
-  const sub = db.prepare("SELECT * FROM newsletters WHERE id = ?").get(result.lastInsertRowid);
-  res.status(201).json({ ok: true, data: sub });
+  const sub = db
+    .prepare(
+      "SELECT * FROM newsletters WHERE id = ?"
+    )
+    .get(result.lastInsertRowid);
+
+  res.status(201).json({
+    ok: true,
+    data: sub,
+  });
 });
 
 router.get("/newsletter", (_req, res) => {
   const db = getDb();
-  const rows = db.prepare("SELECT * FROM newsletters ORDER BY datetime(created_at) DESC").all();
-  res.json({ ok: true, count: rows.length, data: rows });
+
+  const rows = db
+    .prepare(
+      "SELECT * FROM newsletters ORDER BY datetime(created_at) DESC"
+    )
+    .all();
+
+  res.json({
+    ok: true,
+    count: rows.length,
+    data: rows,
+  });
 });
 
+/* -------------------------------------------------------------------------- */
+/* ADMIN                                                                       */
+/* -------------------------------------------------------------------------- */
+
 router.post("/admin/verify", (req, res) => {
-  const { secret } = req.body || {};
-  const expectedSecret = process.env.ADMIN_SECRET || "nyayasetu2026";
-  if (secret && (secret === expectedSecret || secret === "admin123")) {
-    return res.json({ ok: true, token: secret });
+  const body = req.body || {};
+  const secret =
+    typeof body.secret === "string"
+      ? body.secret
+      : "";
+
+  const expectedSecret =
+    process.env.ADMIN_SECRET;
+
+  if (
+    expectedSecret &&
+    secret &&
+    secret === expectedSecret
+  ) {
+    return res.json({
+      ok: true,
+      token: secret,
+    });
   }
-  res.status(401).json({ ok: false, message: "Invalid administrator secret key." });
+
+  return res.status(401).json({
+    ok: false,
+    message:
+      "Invalid administrator secret key.",
+  });
 });
+
+/* -------------------------------------------------------------------------- */
+/* STATS                                                                       */
+/* -------------------------------------------------------------------------- */
 
 router.get("/stats", (_req, res) => {
   const db = getDb();
-  const problems = db.prepare("SELECT COUNT(*) AS count FROM problems").get().count;
-  const routes = db.prepare("SELECT COUNT(*) AS count FROM routes").get().count;
-  const trackerItems = db.prepare("SELECT COUNT(*) AS count FROM tracker_items").get().count;
-  const contacts = db.prepare("SELECT COUNT(*) AS count FROM contacts").get().count;
-  const newsletters = db.prepare("SELECT COUNT(*) AS count FROM newsletters").get().count;
+
+  const problems = db
+    .prepare(
+      "SELECT COUNT(*) AS count FROM problems"
+    )
+    .get().count;
+
+  const routes = db
+    .prepare(
+      "SELECT COUNT(*) AS count FROM routes"
+    )
+    .get().count;
+
+  const trackerItems = db
+    .prepare(
+      "SELECT COUNT(*) AS count FROM tracker_items"
+    )
+    .get().count;
+
+  const contacts = db
+    .prepare(
+      "SELECT COUNT(*) AS count FROM contacts"
+    )
+    .get().count;
+
+  const newsletters = db
+    .prepare(
+      "SELECT COUNT(*) AS count FROM newsletters"
+    )
+    .get().count;
 
   res.json({
     ok: true,
