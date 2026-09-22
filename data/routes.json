@@ -303,5 +303,48 @@
       "Track the complaint and escalate to the next administrative office if there is delay."
     ],
     "draft_template": "Subject: Pension grievance — PPO {{orderId}}\n\nTo,\nThe Pension / Retirement Grievance Cell\n\nRespected Sir/Madam,\n\nI am {{complainantName}}. My pension / PPO number is {{orderId}}. I request assistance on {{issueType}}.\n\nDetails: {{description}}\n\nI request the correct arrears, family pension, or service resolution and a written status update. I will enter this on the official pension grievance portal only.\n\nThank you.\n{{complainantName}}"
-  }
+  },
+  {
+  "id": "legal-aid-nalsa",
+  "authority_name": "Legal Services Authority",
+  "portal_name": "NALSA",
+  "portal_url": "https://nalsa.gov.in/",
+  "helpline": "Legal Services Authority helpline / office contact",
+  "department": "National / State / District Legal Services Authority",
+  "checklist": [
+    "Brief description of the legal issue",
+    "Relevant documents related to the dispute",
+    "Basic contact details",
+    "Details of any court case or legal proceeding, if applicable"
+  ],
+  "steps": [
+    "Identify the appropriate Legal Services Authority for your location.",
+    "Check the available legal aid or Lok Adalat assistance process.",
+    "Provide the required information and supporting documents.",
+    "Follow the instructions provided by the Legal Services Authority."
+  ],
+  "draft_template": "Subject: Request for Legal Aid Assistance — {{issueType}}\n\nTo,\nThe Legal Services Authority\n\nRespected Sir/Madam,\n\nI am {{complainantName}}. I am seeking legal assistance regarding {{issueType}}.\n\nEligibility category: {{eligibilityCategory}}\n\nDetails of the matter: {{description}}\n\nLocation: {{location}}\n\nI request guidance regarding the available legal aid / legal assistance process and the appropriate authority to approach.\n\nThank you.\n{{complainantName}}"
+},
+{
+  "id": "rti-application",
+  "authority_name": "Public Information Officer / Concerned Public Authority",
+  "portal_name": "RTI Online",
+  "portal_url": "https://www.rtionline.gov.in/",
+  "helpline": "RTI Online Help Desk: 011-24010690 / 691",
+  "department": "Concerned Central Government Public Authority",
+  "checklist": [
+    "Name and contact details of the applicant",
+    "Correct Public Authority / Ministry or Department",
+    "Clear description of the information requested",
+    "Supporting documents, if relevant"
+  ],
+    "steps": [
+    "Identify the Public Authority that holds the information.",
+    "Prepare clear and specific questions requesting records or information.",
+    "Generate and review the RTI application.",
+    "Submit it through the appropriate official channel.",
+    "Keep the registration number for future status tracking."
+  ],
+  "draft_template": "Subject: Application under the Right to Information Act, 2005\n\nTo,\nThe Public Information Officer\n{{publicAuthority}}\n\nRespected Sir/Madam,\n\nI, {{complainantName}}, am an Indian citizen and request the following information under the Right to Information Act, 2005.\n\nInformation category: {{informationType}}\n\nPublic authority type: {{authorityType}}\n\nInformation requested:\n{{description}}\n\nRelevant department / authority: {{publicAuthority}}\n\nPeriod / date relevant to the information: {{informationPeriod}}\n\nI request that the information be provided in the manner permitted under the applicable RTI procedure.\n\nApplicant details:\nName: {{complainantName}}\nLocation: {{location}}\n\nThank you.\n{{complainantName}}"
+}
 ]

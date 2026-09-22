@@ -90,7 +90,7 @@
 
     window.NyayaAPI.getProblems(query)
       .then(function (payload) {
-        state.problems = payload.data || [];
+        state.problems = Array.isArray(payload) ? payload : (payload.data || []);
         setStatus(state.problems.length + " categor" + (state.problems.length === 1 ? "y" : "ies") + " found.");
         renderProblems(state.problems);
       })
@@ -108,7 +108,7 @@
       escapeHtml(state.selectedProblem.title) +
       "</h3>" +
       "<p>Official destination: <strong>" +
-      escapeHtml(state.route.authorityName) +
+      escapeHtml(state.route.authorityName || state.route.authority_name) +
       "</strong></p>" +
       "</div>";
 
@@ -127,7 +127,7 @@
           escapeHtml(optionId) +
           '">' +
           '<input type="radio" name="' +
-          escapeHtml(question.questionKey) +
+          escapeHtml(question.questionKey || question.question_key) +
           '" id="' +
           escapeHtml(optionId) +
           '" value="' +
@@ -158,27 +158,26 @@
     document.getElementById("nyaya-show-route").addEventListener("click", collectAnswersAndShowRoute);
   }
 
-  function collectAnswersAndShowRoute() {
-    var questions = (state.route && state.route.questions) || [];
-    state.answers = {};
-    var missing = false;
-
-    questions.forEach(function (question) {
-      var selected = questionEl.querySelector('input[name="' + question.questionKey + '"]:checked');
-      if (!selected) {
-        missing = true;
-        return;
-      }
-      state.answers[question.questionKey] = selected.value;
-    });
-
-    if (missing) {
-      setStatus("Please answer every guided question.", true);
-      return;
+function collectAnswersAndShowRoute() {
+  var questions = (state.route && state.route.questions) || [];
+  state.answers = {};
+  var missing = questions.some(function (question) {
+    var questionKey = question.questionKey || question.question_key;
+    var selected = questionEl.querySelector(
+      'input[name="' + questionKey + '"]:checked'
+    );
+    if (!selected) {
+      return true;
     }
-
-    renderResult();
+    state.answers[questionKey] = selected.value;
+    return false;
+  });
+  if (missing) {
+    setStatus("Please answer every guided question.", true);
+    return;
   }
+  renderResult();
+}
 
   function renderResult() {
     var route = state.route;
@@ -198,14 +197,14 @@
       "<h3>Recommended official destination</h3>" +
       '<p class="nyaya-badge">Verified guidance — not a government website</p>' +
       "<p><strong>" +
-      escapeHtml(route.authorityName) +
+      escapeHtml(route.authorityName || route.authority_name) +
       "</strong><br>" +
       escapeHtml(route.department) +
       "</p>" +
       "<p>Portal: <a href=\"" +
-      escapeHtml(route.portalUrl) +
+      escapeHtml(route.portalUrl || route.portal_url) +
       '" target="_blank" rel="noopener noreferrer">' +
-      escapeHtml(route.portalName) +
+      escapeHtml(route.portalName || route.portal_name) +
       "</a></p>" +
       "<p>Helpline: " +
       escapeHtml(route.helpline) +
@@ -250,9 +249,9 @@
 
     state.selectedProblem = problem;
     setStatus("Loading route logic...");
-    window.NyayaAPI.getRoute(problem.routeId)
+    window.NyayaAPI.getRoute(problem.routeId || problem.route_id)
       .then(function (payload) {
-        state.route = payload.data;
+        state.route = payload.data || payload;
         setStatus("Answer a few questions so the action plan matches your situation.");
         renderQuestions();
       })

@@ -423,6 +423,14 @@
       });
     },
 
+    generateDraft: function (payload) {
+     return request("/drafts/generate", {
+     method: "POST",
+     headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(payload)
+    });
+    },
+
     getI18n: function (lang) {
       var safeLang = lang === "hi" ? "hi" : "en";
       return request("/v1/i18n/" + safeLang).catch(function () {

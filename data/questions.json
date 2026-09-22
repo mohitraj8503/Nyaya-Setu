@@ -253,5 +253,62 @@
       { "label": "Bank account / PPO mismatch", "value": "PPO or bank mismatch" },
       { "label": "Need status update", "value": "status update" }
     ]
-  }
+  },
+  {
+  "id": "q-legal-1",
+  "route_id": "legal-aid-nalsa",
+  "sort_order": 1,
+  "prompt": "Under which category are you claiming free legal aid?",
+  "question_key": "eligibilityCategory",
+  "options": [
+    { "label": "Woman or Child", "value": "Woman or Child" },
+    { "label": "Member of SC/ST", "value": "Member of SC/ST" },
+    { "label": "Industrial Workman", "value": "Industrial Workman" },
+    { "label": "Low Income (Below state threshold)", "value": "Low Income Category" },
+    { "label": "Victim of Disaster/Violence", "value": "Victim of Disaster/Violence" },
+    { "label": "Other / Unsure", "value": "Unspecified Category" }
+  ]
+},
+{
+  "id": "q-legal-2",
+  "route_id": "legal-aid-nalsa",
+  "sort_order": 2,
+  "prompt": "What type of legal dispute are you facing?",
+  "question_key": "issueType",
+  "options": [
+    { "label": "Family / Matrimonial Dispute", "value": "Family or Matrimonial Dispute" },
+    { "label": "Property / Civil Dispute", "value": "Property or Civil Dispute" },
+    { "label": "Labour / Employment Issue", "value": "Labour or Employment Issue" },
+    { "label": "Accident / Compensation", "value": "Accident or Compensation matter" },
+    { "label": "Criminal Defense", "value": "Criminal Defense matter" },
+    { "label": "Other", "value": "Legal Dispute" }
+  ]
+},
+{
+  "id": "q-rti-1",
+  "route_id": "rti-application",
+  "sort_order": 1,
+  "prompt": "What type of information are you seeking?",
+  "question_key": "informationType",
+  "options": [
+    { "label": "Government scheme / service information", "value": "Government scheme or service information" },
+    { "label": "Public expenditure / records", "value": "Public expenditure or official records" },
+    { "label": "Government decision / order", "value": "Government decision or order" },
+    { "label": "Status of an application / request", "value": "Status of an application or request" },
+    { "label": "Other government information", "value": "Other government information" }
+  ]
+},
+{
+  "id": "q-rti-2",
+  "route_id": "rti-application",
+  "sort_order": 2,
+  "prompt": "Which type of public authority do you need information from?",
+  "question_key": "authorityType",
+  "options": [
+    { "label": "Central Government department", "value": "Central Government department" },
+    { "label": "Central Government ministry", "value": "Central Government ministry" },
+    { "label": "Central Government organisation", "value": "Central Government organisation" },
+    { "label": "I am not sure", "value": "Not sure" }
+  ]
+}
 ]

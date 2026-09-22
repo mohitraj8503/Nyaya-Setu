@@ -133,5 +133,23 @@
     "summary": "Pension arrears, family pension issues, and retirement benefit follow-up with government portals.",
     "keywords": "pension, retirement, family pension, benefit, old age, grievance",
     "route_id": "pension-seva"
+  },
+  {
+  "id": "legal-aid-assistance",
+  "slug": "free-legal-aid-assistance",
+  "title": "Free Legal Aid & Lok Adalat Assistance",
+  "category": "Legal Aid",
+  "summary": "Get guidance on free legal aid and Lok Adalat assistance and identify the appropriate legal services authority.",
+  "keywords": "legal aid, free legal aid, NALSA, DLSA, SLSA, Lok Adalat, lawyer, legal assistance",
+  "route_id": "legal-aid-nalsa"
+  },
+  {
+  "id": "rti-information-request",
+  "slug": "rti-information-request",
+  "title": "RTI Information Request",
+  "category": "RTI",
+  "summary": "Get guidance for preparing an RTI application and identify the appropriate public authority.",
+  "keywords": "RTI, Right to Information, information request, government information, public authority, PIO",
+  "route_id": "rti-application"
   }
 ]

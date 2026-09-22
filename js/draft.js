@@ -7,8 +7,9 @@
   }
 
   var selected = {
-    routeId: "",
+     routeId: null,
     problemTitle: "",
+    answers: {},
   };
 
   root.innerHTML =
@@ -23,7 +24,10 @@
     '<label>Date of incident<input name="purchaseDate" type="date"></label>' +
     '<label>Seller / facility / department<input name="seller" placeholder="Platform, DISCOM, hospital, etc."></label>' +
     '<label>Issue type<input name="issueType" id="nyaya-issue-type" placeholder="Filled from the wizard when available"></label>' +
-    '<label>What happened<textarea name="description" rows="5" required placeholder="Facts only. No passwords or OTPs."></textarea></label>' +
+    '<label>Public Authority<input name="publicAuthority" id="nyaya-public-authority" placeholder="Ministry / Department / Public Authority"></label>' +
+    '<label>Information period<input name="informationPeriod" id="nyaya-information-period" placeholder="Example: January 2025 to December 2025"></label>' +
+    '<input type="hidden" name="eligibilityCategory" id="nyaya-eligibility-category">' +
+   '<label>What happened<textarea name="description" id="nyaya-description" rows="5" required placeholder="Facts only. No passwords or OTPs."></textarea><small id="nyaya-description-count" class="nyaya-char-count"></small></label>' +
     '<label>Relief sought<input name="reliefSought" placeholder="Refund, repair, investigation..."></label>' +
     '<input type="hidden" name="routeId" id="nyaya-route-id">' +
     '<button type="submit" class="nyaya-btn">Generate draft</button>' +
@@ -151,23 +155,61 @@
     ].join("\n");
   }
 
-  window.addEventListener("nyaya:route-selected", function (event) {
-    var detail = event.detail || {};
-    selected.routeId = detail.route && detail.route.id;
-    selected.problemTitle = detail.problem && detail.problem.title;
-    document.getElementById("nyaya-route-id").value = selected.routeId || "";
-    if (detail.answers && detail.answers.issueType) {
-      document.getElementById("nyaya-issue-type").value = detail.answers.issueType;
+window.addEventListener("nyaya:route-selected", function (event) {
+  var detail = event.detail || {};
+  var route = detail.route || {};
+  var answers = detail.answers || {};
+  selected.routeId = route.id || "";
+  selected.problemTitle = detail.problem && detail.problem.title;
+  selected.answers = answers;
+  var routeIdInput = document.getElementById("nyaya-route-id");
+  var issueTypeInput = document.getElementById("nyaya-issue-type");
+  var eligibilityInput = document.getElementById("nyaya-eligibility-category");
+  var publicAuthorityInput = document.getElementById("nyaya-public-authority");
+  var informationPeriodInput = document.getElementById("nyaya-information-period");
+  var draftCard = document.getElementById("nyaya-draft-card");
+  var draftForm = document.getElementById("nyaya-draft-form");
+  routeIdInput.value = selected.routeId;
+  if (answers.issueType) {
+    issueTypeInput.value = answers.issueType;
+  }
+  if (answers.eligibilityCategory) {
+    eligibilityInput.value = answers.eligibilityCategory;
+  }
+  var isRti = selected.routeId === "rti-application";
+  var consumerFields = [
+    draftForm.querySelector('input[name="orderId"]'),
+    draftForm.querySelector('input[name="purchaseDate"]'),
+    draftForm.querySelector('input[name="seller"]'),
+    issueTypeInput,
+    draftForm.querySelector('input[name="reliefSought"]')
+  ];
+  consumerFields.forEach(function (input) {
+    if (input && input.parentElement) {
+      input.parentElement.style.display = isRti ? "none" : "";
     }
   });
+  publicAuthorityInput.parentElement.style.display = isRti ? "" : "none";
+  informationPeriodInput.parentElement.style.display = isRti ? "" : "none";
+  draftCard.querySelector("h2").textContent = isRti
+    ? "Prepare an RTI application draft"
+    : "Prepare a complaint draft to copy onto the official portal";
+  draftForm.querySelector('button[type="submit"]').textContent = isRti
+    ? "Generate RTI application"
+    : "Generate draft";
+});
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
     var data = new FormData(form);
     var answers = {};
-    data.forEach(function (value, key) {
-      answers[key] = value;
+   data.forEach(function (value, key) {
+     answers[key] = value;
     });
+      if (answers.routeId === "rti-application") {
+         answers.informationType = selected.answers.informationType || "";
+         answers.authorityType = selected.answers.authorityType || "";
+        }
 
     statusEl.textContent = "Generating draft on the server...";
     statusEl.className = "nyaya-status";
@@ -184,8 +226,8 @@
 
     requestPromise
       .then(function (payload) {
-        var draft = payload.data && payload.data.draft;
-        renderDraft(draft || "", (payload.data && payload.data.disclaimer) || "Draft ready. Copy it onto the official portal yourself.", false);
+        var draft = payload.data ? payload.data.draft : payload.draft;
+        renderDraft(draft || "", (payload.data && payload.data.disclaimer) || payload.disclaimer || "Draft ready. Copy it onto the official portal yourself.", false);
       })
       .catch(function () {
         var offlineDraft = buildOfflineDraft(answers);
