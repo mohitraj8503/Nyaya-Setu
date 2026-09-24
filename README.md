@@ -416,3 +416,7 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 **[⭐ Star on GitHub](https://github.com/mohitraj8503/Nyaya-Setu)** • **[🚀 Try the Live Demo](https://mohitraj8503.github.io/Nyaya-Setu/)**
 
 </div>
+
+---
+
+Built by [Mohit Raj](https://github.com/mohitraj8503) — Technical Team Lead @ [Tech Tomorrow](https://techtomorrow.in)
